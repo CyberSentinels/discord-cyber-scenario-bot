@@ -12,7 +12,7 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 ### Python:
 Assuming you are using a Unix-based system, open a terminal and navigate to the directory where the bot.py script is located. Then, run the following command:
 ```bash
-BOT_TOKEN="INSERT YOUR BOT TOKEN HERE"
+export BOT_TOKEN="INSERT YOUR BOT TOKEN HERE"
 python bot.py
 ```
 Note that if you are using a Windows-based system, you'll need to use a slightly different command to set the environment variable. Here's an example command that should work on Windows:
