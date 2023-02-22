@@ -8,7 +8,7 @@ WORKDIR /
 COPY . /
 
 # Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 # Set the environment variable for the bot token
 ENV BOT_TOKEN=${BOT_TOKEN}
