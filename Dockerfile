@@ -8,7 +8,7 @@ WORKDIR /
 COPY . /
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --upgrade pip && pip install discord.py random
+RUN pip install --upgrade pip && pip install discord.py
 
 # Set the environment variable for the bot token
 ENV BOT_TOKEN=${BOT_TOKEN}
