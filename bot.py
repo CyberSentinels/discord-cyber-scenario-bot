@@ -394,7 +394,7 @@ async def scenario(ctx):
         if 'ways_to_prevent' in scenario:
             prevent = '\n'.join(scenario['ways_to_prevent'])
             respond = '\n'.join(scenario['how_to_respond'])
-            response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
+            response = f"**Here's a Blue Team Scenario for you**:\n\nPrompt: {prompt}\n\n**Ways to prevent**: ||{prevent}||\n\n**How to respond**: ||{respond}||"
         else:
             solution = scenario['solution']
             response = f"**Here's a Red Team Scenario for you**:\n\n**Prompt**: {prompt}\n\n**Solution**: ||{solution}||"
