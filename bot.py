@@ -8,7 +8,6 @@ import os
 intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix=['!','/'], intents=intents)
-tree = app_commands.CommandTree(client)
 
 bottoken = os.environ.get('BOT_TOKEN')
 
