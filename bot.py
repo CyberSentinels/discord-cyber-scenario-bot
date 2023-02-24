@@ -9,7 +9,7 @@ client = commands.Bot(command_prefix='!', intents=intents)
 
 bottoken = os.environ.get('BOT_TOKEN')
 
-bluescenarios = {
+bluescenarios = [
     {
         "prompt": "Ransomware: An attacker uses malware to encrypt an organization's data or lock its devices, and demands a ransom in exchange for restoring access. What are some ways to prevent ransomware attacks, and how can organizations respond when they happen?",
         "ways_to_prevent": ["Regularly backup data to a secure offsite location",
@@ -312,10 +312,10 @@ bluescenarios = {
                         "Implement additional physical security measures to prevent future attacks",
                         "Notify law enforcement as necessary"]
     }
-}
+]
 
 
-redscenarios = {
+redscenarios = [
     {
         "prompt": "Password Cracking: The penetration tester has been able to crack several user passwords by using a simple dictionary attack. However, they still cannot access the network because the administrator's password is much stronger. How can the tester gain access to the network?",
         "solution": "The tester could use a technique such as social engineering to trick the administrator into revealing their password, or they could attempt to reset the password by exploiting a vulnerability in the password reset process."
@@ -380,7 +380,7 @@ redscenarios = {
         "prompt": "Wireless Network Testing: The wireless network is protected by a VPN, but the tester has discovered that the VPN is vulnerable to a man-in-the-middle attack. How can the tester use this vulnerability to intercept?",
         "solution": "The tester could use the man-in-the-middle vulnerability to intercept and decrypt network traffic that is transmitted over the VPN. This could allow them to steal sensitive information or gain access to restricted systems on the network."
     }
-}
+]
 
 scenarios = bluescenarios + redscenarios
 
