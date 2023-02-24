@@ -1,11 +1,17 @@
 import random
 import discord
 from discord.ext import commands
+from discord_slash import SlashCommand, SlashContext
+from discord_slash.utils.manage_commands import create_option
+import discord-py-interactions
 import os
+
 
 intents = discord.Intents.default()
 intents.message_content = True
-client = commands.Bot(command_prefix='!', intents=intents)
+intents.commands = True  # Enable autocomplete for slash commands
+client = commands.Bot(command_prefix=['!','/'], intents=intents)
+slash = SlashCommand(client, sync_commands=True)
 
 bottoken = os.environ.get('BOT_TOKEN')
 
@@ -417,6 +423,50 @@ async def bluescenario(ctx):
 
 @client.command()
 async def redscenario(ctx):
+    try:
+        scenario = random.choice(redscenarios)
+        prompt = scenario['prompt']
+        solution = scenario['solution']
+        response = f"Here's a Red Team Scenario for you:\n\nPrompt: {prompt}\n\nSolution: ||{solution}||"
+        await ctx.send(response)
+    except KeyError as e:
+        await ctx.send(f"Error: {e}. This scenario is missing a required field.")
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@slash.slash(name="scenario", description="Generate a random scenario for Blue or Red Teams")
+async def slash_scenario(ctx: SlashContext):
+    try:
+        scenario = random.choice(scenarios)
+        prompt = scenario['prompt']
+        if 'ways_to_prevent' in scenario:
+            prevent = '\n'.join(scenario['ways_to_prevent'])
+            respond = '\n'.join(scenario['how_to_respond'])
+            response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
+        else:
+            solution = scenario['solution']
+            response = f"Here's a Red Team Scenario for you:\n\nPrompt: {prompt}\n\nSolution: ||{solution}||"
+        await ctx.send(response)
+    except Exception as e:
+        print(f"An error occurred while running the 'scenario' command: {e}")
+        await ctx.send("Sorry, an error occurred while running that command.")
+
+@slash.slash(name="bluescenario", description="Generate a random Blue Team scenario")
+async def slash_bluescenario(ctx: SlashContext):
+    try:
+        scenario = random.choice(bluescenarios)
+        prompt = scenario['prompt']
+        prevent = '\n'.join(scenario['ways_to_prevent'])
+        respond = '\n'.join(scenario['how_to_respond'])
+        response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
+        await ctx.send(response)
+    except KeyError as e:
+        await ctx.send(f"Error: {e}. This scenario is missing a required field.")
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@slash.slash(name="redscenario", description="Generate a random Red Team scenario")
+async def slash_redscenario(ctx: SlashContext):
     try:
         scenario = random.choice(redscenarios)
         prompt = scenario['prompt']
