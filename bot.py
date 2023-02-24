@@ -447,7 +447,7 @@ async def subnet(ctx, ip: str, mask: str):
 @client.hybrid_command()
 async def commands(ctx):
     try:
-        response = f"**Command prefix**: '!', '/'\n\n \n\n**Scenario**: replies with either a red team or blue team scenario. \n\n**Bluescenario**: replies with a blue team scenario. \n\n**Redscenario**: Replies with a redteam scenario.\n\n**Commands**: Replies with this message.\n\n**Socials**: replies with the various bot social media accounts and websites."
+        response = f"**Command prefix**: '!', '/'\n\n**Scenario**: replies with either a red team or blue team scenario. \n\n**Bluescenario**: replies with a blue team scenario. \n\n**Redscenario**: Replies with a redteam scenario.\n\n**Commands**: Replies with this message.\n\n**Socials**: replies with the various bot social media accounts and websites."
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
