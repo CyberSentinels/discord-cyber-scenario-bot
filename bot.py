@@ -386,33 +386,47 @@ scenarios = bluescenarios + redscenarios
 
 @client.command()
 async def scenario(ctx):
-    scenario = random.choice(scenarios)
-    prompt = scenario['prompt']
-    if 'ways_to_prevent' in scenario:
-        prevent = '\n'.join(scenario['ways_to_prevent'])
-        respond = '\n'.join(scenario['how_to_respond'])
-        response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
-    else:
-        solution = scenario['solution']
-        response = f"Here's a Red Team Scenario for you:\n\nPrompt: {prompt}\n\nSolution: ||{solution}||"
-    await ctx.send(response)
+    try:
+        scenario = random.choice(scenarios)
+        prompt = scenario['prompt']
+        if 'ways_to_prevent' in scenario:
+            prevent = '\n'.join(scenario['ways_to_prevent'])
+            respond = '\n'.join(scenario['how_to_respond'])
+            response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
+        else:
+            solution = scenario['solution']
+            response = f"Here's a Red Team Scenario for you:\n\nPrompt: {prompt}\n\nSolution: ||{solution}||"
+        await ctx.send(response)
+    except Exception as e:
+        print(f"An error occurred while running the 'scenario' command: {e}")
+        await ctx.send("Sorry, an error occurred while running that command.")
 
 @client.command()
 async def bluescenario(ctx):
-    scenario = random.choice(bluescenarios)
-    prompt = scenario['prompt']
-    prevent = '\n'.join(scenario['ways_to_prevent'])
-    respond = '\n'.join(scenario['how_to_respond'])
-    response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
-    await ctx.send(response)
+    try:
+        scenario = random.choice(bluescenarios)
+        prompt = scenario['prompt']
+        prevent = '\n'.join(scenario['ways_to_prevent'])
+        respond = '\n'.join(scenario['how_to_respond'])
+        response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
+        await ctx.send(response)
+    except KeyError as e:
+        await ctx.send(f"Error: {e}. This scenario is missing a required field.")
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 @client.command()
 async def redscenario(ctx):
-    scenario = random.choice(redscenarios)
-    prompt = scenario['prompt']
-    solution = scenario['solution']
-    response = f"Here's a Red Team Scenario for you:\n\nPrompt: {prompt}\n\nSolution: ||{solution}||"
-    await ctx.send(response)
+    try:
+        scenario = random.choice(redscenarios)
+        prompt = scenario['prompt']
+        solution = scenario['solution']
+        response = f"Here's a Red Team Scenario for you:\n\nPrompt: {prompt}\n\nSolution: ||{solution}||"
+        await ctx.send(response)
+    except KeyError as e:
+        await ctx.send(f"Error: {e}. This scenario is missing a required field.")
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 @client.event
 async def on_ready():
