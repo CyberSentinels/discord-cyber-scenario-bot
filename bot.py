@@ -397,7 +397,7 @@ async def scenario(ctx):
             response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
         else:
             solution = scenario['solution']
-            response = f"Here's a Red Team Scenario for you:\n\nPrompt: {prompt}\n\nSolution: ||{solution}||"
+            response = f"**Here's a Red Team Scenario for you**:\n\n**Prompt**: {prompt}\n\n**Solution**: ||{solution}||"
         await ctx.send(response)
     except Exception as e:
         print(f"An error occurred while running the 'scenario' command: {e}")
@@ -410,7 +410,7 @@ async def bluescenario(ctx):
         prompt = scenario['prompt']
         prevent = '\n'.join(scenario['ways_to_prevent'])
         respond = '\n'.join(scenario['how_to_respond'])
-        response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
+        response = f"**Here's a Blue Team Scenario for you**:\n\n**Prompt**: {prompt}\n\n**Ways to prevent**: ||{prevent}||\n\n**How to respond**: ||{respond}||"
         await ctx.send(response)
     except KeyError as e:
         await ctx.send(f"Error: {e}. This scenario is missing a required field.")
@@ -423,7 +423,7 @@ async def redscenario(ctx):
         scenario = random.choice(redscenarios)
         prompt = scenario['prompt']
         solution = scenario['solution']
-        response = f"Here's a Red Team Scenario for you:\n\nPrompt: {prompt}\n\nSolution: ||{solution}||"
+        response = f"**Here's a Red Team Scenario for you**:\n\n**Prompt**: {prompt}\n\n**Solution**: ||{solution}||"
         await ctx.send(response)
     except KeyError as e:
         await ctx.send(f"Error: {e}. This scenario is missing a required field.")
@@ -438,10 +438,27 @@ async def subnet(ctx, ip: str, mask: str):
         broadcast_addr = str(network.broadcast_address)
         usable_range = f"{str(network[1])} - {str(network[-2])}"
         host_count = network.num_addresses
-        response = f"Here are the details for subnet {network}: \n\nNetwork address: {net_addr}\nBroadcast address: {broadcast_addr}\nUsable IP range: {usable_range}\nNumber of hosts: {host_count}"
+        response = f"**Here are the details for subnet {network}**: \n\n**Network address**: {net_addr}\n**Broadcast address**: {broadcast_addr}\n**Usable IP range**: {usable_range}\n**Number of hosts**: {host_count}"
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
+
+
+@client.hybrid_command()
+async def commands(ctx):
+    try:
+        response = f"**Command prefix**: '!', '/'\n\n \n\n**Scenario**: replies with either a red team or blue team scenario. \n\n**Bluescenario**: replies with a blue team scenario. \n\n**Redscenario**: Replies with a redteam scenario.\n\n**Commands**: Replies with this message.\n\n**Socials**: replies with the various bot social media accounts and websites."
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.hybrid_command()
+async def socials(ctx):
+    try:
+        response = f"**Website**: https://cybersentinels.com \n\n **GitHub**: https://github.com/cybersentinels"
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 @client.event
 async def on_ready():
