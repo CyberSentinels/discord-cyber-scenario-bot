@@ -1,6 +1,7 @@
 import random
 import discord
 from discord.ext import commands
+import ipaddress
 import os
 
 intents = discord.Intents.default()
@@ -427,6 +428,19 @@ async def redscenario(ctx):
         await ctx.send(f"Error: {e}. This scenario is missing a required field.")
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.command()
+async def subnet(ctx, ip: str, mask: str):
+    try:
+        network = ipaddress.ip_network(f"{ip}/{mask}", strict=False)
+        net_addr = str(network.network_address)
+        broadcast_addr = str(network.broadcast_address)
+        usable_range = f"{str(network[1])} - {str(network[-2])}"
+        host_count = network.num_addresses
+        response = f"Here are the details for subnet {network}: \n\nNetwork address: {net_addr}\nBroadcast address: {broadcast_addr}\nUsable IP range: {usable_range}\nNumber of hosts: {host_count}"
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. Invalid input format.")
 
 @client.event
 async def on_ready():
