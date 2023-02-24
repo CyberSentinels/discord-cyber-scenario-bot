@@ -1,13 +1,13 @@
 import random
-import os
-import interactions
-from interactions import Option, OptionType
 import discord
 from discord.ext import commands
+import os
 
-intents = interactions.Intents.default()
+intents = discord.Intents.default()
 intents.message_content = True
-client = interactions.Client(token=os.environ.get('BOT_TOKEN'), intents=intents, command_prefix=['!', '/'])
+client = commands.Bot(command_prefix=['!','/'], intents=intents)
+
+bottoken = os.environ.get('BOT_TOKEN')
 
 bluescenarios = [
     {
@@ -384,11 +384,8 @@ redscenarios = [
 
 scenarios = bluescenarios + redscenarios
 
-@client.command(
-    name="scenario",
-    description="Generate a random scenario for Blue or Red Teams"
-)
-async def scenario(ctx: interactions.CommandContext):
+@client.command()
+async def scenario(ctx):
     try:
         scenario = random.choice(scenarios)
         prompt = scenario['prompt']
@@ -404,28 +401,27 @@ async def scenario(ctx: interactions.CommandContext):
         print(f"An error occurred while running the 'scenario' command: {e}")
         await ctx.send("Sorry, an error occurred while running that command.")
 
-@scenario.option(
-    name="team",
-    description="The team whose scenario to generate",
-    required=True,
-    choices=[
-        Option(name="Blue", value="blue"),
-        Option(name="Red", value="red")
-    ]
-)
-async def team_scenario(ctx: interactions.CommandContext, team: str):
+@client.command()
+async def bluescenario(ctx):
     try:
-        if team == 'blue':
-            scenario = random.choice(bluescenarios)
-            prompt = scenario['prompt']
-            prevent = '\n'.join(scenario['ways_to_prevent'])
-            respond = '\n'.join(scenario['how_to_respond'])
-            response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
-        elif team == 'red':
-            scenario = random.choice(redscenarios)
-            prompt = scenario['prompt']
-            solution = scenario['solution']
-            response = f"Here's a Red Team Scenario for you:\n\nPrompt: {prompt}\n\nSolution: ||{solution}||"
+        scenario = random.choice(bluescenarios)
+        prompt = scenario['prompt']
+        prevent = '\n'.join(scenario['ways_to_prevent'])
+        respond = '\n'.join(scenario['how_to_respond'])
+        response = f"Here's a Blue Team Scenario for you:\n\nPrompt: {prompt}\n\nWays to prevent: ||{prevent}||\n\nHow to respond: ||{respond}||"
+        await ctx.send(response)
+    except KeyError as e:
+        await ctx.send(f"Error: {e}. This scenario is missing a required field.")
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.command()
+async def redscenario(ctx):
+    try:
+        scenario = random.choice(redscenarios)
+        prompt = scenario['prompt']
+        solution = scenario['solution']
+        response = f"Here's a Red Team Scenario for you:\n\nPrompt: {prompt}\n\nSolution: ||{solution}||"
         await ctx.send(response)
     except KeyError as e:
         await ctx.send(f"Error: {e}. This scenario is missing a required field.")
@@ -437,9 +433,10 @@ async def on_ready():
     print(f'We have logged in as {client.user}')
     print('Bot is ready.')
 
-client.start()
 # async def on_message(message):
 #     if message.content.startswith('!scenario') or message.content.startswith('/scenario'):
 #         scenario = random.choice(scenarios)
 #         response = f"Here's a scenario for you:\n\n{scenario}"
 #         await channel.send(response)
+
+client.run(bottoken)
