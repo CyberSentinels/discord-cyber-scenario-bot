@@ -382,6 +382,8 @@ redscenarios = [
     }
 ]
 
+scenarios = bluescenarios + redscenarios
+
 @client.command(
     name="scenario",
     description="Generate a random scenario for Blue or Red Teams"
