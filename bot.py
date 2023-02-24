@@ -1,12 +1,14 @@
 import random
 import discord
 from discord.ext import commands
+from discord import app_commands
 import ipaddress
 import os
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix=['!','/'], intents=intents)
+tree = app_commands.CommandTree(client)
 
 bottoken = os.environ.get('BOT_TOKEN')
 
@@ -385,7 +387,7 @@ redscenarios = [
 
 scenarios = bluescenarios + redscenarios
 
-@client.command()
+@client.hybrid_command()
 async def scenario(ctx):
     try:
         scenario = random.choice(scenarios)
@@ -402,7 +404,7 @@ async def scenario(ctx):
         print(f"An error occurred while running the 'scenario' command: {e}")
         await ctx.send("Sorry, an error occurred while running that command.")
 
-@client.command()
+@client.hybrid_command()
 async def bluescenario(ctx):
     try:
         scenario = random.choice(bluescenarios)
@@ -416,7 +418,7 @@ async def bluescenario(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.command()
+@client.hybrid_command()
 async def redscenario(ctx):
     try:
         scenario = random.choice(redscenarios)
@@ -429,7 +431,7 @@ async def redscenario(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.command()
+@client.hybrid_command()
 async def subnet(ctx, ip: str, mask: str):
     try:
         network = ipaddress.ip_network(f"{ip}/{mask}", strict=False)
