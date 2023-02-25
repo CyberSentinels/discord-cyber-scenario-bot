@@ -730,6 +730,46 @@ netplusdict = [
     {
         "question": "What is a VPN?",
         "answer": "A VPN (Virtual Private Network) is a secure, encrypted connection between two or more devices or networks over the Internet."
+    },
+    {
+        "question": "What does a network technician need to configure to connect to a switch if DHCP is not enabled on the management port?",
+        "answer": "The technician needs to configure a static IP address on the computer to connect to the switch."
+    },
+    {
+        "question": "A user is unable to access any network resources. The network technician determines that the user's IP address is 169.254.0.20. What is the cause of the problem?",
+        "answer": "The problem is caused by the computer's failure to obtain a valid IP address from the DHCP server."
+    },
+    {
+        "question": "A user is unable to connect to the wireless network with their laptop. What is the first step a network technician should take to troubleshoot the issue?",
+        "answer": "The first step a network technician should take is to check whether the wireless network is broadcasting its SSID and whether the laptop is within range of the wireless network."
+    },
+    {
+        "question": "A user is unable to connect to the internet, but other users on the same network are able to connect. What is the most likely cause of the problem?",
+        "answer": "The most likely cause of the problem is that the user's computer is not obtaining a valid IP address from the DHCP server or is using an incorrect DNS server."
+    },
+    {
+        "question": "A user is experiencing slow network performance. What is the first step a network technician should take to troubleshoot the issue?",
+        "answer": "The first step a network technician should take is to check the network utilization and identify any bandwidth-intensive applications or devices that may be causing the performance issue."
+    },
+    {
+        "question": "A user is unable to connect to a web server. The network technician determines that other users are able to connect to the same web server. What is the most likely cause of the problem?",
+        "answer": "The most likely cause of the problem is that the user's computer has a misconfigured firewall or proxy settings that are blocking access to the web server."
+    },
+    {
+        "question": "A user is unable to access a network resource. The network technician determines that the user's computer has a valid IP address and can ping the default gateway. What is the most likely cause of the problem?",
+        "answer": "The most likely cause of the problem is that there is a problem with the network path to the network resource or the network resource itself is not functioning properly."
+    },
+    {
+        "question": "A user is experiencing intermittent network connectivity issues. What is the first step a network technician should take to troubleshoot the issue?",
+        "answer": "The first step a network technician should take is to identify the scope of the problem and determine whether it is affecting multiple users or just the user who reported the issue."
+    },
+    {
+        "question": "A user is unable to print to a network printer. What is the first step a network technician should take to troubleshoot the issue?",
+        "answer": "The first step a network technician should take is to check whether the user's computer has the correct printer driver installed and whether the printer is powered on and connected to the network."
+    },
+    {
+        "question": "A user is unable to access a network resource using a hostname but is able to access it using an IP address. What is the most likely cause of the problem?",
+        "answer": "The most likely cause of the problem is that there is a problem with the DNS resolution for the hostname or the DNS server is not functioning properly."
     }
 ]
 
