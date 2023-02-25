@@ -443,11 +443,35 @@ async def subnet(ctx, ip: str, mask: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
+@client.hybrid_command()
+async def aplus(ctx):
+    try:
+        response = f"Sorry this command is a work in progress..."
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.hybrid_command()
+async def netplus(ctx):
+    try:
+        response = f"Sorry this command is a work in progress..."
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.hybrid_command()
+async def secplus(ctx):
+    try:
+        response = f"Sorry this command is a work in progress..."
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
 
 @client.hybrid_command()
 async def commands(ctx):
     try:
-        response = f"**Command prefix**: '!', '/'\n\n**Scenario**: Replies with either a red team or blue team scenario. \n\n**Bluescenario**: Replies with a blue team scenario. \n\n**Redscenario**: Replies with a redteam scenario.\n\n**Commands**: Replies with this message.\n\n**Socials**: replies with the various bot social media accounts and websites."
+        response = f"**Command prefix**: '!', '/'\n\n**Scenario**: Replies with either a red team or blue team scenario. \n\n**Bluescenario**: Replies with a blue team scenario. \n\n**Redscenario**: Replies with a redteam scenario.\n\n**Aplus**: Replies with CompTIA's A+ related prompt.\n\n**Netplus**: Replies with CompTIA's Network+ related prompt.\n\n**Secplus**: Replies with CompTIA's Security+ related prompt.\n\n**Commands**: Replies with this message.\n\n**Socials**: replies with the various bot social media accounts and websites."
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
