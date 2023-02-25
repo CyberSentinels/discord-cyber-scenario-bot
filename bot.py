@@ -627,6 +627,66 @@ aplusdict = [
     {
         "question": "What is the difference between RAM and ROM?",
         "answer": "RAM (Random Access Memory) is volatile memory that stores data temporarily, while ROM (Read-Only Memory) is non-volatile memory that stores data permanently."
+    },
+        {
+        "question": "What is the first step in the CompTIA troubleshooting method?",
+        "answer": "The first step in the CompTIA troubleshooting method is to identify the problem."
+    },
+    {
+        "question": "What is the purpose of establishing a theory of probable cause?",
+        "answer": "The purpose of establishing a theory of probable cause is to develop a hypothesis about what is causing the problem."
+    },
+    {
+        "question": "What is the role of testing in the CompTIA troubleshooting method?",
+        "answer": "Testing is used to confirm or eliminate a hypothesis as the cause of the problem."
+    },
+    {
+        "question": "What is the purpose of establishing a plan of action to resolve the problem?",
+        "answer": "The purpose of establishing a plan of action is to address the root cause of the problem."
+    },
+    {
+        "question": "Why is it important to verify full system functionality after implementing a solution?",
+        "answer": "It is important to verify full system functionality to ensure that the solution has been successful and there are no other issues."
+    },
+    {
+        "question": "What should you do if the solution does not fully resolve the problem?",
+        "answer": "If the solution does not fully resolve the problem, you should start the troubleshooting process again."
+    },
+    {
+        "question": "What is the purpose of documenting the troubleshooting process?",
+        "answer": "The purpose of documenting the troubleshooting process is to help with future reference and to share with other technicians or team members."
+    },
+    {
+        "question": "What are some common hardware-related problems that may require troubleshooting?",
+        "answer": "Some common hardware-related problems include malfunctioning power supplies, failing hard drives, and faulty RAM."
+    },
+    {
+        "question": "What are some common software-related problems that may require troubleshooting?",
+        "answer": "Some common software-related problems include viruses and malware, software conflicts, and operating system errors."
+    },
+    {
+        "question": "What is the purpose of preventative measures in the CompTIA troubleshooting method?",
+        "answer": "The purpose of preventative measures is to prevent similar problems from occurring in the future."
+    },
+    {
+        "question": "What are some common network-related problems that may require troubleshooting?",
+        "answer": "Some common network-related problems include connectivity issues, slow network speeds, and DNS resolution problems."
+    },
+    {
+        "question": "What is the purpose of asking open-ended questions when troubleshooting?",
+        "answer": "The purpose of asking open-ended questions is to gather as much information as possible from the user or client to help diagnose the problem."
+    },
+    {
+        "question": "What are some common printer-related problems that may require troubleshooting?",
+        "answer": "Some common printer-related problems include paper jams, printer not responding, and poor print quality."
+    },
+    {
+        "question": "What is the purpose of creating a timeline of events when troubleshooting?",
+        "answer": "The purpose of creating a timeline of events is to identify patterns or trends that may be related to the problem."
+    },
+    {
+        "question": "What is the purpose of narrowing down the scope of the problem when troubleshooting?",
+        "answer": "The purpose of narrowing down the scope of the problem is to isolate the root cause of the problem more efficiently."
     }
 ]
 
