@@ -6,8 +6,9 @@ from discord.ext import commands, tasks
 import ipaddress
 import os
 
-from features.bluescenarios.bluescenarios import bluescenarios
-from features.redscenarios.redscenarios import redscenarios
+import features.scenarios.handle_scenarios as handle_scenarios
+from features.bluescenarios.bluescenariosdict import bluescenarios
+from features.redscenarios.redscenariosdict import redscenarios
 from features.quiz.quizdict import quizdict
 import features.aplus.handle_aplus as handle_aplus
 from features.netplus.netplusdict import netplusdict
@@ -30,16 +31,7 @@ quizrole = os.environ.get("QUIZROLE")
 @client.hybrid_command()
 async def scenario(ctx):
     try:
-        scenarios = bluescenarios + redscenarios
-        scenario = random.choice(scenarios)
-        prompt = scenario["prompt"]
-        if "ways_to_prevent" in scenario:
-            prevent = "\n".join(scenario["ways_to_prevent"])
-            respond = "\n".join(scenario["how_to_respond"])
-            response = f"**Here's a Blue Team Scenario for you**:\n\nPrompt: {prompt}\n\n**Ways to prevent**: ||{prevent}||\n\n**How to respond**: ||{respond}||"
-        else:
-            solution = scenario["solution"]
-            response = f"**Here's a Red Team Scenario for you**:\n\n**Prompt**: {prompt}\n\n**Solution**: ||{solution}||"
+        response = handle_scenarios()
         await ctx.send(response)
     except Exception as e:
         print(f"An error occurred while running the 'scenario' command: {e}")
