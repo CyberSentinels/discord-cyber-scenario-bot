@@ -1,8 +1,9 @@
 
 from ..bluescenarios.bluescenariosdict import bluescenarios
 from ..redscenarios.redscenariosdict import redscenarios
+import random
 
-def handle_scenario():
+def handle_scenarios():
     scenarios = bluescenarios + redscenarios
     scenario = random.choice(scenarios)
     prompt = scenario["prompt"]
