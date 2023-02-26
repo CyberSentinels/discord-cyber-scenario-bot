@@ -27,6 +27,15 @@ netplusrole = os.environ.get("NETPLUSROLE")
 secplusrole = os.environ.get("SECPLUSROLE")
 quizrole = os.environ.get("QUIZROLE")
 
+print(f"BOT_TOKEN: {bottoken}")
+print(f"GUILD_ID: {guildid}")
+print(f"CHANNEL_ID: {channelid}")
+print(f"APLUSROLE: {aplusrole}")
+print(f"NETPLUSROLE: {netplusrole}")
+print(f"SECPLUSROLE: {secplusrole}")
+print(f"QUIZROLE: {quizrole}")
+
+
 @client.hybrid_command()
 async def scenario(ctx):
     try:
