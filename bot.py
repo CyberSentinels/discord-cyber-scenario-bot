@@ -1853,128 +1853,146 @@ async def on_ready():
     print(f"We have logged in as {client.user}")
     print("Bot is ready.")
 
-
 # async def on_message(message):
 #     if message.content.startswith('!scenario') or message.content.startswith('/scenario'):
 #         scenario = random.choice(scenarios)
 #         response = f"Here's a scenario for you:\n\n{scenario}"
 #         await channel.send(response)
 
-# define a function to send the message and run the quiz command
+# Define a function to send the message and run the quiz command
 @tasks.loop(hours=24, minutes=60*14)
 async def send_message_and_quiz(ctx):
-
-    # get a reference to the role object
-    guild = client.get_guild(
-        guildid
-    )  # replace guild_id with the ID of the server/guild where the role exists
-    role = discord.utils.get(
-        guild.roles, name=quizrole
-    )  # replace "Role Name" with the name of the role you want to mention
-    # send the message
-    channel = client.get_channel(
-        channelid
-    )  # replace channel_id with the ID of the channel to send the message in
-    message = f"It's time for the daily quiz! {role.mention}, make sure to participate!"
-    await channel.send(message)
-    # send the quiz
     try:
+        # Replace guildid with the ID of the server/guild where the role exists
+        guild = client.get_guild(guildid)
+        # Replace quizrole with the name of the role to be mentioned
+        role = discord.utils.get(guild.roles, name=quizrole)
+
+        # Replace channelid with the ID of the channel to send the message in
+        channel = client.get_channel(channelid)
+        message = f"It's time for the daily quiz! {role.mention}, make sure to participate!"
+        await channel.send(message)
+
+        # Get a random question from the quiz dictionary
         question = random.choice(quizdict)
         prompt = question["question"]
         answer = question["answer"]
         response = f"**Here's a security question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
         await channel.send(response)
+
+    except discord.errors.Forbidden:
+        # This exception is raised if the bot doesn't have permission to perform an action
+        await channel.send(f"Error: I don't have permission to perform this action. Please check my permissions.")
+    except discord.errors.HTTPException:
+        # This exception is raised if the bot fails to send a message
+        await channel.send("Error: Failed to send message. Please try again later.")
     except Exception as e:
+        # This exception is raised if any unexpected error occurs
         await channel.send(f"Error: {e}. An unexpected error occurred.")
 
 @send_message_and_quiz.before_loop
 async def before_send_message_and_quiz():
     await client.wait_until_ready()
 
-# define the A+ quiz task to run at 8:00am every day
-# define a function to send the message and run the quiz command for A+
+# Define the A+ quiz task to run at 8:00am every day
 @tasks.loop(hours=24, minutes=60*8)
 async def send_message_and_quiz_aplus(ctx):
-    # get a reference to the role object
-    guild = client.get_guild(
-        guildid
-    )  # replace guildid with the ID of the server/guild where the role exists
-    role = discord.utils.get(guild.roles, name=aplusrole)
-    # send the message
-    channel = client.get_channel(
-        channelid
-    )  # replace channelid with the ID of the channel to send the message in
-    message = (
-        f"It's time for the daily A+ quiz! {role.mention}, make sure to participate!"
-    )
-    await channel.send(message)
-    # send the A+ quiz
     try:
+        # Replace guildid with the ID of the server/guild where the role exists
+        guild = client.get_guild(guildid)
+        # Replace aplusrole with the name of the role to be mentioned
+        role = discord.utils.get(guild.roles, name=aplusrole)
+
+        # Replace channelid with the ID of the channel to send the message in
+        channel = client.get_channel(channelid)
+        message = f"It's time for the daily A+ quiz! {role.mention}, make sure to participate!"
+        await channel.send(message)
+
+        # Get a random question from the A+ dictionary
         question = random.choice(aplusdict)
         prompt = question["question"]
         answer = question["answer"]
         response = f"**Here's a practice A+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
         await channel.send(response)
-    except Exception as e:
-        await channel.send(f"Error: {e}. An unexpected error occurred.")
 
+    except discord.errors.Forbidden:
+        # This exception is raised if the bot doesn't have permission to perform an action
+        await channel.send(f"Error: I don't have permission to perform this action. Please check my permissions.")
+    except discord.errors.HTTPException:
+        # This exception is raised if the bot fails to send a message
+        await channel.send("Error: Failed to send message. Please try again later.")
+    except Exception as e:
+        # This exception is raised if any unexpected error occurs
+        await channel.send(f"Error: {e}. An unexpected error occurred.")
 
 @send_message_and_quiz_aplus.before_loop
 async def before_send_message_and_quiz_aplus():
     await client.wait_until_ready()
 
-# define the Network+ quiz task to run at 10:00am every day
-# define a function to send the message and run the quiz command for Network+
+# Define the Network+ quiz task to run at 10:00am every day
 @tasks.loop(hours=24, minutes=60*10)
 async def send_message_and_quiz_netplus(ctx):
-    # get a reference to the role object
-    guild = client.get_guild(
-        guildid
-    )  # replace guildid with the ID of the server/guild where the role exists
-    role = discord.utils.get(guild.roles, name=netplusrole)
-    # send the message
-    channel = client.get_channel(
-        channelid
-    )  # replace channelid with the ID of the channel to send the message in
-    message = f"It's time for the daily Network+ quiz! {role.mention}, make sure to participate!"
-    await channel.send(message)
-    # send the Network+ quiz
     try:
+        # Replace guildid with the ID of the server/guild where the role exists
+        guild = client.get_guild(guildid)
+        # Replace netplusrole with the name of the role to be mentioned
+        role = discord.utils.get(guild.roles, name=netplusrole)
+
+        # Replace channelid with the ID of the channel to send the message in
+        channel = client.get_channel(channelid)
+        message = f"It's time for the daily Network+ quiz! {role.mention}, make sure to participate!"
+        await channel.send(message)
+
+        # Get a random question from the Network+ dictionary
         question = random.choice(netplusdict)
         prompt = question["question"]
         answer = question["answer"]
         response = f"**Here's a practice Network+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
         await channel.send(response)
+
+    except discord.errors.Forbidden:
+        # This exception is raised if the bot doesn't have permission to perform an action
+        await channel.send(f"Error: I don't have permission to perform this action. Please check my permissions.")
+    except discord.errors.HTTPException:
+        # This exception is raised if the bot fails to send a message
+        await channel.send("Error: Failed to send message. Please try again later.")
     except Exception as e:
+        # This exception is raised if any unexpected error occurs
         await channel.send(f"Error: {e}. An unexpected error occurred.")
 
 @send_message_and_quiz_netplus.before_loop
 async def before_send_message_and_quiz_netplus():
     await client.wait_until_ready()
 
-# define the Security+ quiz task to run at 12:00pm every day
-# define a function to send the message and run the quiz command for Security+
+# Define the Security+ quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=60*12)
 async def send_message_and_quiz_secplus(ctx):
-    # get a reference to the role object
-    guild = client.get_guild(
-        guildid
-    )  # replace guildid with the ID of the server/guild where the role exists
-    role = discord.utils.get(guild.roles, name=secplusrole)
-    # send the message
-    channel = client.get_channel(
-        channelid
-    )  # replace channelid with the ID of the channel to send the message in
-    message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
-    await channel.send(message)
-    # run the Security+ quiz command
     try:
+        # Replace guildid with the ID of the server/guild where the role exists
+        guild = client.get_guild(guildid)
+        # Replace secplusrole with the name of the role to be mentioned
+        role = discord.utils.get(guild.roles, name=secplusrole)
+
+        # Replace channelid with the ID of the channel to send the message in
+        channel = client.get_channel(channelid)
+        message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
+        await channel.send(message)
+
+        # Get a random question from the Security+ dictionary
         question = random.choice(secplusdict)
         prompt = question["question"]
         answer = question["answer"]
         response = f"**Here's a practice Security+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
         await channel.send(response)
+
+    except discord.errors.Forbidden:
+        # This exception is raised if the bot doesn't have permission to perform an action
+        await channel.send(f"Error: I don't have permission to perform this action. Please check my permissions.")
+    except discord.errors.HTTPException:
+        # This exception is raised if the bot fails to send a message
+        await channel.send("Error: Failed to send message. Please try again later.")
     except Exception as e:
+        # This exception is raised if any unexpected error occurs
         await channel.send(f"Error: {e}. An unexpected error occurred.")
 
 @send_message_and_quiz_secplus.before_loop
