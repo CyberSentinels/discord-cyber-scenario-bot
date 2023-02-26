@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands, tasks
 import os
+import datetime
 
 from features.bluescenarios.handle_bluescenarios import handle_bluescenarios
 from features.redscenarios.handle_redscenarios import handle_redscenarios
@@ -131,7 +132,7 @@ async def send_message_and_quiz():
         guild = client.get_guild(int(guildid))
         # Replace quizrole with the name of the role to be mentioned
         role = guild.get_role(int(quizrole))
-        print(f"{role}{quizrole}")
+        print(f"Translated ID to Role Name : {role}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily quiz! {role.mention}, make sure to participate!"
@@ -152,6 +153,17 @@ async def send_message_and_quiz():
 @send_message_and_quiz.before_loop
 async def before_send_message_and_quiz():
     await client.wait_until_ready()
+    if guildid is None or channelid is None or quizrole is None:
+        return
+    # Check if the current time is between 6:00pm and 6:01pm
+    now = datetime.datetime.now().time()
+    start_time = datetime.time(hour=18, minute=0)
+    end_time = datetime.time(hour=18, minute=1)
+    if start_time <= now <= end_time:
+        print("Send Message and Quiz task starting...")
+    else:
+        print("Current time is not within the scheduled time range for Send Message and Quiz task. Waiting...")
+        await asyncio.sleep((start_time - now).seconds)
 
 # Define the A+ quiz task to run at 4:00pm every day
 @tasks.loop(hours=24, minutes=60*16)
@@ -163,7 +175,7 @@ async def send_message_and_quiz_aplus():
         guild = client.get_guild(int(guildid))
         # Replace aplusrole with the name of the role to be mentioned
         role = guild.get_role(int(aplusrole))
-        print(f"{role}{aplusrole}")
+        print(f"Translated ID to Role Name : {role}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily A+ quiz! {role.mention}, make sure to participate!"
@@ -184,6 +196,18 @@ async def send_message_and_quiz_aplus():
 @send_message_and_quiz_aplus.before_loop
 async def before_send_message_and_quiz_aplus():
     await client.wait_until_ready()
+    if guildid is None or channelid is None or aplusrole is None:
+        return
+    # Check if the current time is between 4:00pm and 4:01pm
+    now = datetime.datetime.now().time()
+    start_time = datetime.time(hour=16, minute=0)
+    end_time = datetime.time(hour=16, minute=1)
+    if start_time <= now <= end_time:
+        print("Send Message and Quiz Aplus task starting...")
+    else:
+        print("Current time is not within the scheduled time range for Send Message and Quiz Aplus task. Waiting...")
+        await asyncio.sleep((start_time - now).seconds)
+
 
 # Define the Network+ quiz task to run at 2:00pm every day
 @tasks.loop(hours=24, minutes=60*14)
@@ -193,11 +217,9 @@ async def send_message_and_quiz_netplus():
     try:
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(int(guildid))
-        for role in guild.roles:
-            print(role.name)
         # Replace netplusrole with the name of the role to be mentioned
         role = guild.get_role(int(netplusrole))
-        print(f"{role}{netplusrole}")
+        print(f"Translated ID to Role Name :{role} {netplusrole}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily Network+ quiz! {role.mention}, make sure to participate!"
@@ -218,6 +240,18 @@ async def send_message_and_quiz_netplus():
 @send_message_and_quiz_netplus.before_loop
 async def before_send_message_and_quiz_netplus():
     await client.wait_until_ready()
+    if guildid is None or channelid is None or netplusrole is None:
+        return
+    # Check if the current time is between 2:00pm and 2:01pm
+    now = datetime.datetime.now().time()
+    start_time = datetime.time(hour=14, minute=0)
+    end_time = datetime.time(hour=14, minute=1)
+    if start_time <= now <= end_time:
+        print("Send Message and Quiz Netplus task starting...")
+    else:
+        print("Current time is not within the scheduled time range for Send Message and Quiz Netplus task. Waiting...")
+        await asyncio.sleep((start_time - now).seconds)
+
 
 # Define the Security+ quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=60*12)
@@ -229,7 +263,7 @@ async def send_message_and_quiz_secplus():
         guild = client.get_guild(int(guildid))
         # Replace secplusrole with the name of the role to be mentioned
         role = guild.get_role(int(secplusrole))
-        print(f"{role}{secplusrole}")
+        print(f"Translated ID to Role Name : {role}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
@@ -250,6 +284,17 @@ async def send_message_and_quiz_secplus():
 @send_message_and_quiz_secplus.before_loop
 async def before_send_message_and_quiz_secplus():
     await client.wait_until_ready()
+    if guildid is None or channelid is None or secplusrole is None:
+        return
+    # Check if the current time is between 12:00pm and 12:01pm
+    now = datetime.datetime.now().time()
+    start_time = datetime.time(hour=12, minute=0)
+    end_time = datetime.time(hour=12, minute=1)
+    if start_time <= now <= end_time:
+        print("Send Message and Quiz Secplus task starting...")
+    else:
+        print("Current time is not within the scheduled time range for Send Message and Quiz Secplus task. Waiting...")
+        await asyncio.sleep((start_time - now).seconds)
 
 # Define the on_ready event handler
 @client.event
