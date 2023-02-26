@@ -1996,9 +1996,31 @@ async def send_message_and_quiz_secplus():
 async def before_send_message_and_quiz_secplus():
     await client.wait_until_ready()
 
+# always needed
+bottoken = os.environ.get("BOT_TOKEN")
+# only needed if you want the timed quizes
+guildid = os.environ.get("GUILD_ID")
+channelid = os.environ.get("CHANNEL_ID")
+aplusrole = os.environ.get("APLUSROLE")
+netplusrole = os.environ.get("NETPLUSROLE")
+secplusrole = os.environ.get("SECPLUSROLE")
+quizrole = os.environ.get("QUIZROLE")
+
+# Define the on_ready event handler
 @client.event
 async def on_ready():
-    print(f"We have logged in as {client.user}")
-    print("Bot is ready.")
+    # Get the name of the bot user
+    bot_username = client.user.name
+    
+    # Find the Discord guild object based on its ID
+    guild = client.get_guild(int(guildid))
+    
+    # Find the channel object based on its ID
+    channel = guild.get_channel(int(channelid))
+    
+    # Print a message indicating that the bot is logged in and ready
+    print(f"Logged in as {bot_username} ({client.user.id})")
+    print(f"Connected to Discord server '{guild.name}' ({guild.id})")
+    print(f"Bot is ready and listening for commands in channel '{channel.name}' ({channel.id})")
 
 client.run(bottoken)
