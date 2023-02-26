@@ -4,7 +4,7 @@ FROM python:3.11.2-bullseye
 # Set the working directory to /app
 WORKDIR /
 
-# Copy the current directory contents into the container at /app
+# Copy the current directory contents into the container at /
 COPY . /
 
 # Install any needed packages specified in requirements.txt
