@@ -5,8 +5,6 @@ from discord import app_commands
 from discord.ext import commands, tasks
 import ipaddress
 import os
-import threading
-import schedule
 
 from bluescenarios import bluescenarios
 from redscenarios import redscenarios
