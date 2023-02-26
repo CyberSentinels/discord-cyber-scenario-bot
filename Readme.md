@@ -30,14 +30,25 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 Assuming you are using a Unix-based system, open a terminal and navigate to the directory where the bot.py script is located. Then, run the following command:
 ```bash
 export BOT_TOKEN="INSERT YOUR BOT TOKEN HERE"
+export GUILD_ID="INSERT YOUR GUILD ID HERE (only needed for timed quizes)"
+export CHANNEL_ID="INSERT YOUR CHANNEL ID HERE (only needed for timed quizes)"
+export APLUSROLE="INSERT YOUR A+ ROLE NAME HERE (only needed for timed quizes)"
+export NETPLUSROLE="INSERT YOUR Network+ ROLE NAME HERE (only needed for timed quizes)"
+export SECPLUSROLE="INSERT YOUR Security+ ROLE NAME HERE (only needed for timed quizes)"
+export QUIZROLE="INSERT YOUR QUIZ ROLE NAME HERE (only needed for timed quizes)"
 python bot.py
 ```
 Note that if you are using a Windows-based system, you'll need to use a slightly different command to set the environment variable. Here's an example command that should work on Windows:
 ```powershell
 set BOT_TOKEN="INSERT YOUR BOT TOKEN HERE"
+set GUILD_ID="INSERT YOUR GUILD ID HERE (only needed for timed quizes)"
+set CHANNEL_ID="INSERT YOUR CHANNEL ID HERE (only needed for timed quizes)"
+set APLUSROLE="INSERT YOUR A+ ROLE NAME HERE (only needed for timed quizes)"
+set NETPLUSROLE="INSERT YOUR Network+ ROLE NAME HERE (only needed for timed quizes)"
+set SECPLUSROLE="INSERT YOUR Security+ ROLE NAME HERE (only needed for timed quizes)"
+set QUIZROLE="INSERT YOUR QUIZ ROLE NAME HERE (only needed for timed quizes)"
 python bot.py
 ```
-
 ### Docker:
 When running the Docker container, you can pass in the BOT_TOKEN environment variable using the -e flag as follows:
 
@@ -48,4 +59,17 @@ docker run -e BOT_TOKEN="INSERT YOUR BOT TOKEN HERE" -it --rm simeononsecurity/d
 To run the bot in the background:
 ```bash
 docker run -td --name scenario-bot -e BOT_TOKEN="INSERT YOUR BOT TOKEN HERE" simeononsecurity/discord-cyber-scenario-bot:latest
+```
+
+To run the bot in the background with all scheduled prompts and roles:
+```bash
+docker run -td --name scenario-bot \
+-e BOT_TOKEN="INSERT YOUR BOT TOKEN HERE" \
+-e GUILD_ID="INSERT YOUR GUILD ID HERE" \
+-e CHANNEL_ID="INSERT YOUR CHANNEL ID HERE" \
+-e APLUSROLE="INSERT YOUR A+ ROLE NAME HERE" \
+-e NETPLUSROLE="INSERT YOUR NET+ ROLE NAME HERE" \
+-e SECPLUSROLE="INSERT YOUR SEC+ ROLE NAME HERE" \
+-e QUIZROLE="INSERT YOUR QUIZ ROLE NAME HERE" \
+simeononsecurity/discord-cyber-scenario-bot:latest
 ```
