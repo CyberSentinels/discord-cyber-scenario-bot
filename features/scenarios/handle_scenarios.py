@@ -1,6 +1,6 @@
-
 from ..bluescenarios.bluescenariosdict import bluescenarios
 from ..redscenarios.redscenariosdict import redscenarios
+
 import random
 
 def handle_scenarios():
@@ -14,3 +14,4 @@ def handle_scenarios():
     else:
         solution = scenario["solution"]
         response = f"**Here's a Red Team Scenario for you**:\n\n**Prompt**: {prompt}\n\n**Solution**: ||{solution}||"
+    return response

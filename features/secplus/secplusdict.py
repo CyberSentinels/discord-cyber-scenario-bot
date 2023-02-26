@@ -1,4 +1,3 @@
-
 secplusdict = [
     {
         "question": "What is CIA in information security?",
