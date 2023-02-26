@@ -1861,7 +1861,9 @@ async def on_ready():
 
 # Define a function to send the message and run the quiz command
 @tasks.loop(hours=24, minutes=60*14)
-async def send_message_and_quiz(ctx):
+async def send_message_and_quiz():
+    if guildid is None or channelid is None or quizrole is None:
+        return
     try:
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(guildid)
@@ -1896,7 +1898,9 @@ async def before_send_message_and_quiz():
 
 # Define the A+ quiz task to run at 8:00am every day
 @tasks.loop(hours=24, minutes=60*8)
-async def send_message_and_quiz_aplus(ctx):
+async def send_message_and_quiz_aplus():
+    if guildid is None or channelid is None or aplusrole is None:
+        return
     try:
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(guildid)
@@ -1931,7 +1935,9 @@ async def before_send_message_and_quiz_aplus():
 
 # Define the Network+ quiz task to run at 10:00am every day
 @tasks.loop(hours=24, minutes=60*10)
-async def send_message_and_quiz_netplus(ctx):
+async def send_message_and_quiz_netplus():
+    if guildid is None or channelid is None or netplusrole is None:
+        return
     try:
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(guildid)
@@ -1966,7 +1972,9 @@ async def before_send_message_and_quiz_netplus():
 
 # Define the Security+ quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=60*12)
-async def send_message_and_quiz_secplus(ctx):
+async def send_message_and_quiz_secplus():
+    if guildid is None or channelid is None or secplusrole is None:
+        return
     try:
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(guildid)
