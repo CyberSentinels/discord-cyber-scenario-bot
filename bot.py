@@ -258,10 +258,14 @@ async def on_ready():
     print(f"Bot is ready and listening for commands in channel '{channel.name}' ({channel.id})")
 
     print(f"Starting Scheduled Task Loops")
-    send_message_and_quiz_secplus.start()
-    send_message_and_quiz_netplus.start()
-    send_message_and_quiz_aplus.start()
-    send_message_and_quiz.start()
+    try:
+        send_message_and_quiz_secplus.start()
+        send_message_and_quiz_netplus.start()
+        send_message_and_quiz_aplus.start()
+        send_message_and_quiz.start()
+        print(f"Tasks Scheduled Successfully")
+    except:
+        print(f"Tasks Failed")
 
 
 client.run(bottoken)
