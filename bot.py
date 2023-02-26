@@ -1848,11 +1848,6 @@ async def socials(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.event
-async def on_ready():
-    print(f"We have logged in as {client.user}")
-    print("Bot is ready.")
-
 # Define a function to send the message and run the quiz command
 @tasks.loop(hours=24, minutes=60*14)
 async def send_message_and_quiz():
@@ -2000,5 +1995,10 @@ async def send_message_and_quiz_secplus():
 @send_message_and_quiz_secplus.before_loop
 async def before_send_message_and_quiz_secplus():
     await client.wait_until_ready()
+
+@client.event
+async def on_ready():
+    print(f"We have logged in as {client.user}")
+    print("Bot is ready.")
 
 client.run(bottoken)
