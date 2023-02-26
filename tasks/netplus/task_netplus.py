@@ -1,5 +1,5 @@
 import discord
-from ...features.netplus.handle_netplus import handle_netplus
+from features.netplus.handle_netplus import handle_netplus
 
 async def task_netplus(client, guildid, channelid, netplusrole):
     try:

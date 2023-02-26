@@ -1,5 +1,5 @@
 import discord
-from ...features.quiz.handle_quiz import handle_quiz
+from features.quiz.handle_quiz import handle_quiz
 
 async def task_quiz(client, guildid, channelid, quizrole):
     if guildid is None or channelid is None or quizrole is None:

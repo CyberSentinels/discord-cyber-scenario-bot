@@ -1,5 +1,5 @@
 import discord
-from ...features.secplus.handle_secplus import handle_secplus
+from features.secplus.handle_secplus import handle_secplus
 
 async def task_secplus(client, guildid, channelid, secplusrole):
     if guildid is None or channelid is None or secplusrole is None:

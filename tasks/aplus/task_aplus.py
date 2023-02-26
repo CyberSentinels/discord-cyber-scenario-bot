@@ -1,5 +1,5 @@
 import discord
-from ...features.aplus.handle_aplus import handle_aplus
+from features.aplus.handle_aplus import handle_aplus
 
 async def task_aplus(client, guildid, channelid, aplusrole):    
     if guildid is None or channelid is None or aplusrole is None:
