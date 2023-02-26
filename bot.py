@@ -95,7 +95,7 @@ async def secplus(ctx):
 @client.hybrid_command()
 async def subnet(ctx, ip: str, mask: str):
     try:
-        response = handle_subnet()
+        response = handle_subnet(ip: str, mask: str)
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
