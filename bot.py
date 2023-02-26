@@ -6,13 +6,14 @@ from discord.ext import commands, tasks
 import ipaddress
 import os
 
-import features.scenarios.handle_scenarios as handle_scenarios
-from features.bluescenarios.bluescenariosdict import bluescenarios
-from features.redscenarios.redscenariosdict import redscenarios
-from features.quiz.quizdict import quizdict
-import features.aplus.handle_aplus as handle_aplus
-from features.netplus.netplusdict import netplusdict
-from features.secplus.secplusdict import secplusdict
+from features.bluescenarios.handle_bluescenarios import handle_bluescenarios
+from features.redscenarios.handle_redscenarios import handle_redscenarios
+from features.scenarios.handle_scenarios import handle_scenarios
+
+from features.quiz.handle_quiz import handle_quiz
+from features.netplus.handle_netplus import handle_netplus
+from features.aplus.handle_aplus import handle_aplus
+from features.secplus.handle_secplus import handle_secplus
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -37,47 +38,33 @@ async def scenario(ctx):
         print(f"An error occurred while running the 'scenario' command: {e}")
         await ctx.send("Sorry, an error occurred while running that command.")
 
-
 @client.hybrid_command()
 async def bluescenario(ctx):
     try:
-        scenario = random.choice(bluescenarios)
-        prompt = scenario["prompt"]
-        prevent = "\n".join(scenario["ways_to_prevent"])
-        respond = "\n".join(scenario["how_to_respond"])
-        response = f"**Here's a Blue Team Scenario for you**:\n\n**Prompt**: {prompt}\n\n**Ways to prevent**: ||{prevent}||\n\n**How to respond**: ||{respond}||"
+        response = handle_bluescenarios()
         await ctx.send(response)
     except KeyError as e:
         await ctx.send(f"Error: {e}. This scenario is missing a required field.")
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
-
 
 @client.hybrid_command()
 async def redscenario(ctx):
     try:
-        scenario = random.choice(redscenarios)
-        prompt = scenario["prompt"]
-        solution = scenario["solution"]
-        response = f"**Here's a Red Team Scenario for you**:\n\n**Prompt**: {prompt}\n\n**Solution**: ||{solution}||"
+        response = handle_redscenarios()
         await ctx.send(response)
     except KeyError as e:
         await ctx.send(f"Error: {e}. This scenario is missing a required field.")
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-
 @client.hybrid_command()
 async def quiz(ctx):
     try:
-        question = random.choice(quizdict)
-        prompt = question["question"]
-        answer = question["answer"]
-        response = f"**Here's a security question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        response = handle_quiz()
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
-
 
 @client.hybrid_command()
 async def aplus(ctx):
@@ -87,26 +74,18 @@ async def aplus(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-
 @client.hybrid_command()
 async def netplus(ctx):
     try:
-        question = random.choice(netplusdict)
-        prompt = question["question"]
-        answer = question["answer"]
-        response = f"**Here's a practice Network+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        response = handle_netplus()
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-
 @client.hybrid_command()
 async def secplus(ctx):
     try:
-        question = random.choice(secplusdict)
-        prompt = question["question"]
-        answer = question["answer"]
-        response = f"**Here's a practice Security+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        response = handle_secplus()
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")

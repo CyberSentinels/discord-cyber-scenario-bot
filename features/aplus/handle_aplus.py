@@ -1,5 +1,6 @@
-from aplusdict import aplusdict
 import random
+
+from .aplusdict import aplusdict
 
 def handle_aplus():
     question = random.choice(aplusdict)
