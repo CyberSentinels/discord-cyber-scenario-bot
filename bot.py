@@ -270,13 +270,31 @@ async def on_ready():
 
     print(f"Starting Scheduled Task Loops")
     try:
-        send_message_and_quiz_secplus.start()
-        send_message_and_quiz_netplus.start()
-        send_message_and_quiz_aplus.start()
-        send_message_and_quiz.start()
-        print(f"Tasks Scheduled Successfully")
+        if guildid is not None and channelid is not None and secplusrole is not None:
+            try:
+                send_message_and_quiz_secplus.start()
+                print(f"Sec Plus Task Scheduled Successfully")
+            except:
+                print(f"Sec Plus Task Failed to Start")
+        if guildid is not None and channelid is not None and netplusrole is not None:
+            try:
+                send_message_and_quiz_netplus.start()
+                print(f"Net Plus Task Scheduled Successfully")
+            except:
+                print(f"Net Plus Task Failed to Start")
+        if guildid is not None and channelid is not None and aplusrole is not None:    
+            try:
+                send_message_and_quiz_aplus.start()
+                print(f"A Plus Task Scheduled Successfully")
+            except:
+                print(f"A Plus Task Failed to Start")
+        if guildid is not None and channelid is not None and quizrole is not None: 
+            try:  
+                send_message_and_quiz.start()
+                print(f"Quiz Task Scheduled Successfully")
+            except:
+                print(f"Quiz Task Failed to Start")
     except:
         print(f"Tasks Failed")
-
 
 client.run(bottoken)
