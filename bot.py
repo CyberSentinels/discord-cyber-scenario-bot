@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands, tasks
 import os
 import datetime
+import asyncio
 
 from features.bluescenarios.handle_bluescenarios import handle_bluescenarios
 from features.redscenarios.handle_redscenarios import handle_redscenarios
@@ -155,15 +156,19 @@ async def before_send_message_and_quiz():
     await client.wait_until_ready()
     if guildid is None or channelid is None or quizrole is None:
         return
-    # Check if the current time is between 6:00pm and 6:01pm
-    now = datetime.datetime.now().time()
-    start_time = datetime.time(hour=18, minute=0)
-    end_time = datetime.time(hour=18, minute=1)
-    if start_time <= now <= end_time:
-        print("Send Message and Quiz task starting...")
+    now = datetime.datetime.utcnow()
+    scheduled_time = datetime.time(hour=18, minute=0)  # Adjust the time as necessary
+    # Calculate the time until the next scheduled time
+    if now.time() < scheduled_time:
+        wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
     else:
-        print("Current time is not within the scheduled time range for Send Message and Quiz task. Waiting...")
-        await asyncio.sleep((start_time - now).seconds)
+        wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
+    # Wait for the calculated time
+    print(f"Waiting for {wait_time} seconds before starting task loop")
+    await asyncio.sleep(wait_time)
+    # Start the task loop
+    send_message_and_quiz.start()
+    print(f"Quiz Task loop started")
 
 # Define the A+ quiz task to run at 4:00pm every day
 @tasks.loop(hours=24, minutes=60*16)
@@ -198,15 +203,19 @@ async def before_send_message_and_quiz_aplus():
     await client.wait_until_ready()
     if guildid is None or channelid is None or aplusrole is None:
         return
-    # Check if the current time is between 4:00pm and 4:01pm
-    now = datetime.datetime.now().time()
-    start_time = datetime.time(hour=16, minute=0)
-    end_time = datetime.time(hour=16, minute=1)
-    if start_time <= now <= end_time:
-        print("Send Message and Quiz Aplus task starting...")
+    now = datetime.datetime.utcnow()
+    scheduled_time = datetime.time(hour=16, minute=0)  # Adjust the time as necessary
+    # Calculate the time until the next scheduled time
+    if now.time() < scheduled_time:
+        wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
     else:
-        print("Current time is not within the scheduled time range for Send Message and Quiz Aplus task. Waiting...")
-        await asyncio.sleep((start_time - now).seconds)
+        wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
+    # Wait for the calculated time
+    print(f"Waiting for {wait_time} seconds before starting task loop")
+    await asyncio.sleep(wait_time)
+    # Start the task loop
+    send_message_and_quiz_aplus.start()
+    print(f"Aplus Task loop started")
 
 
 # Define the Network+ quiz task to run at 2:00pm every day
@@ -242,15 +251,19 @@ async def before_send_message_and_quiz_netplus():
     await client.wait_until_ready()
     if guildid is None or channelid is None or netplusrole is None:
         return
-    # Check if the current time is between 2:00pm and 2:01pm
-    now = datetime.datetime.now().time()
-    start_time = datetime.time(hour=14, minute=0)
-    end_time = datetime.time(hour=14, minute=1)
-    if start_time <= now <= end_time:
-        print("Send Message and Quiz Netplus task starting...")
+    now = datetime.datetime.utcnow()
+    scheduled_time = datetime.time(hour=14, minute=0)  # Adjust the time as necessary
+    # Calculate the time until the next scheduled time
+    if now.time() < scheduled_time:
+        wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
     else:
-        print("Current time is not within the scheduled time range for Send Message and Quiz Netplus task. Waiting...")
-        await asyncio.sleep((start_time - now).seconds)
+        wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
+    # Wait for the calculated time
+    print(f"Waiting for {wait_time} seconds before starting task loop")
+    await asyncio.sleep(wait_time)
+    # Start the task loop
+    send_message_and_quiz_netplus.start()
+    print(f"Netplus Task loop started")
 
 
 # Define the Security+ quiz task to run at 12:00pm every day
@@ -286,15 +299,19 @@ async def before_send_message_and_quiz_secplus():
     await client.wait_until_ready()
     if guildid is None or channelid is None or secplusrole is None:
         return
-    # Check if the current time is between 12:00pm and 12:01pm
-    now = datetime.datetime.now().time()
-    start_time = datetime.time(hour=12, minute=0)
-    end_time = datetime.time(hour=12, minute=1)
-    if start_time <= now <= end_time:
-        print("Send Message and Quiz Secplus task starting...")
+    now = datetime.datetime.utcnow()
+    scheduled_time = datetime.time(hour=12, minute=0)  # Adjust the time as necessary
+    # Calculate the time until the next scheduled time
+    if now.time() < scheduled_time:
+        wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
     else:
-        print("Current time is not within the scheduled time range for Send Message and Quiz Secplus task. Waiting...")
-        await asyncio.sleep((start_time - now).seconds)
+        wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
+    # Wait for the calculated time
+    print(f"Waiting for {wait_time} seconds before starting task loop")
+    await asyncio.sleep(wait_time)
+    # Start the task loop
+    send_message_and_quiz_secplus()
+    print(f"Secplus Task loop started")
 
 # Define the on_ready event handler
 @client.event
