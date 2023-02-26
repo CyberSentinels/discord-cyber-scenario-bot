@@ -11,6 +11,7 @@ from redscenarios import redscenarios
 from quizdict import quizdict
 from aplusdict import aplusdict
 from netplusdict import netplusdict
+from secplusdict import secplusdict
 
 intents = discord.Intents.default()
 intents.message_content = True
