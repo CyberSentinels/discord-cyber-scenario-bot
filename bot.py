@@ -4,21 +4,28 @@ import os
 import datetime
 import asyncio
 
+# import features
 from features.bluescenarios.handle_bluescenarios import handle_bluescenarios
 from features.redscenarios.handle_redscenarios import handle_redscenarios
 from features.scenarios.handle_scenarios import handle_scenarios
-
 from features.quiz.handle_quiz import handle_quiz
 from features.netplus.handle_netplus import handle_netplus
 from features.aplus.handle_aplus import handle_aplus
 from features.secplus.handle_secplus import handle_secplus
-
 from features.subnet.handle_subnet import handle_subnet
 
+#import tasks
+from tasks.aplus.task_aplus import task_aplus
+from tasks.netplus.task_netplus import task_netplus
+from tasks.secplus.task_secplus import task_secplus
+from tasks.quiz.task_quiz import task_quiz
+
+#setup the discord.py client and intents
 intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix=["!", "/"], intents=intents)
 
+# setup variables
 # always needed
 bottoken = os.environ.get("BOT_TOKEN")
 # only needed if you want the timed quizes
@@ -29,6 +36,7 @@ netplusrole = os.environ.get("NETPLUSROLE")
 secplusrole = os.environ.get("SECPLUSROLE")
 quizrole = os.environ.get("QUIZROLE")
 
+#print variables to confirmed they were passed in correctly
 print(f"BOT_TOKEN: {bottoken}")
 print(f"GUILD_ID: {guildid}")
 print(f"CHANNEL_ID: {channelid}")
@@ -36,7 +44,6 @@ print(f"APLUSROLE: {aplusrole}")
 print(f"NETPLUSROLE: {netplusrole}")
 print(f"SECPLUSROLE: {secplusrole}")
 print(f"QUIZROLE: {quizrole}")
-
 
 @client.hybrid_command()
 async def scenario(ctx):
@@ -125,34 +132,11 @@ async def socials(ctx):
 
 # Define a function to send the message and run the quiz command
 @tasks.loop(hours=24, minutes=60*18)
-async def send_message_and_quiz():
-    if guildid is None or channelid is None or quizrole is None:
-        return
-    try:
-        # Replace guildid with the ID of the server/guild where the role exists
-        guild = client.get_guild(int(guildid))
-        # Replace quizrole with the name of the role to be mentioned
-        role = guild.get_role(int(quizrole))
-        print(f"Translated ID to Role Name : {role}")
-        # Replace channelid with the ID of the channel to send the message in
-        channel = guild.get_channel(int(channelid))
-        message = f"It's time for the daily quiz! {role.mention}, make sure to participate!"
-        await channel.send(message)
-        response = handle_quiz()
-        await channel.send(response)
-
-    except discord.errors.Forbidden:
-        # This exception is raised if the bot doesn't have permission to perform an action
-        await channel.send(f"Error: I don't have permission to perform this action. Please check my permissions.")
-    except discord.errors.HTTPException:
-        # This exception is raised if the bot fails to send a message
-        await channel.send("Error: Failed to send message. Please try again later.")
-    except Exception as e:
-        # This exception is raised if any unexpected error occurs
-        await channel.send(f"Error: {e}. An unexpected error occurred.")
+async def send_message_and_quiz(client, guildid, channelid, quizrole):
+    task_quiz(client, guildid, channelid, quizrole)
 
 @send_message_and_quiz.before_loop
-async def before_send_message_and_quiz():
+async def before_send_message_and_quiz(client, guildid, channelid, quizrole):
     await client.wait_until_ready()
     if guildid is None or channelid is None or quizrole is None:
         return
@@ -167,39 +151,16 @@ async def before_send_message_and_quiz():
     print(f"Waiting for {wait_time} seconds before starting task loop")
     await asyncio.sleep(wait_time)
     # Start the task loop
-    send_message_and_quiz.start()
+    send_message_and_quiz.start(client, guildid, channelid, quizrole)
     print(f"Quiz Task loop started")
 
 # Define the A+ quiz task to run at 4:00pm every day
 @tasks.loop(hours=24, minutes=60*16)
-async def send_message_and_quiz_aplus():
-    if guildid is None or channelid is None or aplusrole is None:
-        return
-    try:
-        # Replace guildid with the ID of the server/guild where the role exists
-        guild = client.get_guild(int(guildid))
-        # Replace aplusrole with the name of the role to be mentioned
-        role = guild.get_role(int(aplusrole))
-        print(f"Translated ID to Role Name : {role}")
-        # Replace channelid with the ID of the channel to send the message in
-        channel = guild.get_channel(int(channelid))
-        message = f"It's time for the daily A+ quiz! {role.mention}, make sure to participate!"
-        await channel.send(message)
-        response = handle_aplus()
-        await channel.send(response)
-
-    except discord.errors.Forbidden:
-        # This exception is raised if the bot doesn't have permission to perform an action
-        await channel.send(f"Error: I don't have permission to perform this action. Please check my permissions.")
-    except discord.errors.HTTPException:
-        # This exception is raised if the bot fails to send a message
-        await channel.send("Error: Failed to send message. Please try again later.")
-    except Exception as e:
-        # This exception is raised if any unexpected error occurs
-        await channel.send(f"Error: {e}. An unexpected error occurred.")
+async def send_message_and_quiz_aplus(client, guildid, channelid, aplusrole):
+    task_aplus(client, guildid, channelid, aplusrole)
 
 @send_message_and_quiz_aplus.before_loop
-async def before_send_message_and_quiz_aplus():
+async def before_send_message_and_quiz_aplus(client, guildid, channelid, aplusrole):
     await client.wait_until_ready()
     if guildid is None or channelid is None or aplusrole is None:
         return
@@ -214,40 +175,17 @@ async def before_send_message_and_quiz_aplus():
     print(f"Waiting for {wait_time} seconds before starting task loop")
     await asyncio.sleep(wait_time)
     # Start the task loop
-    send_message_and_quiz_aplus.start()
+    send_message_and_quiz_aplus.start(client, guildid, channelid, aplusrole)
     print(f"Aplus Task loop started")
 
 
 # Define the Network+ quiz task to run at 2:00pm every day
 @tasks.loop(hours=24, minutes=60*14)
-async def send_message_and_quiz_netplus():
-    if guildid is None or channelid is None or netplusrole is None:
-        return
-    try:
-        # Replace guildid with the ID of the server/guild where the role exists
-        guild = client.get_guild(int(guildid))
-        # Replace netplusrole with the name of the role to be mentioned
-        role = guild.get_role(int(netplusrole))
-        print(f"Translated ID to Role Name :{role} {netplusrole}")
-        # Replace channelid with the ID of the channel to send the message in
-        channel = guild.get_channel(int(channelid))
-        message = f"It's time for the daily Network+ quiz! {role.mention}, make sure to participate!"
-        await channel.send(message)
-        response = handle_netplus()
-        await channel.send(response)
-
-    except discord.errors.Forbidden:
-        # This exception is raised if the bot doesn't have permission to perform an action
-        await channel.send(f"Error: I don't have permission to perform this action. Please check my permissions.")
-    except discord.errors.HTTPException:
-        # This exception is raised if the bot fails to send a message
-        await channel.send("Error: Failed to send message. Please try again later.")
-    except Exception as e:
-        # This exception is raised if any unexpected error occurs
-        await channel.send(f"Error: {e}. An unexpected error occurred.")
+async def send_message_and_quiz_netplus(client, guildid, channelid, netplusrole):
+    task_netplus(client, guildid, channelid, netplusrole)
 
 @send_message_and_quiz_netplus.before_loop
-async def before_send_message_and_quiz_netplus():
+async def before_send_message_and_quiz_netplus(client, guildid, channelid, netplusrole):
     await client.wait_until_ready()
     if guildid is None or channelid is None or netplusrole is None:
         return
@@ -262,40 +200,17 @@ async def before_send_message_and_quiz_netplus():
     print(f"Waiting for {wait_time} seconds before starting task loop")
     await asyncio.sleep(wait_time)
     # Start the task loop
-    send_message_and_quiz_netplus.start()
+    send_message_and_quiz_netplus.start(client, guildid, channelid, netplusrole)
     print(f"Netplus Task loop started")
 
 
 # Define the Security+ quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=60*12)
-async def send_message_and_quiz_secplus():
-    if guildid is None or channelid is None or secplusrole is None:
-        return
-    try:
-        # Replace guildid with the ID of the server/guild where the role exists
-        guild = client.get_guild(int(guildid))
-        # Replace secplusrole with the name of the role to be mentioned
-        role = guild.get_role(int(secplusrole))
-        print(f"Translated ID to Role Name : {role}")
-        # Replace channelid with the ID of the channel to send the message in
-        channel = guild.get_channel(int(channelid))
-        message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
-        await channel.send(message)
-        response = handle_secplus()
-        await channel.send(response)
-
-    except discord.errors.Forbidden:
-        # This exception is raised if the bot doesn't have permission to perform an action
-        await channel.send(f"Error: I don't have permission to perform this action. Please check my permissions.")
-    except discord.errors.HTTPException:
-        # This exception is raised if the bot fails to send a message
-        await channel.send("Error: Failed to send message. Please try again later.")
-    except Exception as e:
-        # This exception is raised if any unexpected error occurs
-        await channel.send(f"Error: {e}. An unexpected error occurred.")
+async def send_message_and_quiz_secplus(client, guildid, channelid, secplusrole):
+    task_secplus(client, guildid, channelid, secplusrole)
 
 @send_message_and_quiz_secplus.before_loop
-async def before_send_message_and_quiz_secplus():
+async def before_send_message_and_quiz_secplus(client, guildid, channelid, secplusrole):
     await client.wait_until_ready()
     if guildid is None or channelid is None or secplusrole is None:
         return
@@ -310,7 +225,7 @@ async def before_send_message_and_quiz_secplus():
     print(f"Waiting for {wait_time} seconds before starting task loop")
     await asyncio.sleep(wait_time)
     # Start the task loop
-    send_message_and_quiz_secplus()
+    send_message_and_quiz_secplus(client, guildid, channelid, secplusrole)
     print(f"Secplus Task loop started")
 
 # Define the on_ready event handler
