@@ -1853,12 +1853,6 @@ async def on_ready():
     print(f"We have logged in as {client.user}")
     print("Bot is ready.")
 
-# async def on_message(message):
-#     if message.content.startswith('!scenario') or message.content.startswith('/scenario'):
-#         scenario = random.choice(scenarios)
-#         response = f"Here's a scenario for you:\n\n{scenario}"
-#         await channel.send(response)
-
 # Define a function to send the message and run the quiz command
 @tasks.loop(hours=24, minutes=60*14)
 async def send_message_and_quiz():
