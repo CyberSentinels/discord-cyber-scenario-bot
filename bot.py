@@ -113,7 +113,7 @@ async def socials(ctx):
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 # Define a function to send the message and run the quiz command
-@tasks.loop(hours=24, minutes=60*14)
+@tasks.loop(hours=24, minutes=60*18)
 async def send_message_and_quiz():
     if guildid is None or channelid is None or quizrole is None:
         return
@@ -144,8 +144,8 @@ async def send_message_and_quiz():
 async def before_send_message_and_quiz():
     await client.wait_until_ready()
 
-# Define the A+ quiz task to run at 8:00am every day
-@tasks.loop(hours=24, minutes=60*8)
+# Define the A+ quiz task to run at 4:00pm every day
+@tasks.loop(hours=24, minutes=60*16)
 async def send_message_and_quiz_aplus():
     if guildid is None or channelid is None or aplusrole is None:
         return
@@ -176,8 +176,8 @@ async def send_message_and_quiz_aplus():
 async def before_send_message_and_quiz_aplus():
     await client.wait_until_ready()
 
-# Define the Network+ quiz task to run at 10:00am every day
-@tasks.loop(hours=24, minutes=60*10)
+# Define the Network+ quiz task to run at 2:00pm every day
+@tasks.loop(hours=24, minutes=60*14)
 async def send_message_and_quiz_netplus():
     if guildid is None or channelid is None or netplusrole is None:
         return
@@ -256,5 +256,12 @@ async def on_ready():
     print(f"Logged in as {bot_username} ({client.user.id})")
     print(f"Connected to Discord server '{guild.name}' ({guild.id})")
     print(f"Bot is ready and listening for commands in channel '{channel.name}' ({channel.id})")
+
+    print(f"Starting Scheduled Task Loops")
+    send_message_and_quiz_secplus.start()
+    send_message_and_quiz_netplus.start()
+    send_message_and_quiz_aplus.start()
+    send_message_and_quiz.start()
+
 
 client.run(bottoken)
