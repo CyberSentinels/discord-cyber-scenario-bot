@@ -2,8 +2,11 @@ import random
 import discord
 from discord.ext import commands
 from discord import app_commands
+from discord.ext import commands, tasks
 import ipaddress
 import os
+import threading
+import schedule
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -637,58 +640,58 @@ quizdict = [
         "question": "What is malware?",
         "answer": "Malware is a type of software that is designed to cause harm to a computer system, network, or device. This can include viruses, trojans, worms, and other types of malicious code. Malware can be used for a variety of purposes, such as stealing data, disrupting operations, or spying on users. For example, the NotPetya malware attack in 2017 used a worm that spread rapidly through networks and caused extensive damage to numerous organizations.",
     },
-        {
+    {
         "question": "What is a data breach?",
-        "answer": "A data breach is an incident in which sensitive, protected, or confidential data is accessed or disclosed without authorization. This can occur due to a variety of causes, such as hacking, social engineering, or insider threats. For example, in 2017, Equifax suffered a data breach in which the personal and financial information of approximately 143 million people was compromised."
+        "answer": "A data breach is an incident in which sensitive, protected, or confidential data is accessed or disclosed without authorization. This can occur due to a variety of causes, such as hacking, social engineering, or insider threats. For example, in 2017, Equifax suffered a data breach in which the personal and financial information of approximately 143 million people was compromised.",
     },
     {
         "question": "What is a botnet?",
-        "answer": "A botnet is a network of computers that have been infected with malware and are under the control of a remote attacker. This can be used for a variety of purposes, such as carrying out distributed denial of service (DDoS) attacks, sending spam, or stealing sensitive information. For example, the Mirai botnet was used in a DDoS attack in 2016 that caused widespread disruption to internet service providers and other companies."
+        "answer": "A botnet is a network of computers that have been infected with malware and are under the control of a remote attacker. This can be used for a variety of purposes, such as carrying out distributed denial of service (DDoS) attacks, sending spam, or stealing sensitive information. For example, the Mirai botnet was used in a DDoS attack in 2016 that caused widespread disruption to internet service providers and other companies.",
     },
     {
         "question": "What is social media engineering?",
-        "answer": "Social media engineering is a type of cyber attack that uses social media platforms to target users with scams or other types of malicious content. This can take many forms, such as fake friend requests, phishing messages, or links to malicious websites. For example, in 2017, the WannaCry ransomware attack spread through social media platforms such as Twitter and Facebook, enticing users to click on a link that appeared to be from a trusted source."
+        "answer": "Social media engineering is a type of cyber attack that uses social media platforms to target users with scams or other types of malicious content. This can take many forms, such as fake friend requests, phishing messages, or links to malicious websites. For example, in 2017, the WannaCry ransomware attack spread through social media platforms such as Twitter and Facebook, enticing users to click on a link that appeared to be from a trusted source.",
     },
     {
         "question": "What is a password manager?",
-        "answer": "A password manager is a software tool that helps users generate and store strong, unique passwords for each of their online accounts. This can help users protect their accounts from credential stuffing attacks and other types of password-related attacks. For example, LastPass is a popular password manager that allows users to store their passwords in an encrypted vault and generate strong passwords on demand."
+        "answer": "A password manager is a software tool that helps users generate and store strong, unique passwords for each of their online accounts. This can help users protect their accounts from credential stuffing attacks and other types of password-related attacks. For example, LastPass is a popular password manager that allows users to store their passwords in an encrypted vault and generate strong passwords on demand.",
     },
     {
         "question": "What is cybersecurity governance?",
-        "answer": "Cybersecurity governance is the process by which organizations manage their cybersecurity risks and ensure that their cybersecurity programs align with their business objectives. This can include developing policies and procedures, implementing security controls, and monitoring and reporting on the effectiveness of the cybersecurity program. For example, the NIST Cybersecurity Framework provides a set of guidelines and best practices for organizations to improve their cybersecurity posture."
+        "answer": "Cybersecurity governance is the process by which organizations manage their cybersecurity risks and ensure that their cybersecurity programs align with their business objectives. This can include developing policies and procedures, implementing security controls, and monitoring and reporting on the effectiveness of the cybersecurity program. For example, the NIST Cybersecurity Framework provides a set of guidelines and best practices for organizations to improve their cybersecurity posture.",
     },
     {
         "question": "What is a supply chain attack?",
-        "answer": "A supply chain attack is a type of cyber attack that targets the software or hardware supply chain, typically by injecting malware into a legitimate software update or hardware component. This can allow the attacker to infiltrate numerous organizations that rely on the compromised supply chain, and can be difficult to detect and remediate. For example, in 2021, the SolarWinds supply chain attack affected numerous government and private sector organizations by exploiting a vulnerability in SolarWinds' Orion product."
+        "answer": "A supply chain attack is a type of cyber attack that targets the software or hardware supply chain, typically by injecting malware into a legitimate software update or hardware component. This can allow the attacker to infiltrate numerous organizations that rely on the compromised supply chain, and can be difficult to detect and remediate. For example, in 2021, the SolarWinds supply chain attack affected numerous government and private sector organizations by exploiting a vulnerability in SolarWinds' Orion product.",
     },
     {
         "question": "What is a virtual machine?",
-        "answer": "A virtual machine (VM) is a software emulation of a physical computer system, which can run its own operating system and applications. VMs can be used for a variety of purposes, such as isolating applications or environments, testing new software, or running legacy applications on modern hardware. VMs can also be used as a security control, by running untrusted applications in a sandboxed environment. For example, many cloud service providers use VMs to offer scalable and isolated computing environments to their customers."
+        "answer": "A virtual machine (VM) is a software emulation of a physical computer system, which can run its own operating system and applications. VMs can be used for a variety of purposes, such as isolating applications or environments, testing new software, or running legacy applications on modern hardware. VMs can also be used as a security control, by running untrusted applications in a sandboxed environment. For example, many cloud service providers use VMs to offer scalable and isolated computing environments to their customers.",
     },
-        {
+    {
         "question": "What is ransomware?",
-        "answer": "Ransomware is a type of malware that encrypts a victim's files and demands payment in exchange for the decryption key. This can be used as a form of extortion, and can result in the loss of sensitive data if the victim is unable or unwilling to pay the ransom. For example, in 2017, the WannaCry ransomware attack infected hundreds of thousands of computers worldwide and caused widespread disruption to hospitals, government agencies, and other organizations."
+        "answer": "Ransomware is a type of malware that encrypts a victim's files and demands payment in exchange for the decryption key. This can be used as a form of extortion, and can result in the loss of sensitive data if the victim is unable or unwilling to pay the ransom. For example, in 2017, the WannaCry ransomware attack infected hundreds of thousands of computers worldwide and caused widespread disruption to hospitals, government agencies, and other organizations.",
     },
     {
         "question": "What is spear phishing?",
-        "answer": "Spear phishing is a type of phishing attack that targets a specific individual or organization, often with personalized and convincing messages that appear to be from a trusted source. This can be used to trick the victim into divulging sensitive information or clicking on a malicious link or attachment. For example, in 2015, the Russian cyber espionage group APT29 used spear phishing attacks to infiltrate the U.S. Democratic National Committee and other organizations."
+        "answer": "Spear phishing is a type of phishing attack that targets a specific individual or organization, often with personalized and convincing messages that appear to be from a trusted source. This can be used to trick the victim into divulging sensitive information or clicking on a malicious link or attachment. For example, in 2015, the Russian cyber espionage group APT29 used spear phishing attacks to infiltrate the U.S. Democratic National Committee and other organizations.",
     },
     {
         "question": "What is an insider threat?",
-        "answer": "An insider threat is a security risk posed by employees, contractors, or other authorized users who have access to an organization's systems or data. This can include intentional or unintentional actions that result in data breaches or other security incidents. For example, in 2016, a former employee of the Federal Reserve Bank of New York was sentenced to 6 months in prison for stealing confidential information from the bank's computer systems."
+        "answer": "An insider threat is a security risk posed by employees, contractors, or other authorized users who have access to an organization's systems or data. This can include intentional or unintentional actions that result in data breaches or other security incidents. For example, in 2016, a former employee of the Federal Reserve Bank of New York was sentenced to 6 months in prison for stealing confidential information from the bank's computer systems.",
     },
     {
         "question": "What is a VPN?",
-        "answer": "A virtual private network (VPN) is a technology that allows users to securely connect to a remote network over the internet. This can be used to protect the user's internet traffic from eavesdropping or interception by third parties, and can allow users to access resources that are not normally available from their physical location. For example, a user might connect to a VPN in order to access a company's internal network from a remote location, or to bypass internet censorship in a restrictive regime."
+        "answer": "A virtual private network (VPN) is a technology that allows users to securely connect to a remote network over the internet. This can be used to protect the user's internet traffic from eavesdropping or interception by third parties, and can allow users to access resources that are not normally available from their physical location. For example, a user might connect to a VPN in order to access a company's internal network from a remote location, or to bypass internet censorship in a restrictive regime.",
     },
     {
         "question": "What is a firewall?",
-        "answer": "A firewall is a network security device that monitors and controls incoming and outgoing network traffic based on predetermined security rules. This can be used to prevent unauthorized access to a network, and to protect against malicious traffic such as viruses or DDoS attacks. For example, a firewall might be used to block incoming traffic from a known malicious IP address, or to restrict outbound traffic from a specific network segment."
+        "answer": "A firewall is a network security device that monitors and controls incoming and outgoing network traffic based on predetermined security rules. This can be used to prevent unauthorized access to a network, and to protect against malicious traffic such as viruses or DDoS attacks. For example, a firewall might be used to block incoming traffic from a known malicious IP address, or to restrict outbound traffic from a specific network segment.",
     },
     {
         "question": "What is encryption?",
-        "answer": "Encryption is the process of converting data into a form that is unreadable without a special key or password. This can be used to protect sensitive information from unauthorized access, and can help ensure the confidentiality, integrity, and authenticity of data. For example, end-to-end encryption is used in many messaging apps to ensure that messages can only be read by the sender and intended recipient."
-    }
+        "answer": "Encryption is the process of converting data into a form that is unreadable without a special key or password. This can be used to protect sensitive information from unauthorized access, and can help ensure the confidentiality, integrity, and authenticity of data. For example, end-to-end encryption is used in many messaging apps to ensure that messages can only be read by the sender and intended recipient.",
+    },
 ]
 
 aplusdict = [
@@ -1720,12 +1723,11 @@ secplusdict = [
     },
 ]
 
-scenarios = bluescenarios + redscenarios
-
 
 @client.hybrid_command()
 async def scenario(ctx):
     try:
+        scenarios = bluescenarios + redscenarios
         scenario = random.choice(scenarios)
         prompt = scenario["prompt"]
         if "ways_to_prevent" in scenario:
@@ -1817,7 +1819,6 @@ async def secplus(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-
 @client.hybrid_command()
 async def subnet(ctx, ip: str, mask: str):
     try:
@@ -1831,7 +1832,6 @@ async def subnet(ctx, ip: str, mask: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
-
 @client.hybrid_command()
 async def commands(ctx):
     try:
@@ -1840,7 +1840,6 @@ async def commands(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-
 @client.hybrid_command()
 async def socials(ctx):
     try:
@@ -1848,7 +1847,6 @@ async def socials(ctx):
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
-
 
 @client.event
 async def on_ready():
@@ -1861,5 +1859,126 @@ async def on_ready():
 #         scenario = random.choice(scenarios)
 #         response = f"Here's a scenario for you:\n\n{scenario}"
 #         await channel.send(response)
+
+# define a function to send the message and run the quiz command
+@tasks.loop(hours=24, minutes=60*14)
+async def send_message_and_quiz(ctx):
+
+    # get a reference to the role object
+    guild = client.get_guild(
+        guildid
+    )  # replace guild_id with the ID of the server/guild where the role exists
+    role = discord.utils.get(
+        guild.roles, name=quizrole
+    )  # replace "Role Name" with the name of the role you want to mention
+    # send the message
+    channel = client.get_channel(
+        channelid
+    )  # replace channel_id with the ID of the channel to send the message in
+    message = f"It's time for the daily quiz! {role.mention}, make sure to participate!"
+    await channel.send(message)
+    # send the quiz
+    try:
+        question = random.choice(quizdict)
+        prompt = question["question"]
+        answer = question["answer"]
+        response = f"**Here's a security question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        await channel.send(response)
+    except Exception as e:
+        await channel.send(f"Error: {e}. An unexpected error occurred.")
+
+@send_message_and_quiz.before_loop
+async def before_send_message_and_quiz():
+    await client.wait_until_ready()
+
+# define the A+ quiz task to run at 8:00am every day
+# define a function to send the message and run the quiz command for A+
+@tasks.loop(hours=24, minutes=60*8)
+async def send_message_and_quiz_aplus(ctx):
+    # get a reference to the role object
+    guild = client.get_guild(
+        guildid
+    )  # replace guildid with the ID of the server/guild where the role exists
+    role = discord.utils.get(guild.roles, name=aplusrole)
+    # send the message
+    channel = client.get_channel(
+        channelid
+    )  # replace channelid with the ID of the channel to send the message in
+    message = (
+        f"It's time for the daily A+ quiz! {role.mention}, make sure to participate!"
+    )
+    await channel.send(message)
+    # send the A+ quiz
+    try:
+        question = random.choice(aplusdict)
+        prompt = question["question"]
+        answer = question["answer"]
+        response = f"**Here's a practice A+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        await channel.send(response)
+    except Exception as e:
+        await channel.send(f"Error: {e}. An unexpected error occurred.")
+
+
+@send_message_and_quiz_aplus.before_loop
+async def before_send_message_and_quiz_aplus():
+    await client.wait_until_ready()
+
+# define the Network+ quiz task to run at 10:00am every day
+# define a function to send the message and run the quiz command for Network+
+@tasks.loop(hours=24, minutes=60*10)
+async def send_message_and_quiz_netplus(ctx):
+    # get a reference to the role object
+    guild = client.get_guild(
+        guildid
+    )  # replace guildid with the ID of the server/guild where the role exists
+    role = discord.utils.get(guild.roles, name=netplusrole)
+    # send the message
+    channel = client.get_channel(
+        channelid
+    )  # replace channelid with the ID of the channel to send the message in
+    message = f"It's time for the daily Network+ quiz! {role.mention}, make sure to participate!"
+    await channel.send(message)
+    # send the Network+ quiz
+    try:
+        question = random.choice(netplusdict)
+        prompt = question["question"]
+        answer = question["answer"]
+        response = f"**Here's a practice Network+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        await channel.send(response)
+    except Exception as e:
+        await channel.send(f"Error: {e}. An unexpected error occurred.")
+
+@send_message_and_quiz_netplus.before_loop
+async def before_send_message_and_quiz_netplus():
+    await client.wait_until_ready()
+
+# define the Security+ quiz task to run at 12:00pm every day
+# define a function to send the message and run the quiz command for Security+
+@tasks.loop(hours=24, minutes=60*12)
+async def send_message_and_quiz_secplus(ctx):
+    # get a reference to the role object
+    guild = client.get_guild(
+        guildid
+    )  # replace guildid with the ID of the server/guild where the role exists
+    role = discord.utils.get(guild.roles, name=secplusrole)
+    # send the message
+    channel = client.get_channel(
+        channelid
+    )  # replace channelid with the ID of the channel to send the message in
+    message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
+    await channel.send(message)
+    # run the Security+ quiz command
+    try:
+        question = random.choice(secplusdict)
+        prompt = question["question"]
+        answer = question["answer"]
+        response = f"**Here's a practice Security+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        await channel.send(response)
+    except Exception as e:
+        await channel.send(f"Error: {e}. An unexpected error occurred.")
+
+@send_message_and_quiz_secplus.before_loop
+async def before_send_message_and_quiz_secplus():
+    await client.wait_until_ready()
 
 client.run(bottoken)
