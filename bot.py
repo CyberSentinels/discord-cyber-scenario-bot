@@ -129,13 +129,11 @@ async def send_message_and_quiz():
     try:
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(int(guildid))
-        print(f"{guild}")
         # Replace quizrole with the name of the role to be mentioned
         role = discord.utils.get(guild.roles, name=quizrole)
         print(f"{role}{quizrole}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
-        print(f"{channel}")
         message = f"It's time for the daily quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
         response = handle_quiz()
@@ -163,13 +161,11 @@ async def send_message_and_quiz_aplus():
     try:
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(int(guildid))
-        print(f"{guild}")
         # Replace aplusrole with the name of the role to be mentioned
         role = discord.utils.get(guild.roles, name=aplusrole)
         print(f"{role}{aplusrole}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
-        print(f"{channel}")
         message = f"It's time for the daily A+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
         response = handle_aplus()
@@ -197,13 +193,13 @@ async def send_message_and_quiz_netplus():
     try:
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(int(guildid))
-        print(f"{guild}")
+        for role in guild.roles:
+            print(role.name)
         # Replace netplusrole with the name of the role to be mentioned
         role = discord.utils.get(guild.roles, name=netplusrole)
         print(f"{role}{netplusrole}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
-        print(f"{channel}")
         message = f"It's time for the daily Network+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
         response = handle_netplus()
@@ -231,13 +227,11 @@ async def send_message_and_quiz_secplus():
     try:
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(int(guildid))
-        print(f"{guild}")
         # Replace secplusrole with the name of the role to be mentioned
         role = discord.utils.get(guild.roles, name=secplusrole)
         print(f"{role}{secplusrole}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
-        print(f"{channel}")
         message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
         response = handle_secplus()
