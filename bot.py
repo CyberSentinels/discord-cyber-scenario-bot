@@ -6,12 +6,12 @@ from discord.ext import commands, tasks
 import ipaddress
 import os
 
-from features.bluescenarios import bluescenarios
-from features.redscenarios import redscenarios
-from features.quiz import quizdict
-from features.aplus import aplusdict
-from features.netplus import netplusdict
-from features.secplus import secplusdict
+from features.bluescenarios.bluescenarios import bluescenarios
+from features.redscenarios.redscenarios import redscenarios
+from features.quiz.quizdict import quizdict
+from features.aplus.aplusdict import aplusdict
+from features.netplus.netplusdict import netplusdict
+from features.secplus.secplusdict import secplusdict
 
 intents = discord.Intents.default()
 intents.message_content = True
