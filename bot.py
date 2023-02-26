@@ -8,11 +8,11 @@ import os
 import threading
 import schedule
 
-from bluescenarios.py import bluescenarios
-from redscenarios.py import redscenarios
-from quizdict.py import quizdict
-from aplusdict.py import aplusdict
-from netplusdict.py import netplusdict
+from bluescenarios import bluescenarios
+from redscenarios import redscenarios
+from quizdict import quizdict
+from aplusdict import aplusdict
+from netplusdict import netplusdict
 
 intents = discord.Intents.default()
 intents.message_content = True
