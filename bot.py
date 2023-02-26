@@ -5,8 +5,6 @@ from discord import app_commands
 from discord.ext import commands, tasks
 import ipaddress
 import os
-import threading
-import schedule
 
 intents = discord.Intents.default()
 intents.message_content = True
