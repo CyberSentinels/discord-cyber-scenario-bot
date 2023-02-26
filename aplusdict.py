@@ -1,4 +1,3 @@
-
 aplusdict = [
     {
         "question": "What is the purpose of the BIOS?",
