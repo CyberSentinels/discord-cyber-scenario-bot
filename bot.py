@@ -136,7 +136,7 @@ async def send_message_and_quiz(client, guildid, channelid, quizrole):
     task_quiz(client, guildid, channelid, quizrole)
 
 @send_message_and_quiz.before_loop
-async def before_send_message_and_quiz(client, guildid, channelid, quizrole):
+async def before_send_message_and_quiz():
     await client.wait_until_ready()
     if guildid is None or channelid is None or quizrole is None:
         return
@@ -160,7 +160,7 @@ async def send_message_and_quiz_aplus(client, guildid, channelid, aplusrole):
     task_aplus(client, guildid, channelid, aplusrole)
 
 @send_message_and_quiz_aplus.before_loop
-async def before_send_message_and_quiz_aplus(client, guildid, channelid, aplusrole):
+async def before_send_message_and_quiz_aplus():
     await client.wait_until_ready()
     if guildid is None or channelid is None or aplusrole is None:
         return
@@ -185,7 +185,7 @@ async def send_message_and_quiz_netplus(client, guildid, channelid, netplusrole)
     task_netplus(client, guildid, channelid, netplusrole)
 
 @send_message_and_quiz_netplus.before_loop
-async def before_send_message_and_quiz_netplus(client, guildid, channelid, netplusrole):
+async def before_send_message_and_quiz_netplus():
     await client.wait_until_ready()
     if guildid is None or channelid is None or netplusrole is None:
         return
@@ -210,7 +210,7 @@ async def send_message_and_quiz_secplus(client, guildid, channelid, secplusrole)
     task_secplus(client, guildid, channelid, secplusrole)
 
 @send_message_and_quiz_secplus.before_loop
-async def before_send_message_and_quiz_secplus(client, guildid, channelid, secplusrole):
+async def before_send_message_and_quiz_secplus():
     await client.wait_until_ready()
     if guildid is None or channelid is None or secplusrole is None:
         return
