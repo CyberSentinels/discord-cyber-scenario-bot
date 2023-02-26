@@ -9,7 +9,7 @@ import os
 from features.bluescenarios.bluescenarios import bluescenarios
 from features.redscenarios.redscenarios import redscenarios
 from features.quiz.quizdict import quizdict
-from features.aplus.aplusdict import aplusdict
+import features.aplus.handle_aplus as handle_aplus
 from features.netplus.netplusdict import netplusdict
 from features.secplus.secplusdict import secplusdict
 
@@ -90,10 +90,7 @@ async def quiz(ctx):
 @client.hybrid_command()
 async def aplus(ctx):
     try:
-        question = random.choice(aplusdict)
-        prompt = question["question"]
-        answer = question["answer"]
-        response = f"**Here's a practice A+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        response = handle_aplus()
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
@@ -298,16 +295,6 @@ async def send_message_and_quiz_secplus():
 @send_message_and_quiz_secplus.before_loop
 async def before_send_message_and_quiz_secplus():
     await client.wait_until_ready()
-
-# always needed
-bottoken = os.environ.get("BOT_TOKEN")
-# only needed if you want the timed quizes
-guildid = os.environ.get("GUILD_ID")
-channelid = os.environ.get("CHANNEL_ID")
-aplusrole = os.environ.get("APLUSROLE")
-netplusrole = os.environ.get("NETPLUSROLE")
-secplusrole = os.environ.get("SECPLUSROLE")
-quizrole = os.environ.get("QUIZROLE")
 
 # Define the on_ready event handler
 @client.event
