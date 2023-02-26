@@ -130,7 +130,7 @@ async def send_message_and_quiz():
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(int(guildid))
         # Replace quizrole with the name of the role to be mentioned
-        role = discord.utils.get(guild.roles, name=quizrole)
+        role = guild.get_role(int(quizrole))
         print(f"{role}{quizrole}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
@@ -162,7 +162,7 @@ async def send_message_and_quiz_aplus():
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(int(guildid))
         # Replace aplusrole with the name of the role to be mentioned
-        role = discord.utils.get(guild.roles, name=aplusrole)
+        role = guild.get_role(int(aplusrole))
         print(f"{role}{aplusrole}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
@@ -196,7 +196,7 @@ async def send_message_and_quiz_netplus():
         for role in guild.roles:
             print(role.name)
         # Replace netplusrole with the name of the role to be mentioned
-        role = discord.utils.get(guild.roles, name=netplusrole)
+        role = guild.get_role(int(netplusrole))
         print(f"{role}{netplusrole}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
@@ -228,7 +228,7 @@ async def send_message_and_quiz_secplus():
         # Replace guildid with the ID of the server/guild where the role exists
         guild = client.get_guild(int(guildid))
         # Replace secplusrole with the name of the role to be mentioned
-        role = discord.utils.get(guild.roles, name=secplusrole)
+        role = guild.get_role(int(secplusrole))
         print(f"{role}{secplusrole}")
         # Replace channelid with the ID of the channel to send the message in
         channel = guild.get_channel(int(channelid))
