@@ -12,6 +12,12 @@ RUN pip install --upgrade pip && pip install discord.py discord-py-slash-command
 
 # Set the environment variable for the bot token
 ENV BOT_TOKEN=${BOT_TOKEN}
+ENV GUILD_ID=${GUILD_ID}
+ENV CHANNEL_ID=${CHANNEL_ID}
+ENV APLUSROLE=${APLUSROLE}
+ENV NETPLUSROLE=${NETPLUSROLE}
+ENV SECPLUSROLE=${SECPLUSROLE}
+ENV QUIZROLE=${QUIZROLE}
 
 # Run app.py when the container launches
 CMD ["python", "bot.py"]
