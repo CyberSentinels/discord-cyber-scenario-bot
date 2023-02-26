@@ -15,6 +15,8 @@ from features.netplus.handle_netplus import handle_netplus
 from features.aplus.handle_aplus import handle_aplus
 from features.secplus.handle_secplus import handle_secplus
 
+from features.subnet.handle_subnet import handle_subnet
+
 intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix=["!", "/"], intents=intents)
@@ -93,12 +95,7 @@ async def secplus(ctx):
 @client.hybrid_command()
 async def subnet(ctx, ip: str, mask: str):
     try:
-        network = ipaddress.ip_network(f"{ip}/{mask}", strict=False)
-        net_addr = str(network.network_address)
-        broadcast_addr = str(network.broadcast_address)
-        usable_range = f"{str(network[1])} - {str(network[-2])}"
-        host_count = network.num_addresses
-        response = f"**Here are the details for subnet {network}**: \n\n**Network address**: {net_addr}\n**Broadcast address**: {broadcast_addr}\n**Usable IP range**: {usable_range}\n**Number of hosts**: {host_count}"
+        response = handle_subnet()
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
@@ -134,12 +131,7 @@ async def send_message_and_quiz():
         channel = client.get_channel(channelid)
         message = f"It's time for the daily quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-
-        # Get a random question from the quiz dictionary
-        question = random.choice(quizdict)
-        prompt = question["question"]
-        answer = question["answer"]
-        response = f"**Here's a security question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        response = handle_quiz()
         await channel.send(response)
 
     except discord.errors.Forbidden:
@@ -171,8 +163,6 @@ async def send_message_and_quiz_aplus():
         channel = client.get_channel(channelid)
         message = f"It's time for the daily A+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-
-        # Get a random question from the A+ dictionary
         response = handle_aplus()
         await channel.send(response)
 
@@ -205,12 +195,7 @@ async def send_message_and_quiz_netplus():
         channel = client.get_channel(channelid)
         message = f"It's time for the daily Network+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-
-        # Get a random question from the Network+ dictionary
-        question = random.choice(netplusdict)
-        prompt = question["question"]
-        answer = question["answer"]
-        response = f"**Here's a practice Network+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        response = handle_netplus()
         await channel.send(response)
 
     except discord.errors.Forbidden:
@@ -242,12 +227,7 @@ async def send_message_and_quiz_secplus():
         channel = client.get_channel(channelid)
         message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-
-        # Get a random question from the Security+ dictionary
-        question = random.choice(secplusdict)
-        prompt = question["question"]
-        answer = question["answer"]
-        response = f"**Here's a practice Security+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        response = handle_secplus()
         await channel.send(response)
 
     except discord.errors.Forbidden:
