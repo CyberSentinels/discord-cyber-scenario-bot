@@ -202,10 +202,7 @@ async def send_message_and_quiz_aplus():
         await channel.send(message)
 
         # Get a random question from the A+ dictionary
-        question = random.choice(aplusdict)
-        prompt = question["question"]
-        answer = question["answer"]
-        response = f"**Here's a practice A+ question for you**:\n\n**Prompt**: {prompt}\n\n**Answer**: ||{answer}||"
+        response = handle_aplus()
         await channel.send(response)
 
     except discord.errors.Forbidden:
