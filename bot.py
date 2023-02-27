@@ -245,7 +245,7 @@ async def on_ready():
                 print(f"Sec Plus Task Failed to Start")
         if guildid is not None and channelid is not None and netplusrole is not None:
             try:
-                send_message_and_quiz_netplus.start(client, guildid, channelid, netplusrole)
+                send_message_and_quiz_netplus.start()
                 print(f"Net Plus Task Scheduled Successfully")
             except:
                 print(f"Net Plus Task Failed to Start")
