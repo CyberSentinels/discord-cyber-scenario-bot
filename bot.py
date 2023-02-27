@@ -20,6 +20,11 @@ from tasks.netplus.task_netplus import task_netplus
 from tasks.secplus.task_secplus import task_secplus
 from tasks.quiz.task_quiz import task_quiz
 
+
+import tracemalloc
+tracemalloc.start()
+
+
 #setup the discord.py client and intents
 intents = discord.Intents.default()
 intents.message_content = True
