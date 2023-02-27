@@ -20,10 +20,8 @@ from tasks.netplus.task_netplus import task_netplus
 from tasks.secplus.task_secplus import task_secplus
 from tasks.quiz.task_quiz import task_quiz
 
-
 import tracemalloc
 tracemalloc.start()
-
 
 #setup the discord.py client and intents
 intents = discord.Intents.default()
@@ -197,17 +195,36 @@ async def before_send_message_and_quiz_aplus():
     except Exception as e:
         print(f"An error occurred while setting up send_message_and_quiz_aplus: {e}")
 
-# Define the Network+ quiz task to run every minute
-@tasks.loop(minutes=1)
+# Define the Network+ quiz task to run at 2:00pm every day
+@tasks.loop(hours=24, minutes=60*14)
 async def send_message_and_quiz_netplus():
     try:
         await task_netplus(client, guildid, channelid, netplusrole)
     except Exception as e:
-        print(f"An error occurred while running the 'task_netplus' task: {e}")
+        print(f"An error occurred while running send_message_and_quiz_netplus: {e}")
 
 @send_message_and_quiz_netplus.before_loop
 async def before_send_message_and_quiz_netplus():
-    await client.wait_until_ready()
+    try:
+        await client.wait_until_ready()
+        if guildid is None or channelid is None or netplusrole is None:
+            return
+        now = datetime.datetime.utcnow()
+        scheduled_time = datetime.time(hour=14, minute=0)  # Adjust the time as necessary
+        # Calculate the time until the next scheduled time
+        if now.time() < scheduled_time:
+            wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
+        else:
+            wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
+        # Wait for the calculated time
+        print(f"Waiting for {wait_time} seconds before starting task loop")
+        await asyncio.sleep(wait_time)
+        # Start the task loop
+        send_message_and_quiz_netplus.start()
+        print(f"Netplus Task loop started")
+    except Exception as e:
+        print(f"An error occurred while running the 'send_message_and_quiz_netplus.before_loop' command: {e}")
+        return
 
 # Define the Security+ quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=60*12)
