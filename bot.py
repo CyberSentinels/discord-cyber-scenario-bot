@@ -137,7 +137,7 @@ async def send_message_and_quiz(client, guildid, channelid, quizrole):
 
 @send_message_and_quiz.before_loop
 async def before_send_message_and_quiz():
-    await client.wait_until_ready()
+    await client.wait_until_ready(client, guildid, channelid, quizrole)
     if guildid is None or channelid is None or quizrole is None:
         return
     now = datetime.datetime.utcnow()
@@ -160,7 +160,7 @@ async def send_message_and_quiz_aplus(client, guildid, channelid, aplusrole):
     task_aplus(client, guildid, channelid, aplusrole)
 
 @send_message_and_quiz_aplus.before_loop
-async def before_send_message_and_quiz_aplus():
+async def before_send_message_and_quiz_aplus(client, guildid, channelid, netplusrole):
     await client.wait_until_ready()
     if guildid is None or channelid is None or aplusrole is None:
         return
@@ -185,7 +185,7 @@ async def send_message_and_quiz_netplus(client, guildid, channelid, netplusrole)
     task_netplus(client, guildid, channelid, netplusrole)
 
 @send_message_and_quiz_netplus.before_loop
-async def before_send_message_and_quiz_netplus():
+async def before_send_message_and_quiz_netplus(client, guildid, channelid, netplusrole):
     await client.wait_until_ready()
     if guildid is None or channelid is None or netplusrole is None:
         return
@@ -210,7 +210,7 @@ async def send_message_and_quiz_secplus(client, guildid, channelid, secplusrole)
     task_secplus(client, guildid, channelid, secplusrole)
 
 @send_message_and_quiz_secplus.before_loop
-async def before_send_message_and_quiz_secplus():
+async def before_send_message_and_quiz_secplus(client, guildid, channelid, secplusrole):
     await client.wait_until_ready()
     if guildid is None or channelid is None or secplusrole is None:
         return
@@ -249,25 +249,25 @@ async def on_ready():
     try:
         if guildid is not None and channelid is not None and secplusrole is not None:
             try:
-                send_message_and_quiz_secplus.start()
+                send_message_and_quiz_secplus.start(client, guildid, channelid, secplusrole)
                 print(f"Sec Plus Task Scheduled Successfully")
             except:
                 print(f"Sec Plus Task Failed to Start")
         if guildid is not None and channelid is not None and netplusrole is not None:
             try:
-                send_message_and_quiz_netplus.start()
+                send_message_and_quiz_netplus.start(client, guildid, channelid, netplusrole)
                 print(f"Net Plus Task Scheduled Successfully")
             except:
                 print(f"Net Plus Task Failed to Start")
         if guildid is not None and channelid is not None and aplusrole is not None:    
             try:
-                send_message_and_quiz_aplus.start()
+                send_message_and_quiz_aplus.start(client, guildid, channelid, aplusrole)
                 print(f"A Plus Task Scheduled Successfully")
             except:
                 print(f"A Plus Task Failed to Start")
         if guildid is not None and channelid is not None and quizrole is not None: 
             try:  
-                send_message_and_quiz.start()
+                send_message_and_quiz.start(client, guildid, channelid, quizrole)
                 print(f"Quiz Task Scheduled Successfully")
             except:
                 print(f"Quiz Task Failed to Start")
