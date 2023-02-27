@@ -133,90 +133,116 @@ async def socials(ctx):
 # Define a function to send the message and run the quiz command
 @tasks.loop(hours=24, minutes=60*18)
 async def send_message_and_quiz():
-    task_quiz(client, guildid, channelid, quizrole)
+    try:
+        task_quiz(client, guildid, channelid, quizrole)
+    except Exception as e:
+        print(f"An error occurred while running send_message_and_quiz: {e}")
 
 @send_message_and_quiz.before_loop
 async def before_send_message_and_quiz():
     await client.wait_until_ready()
     if guildid is None or channelid is None or quizrole is None:
+        print("Missing required input parameters. Please make sure to set guildid, channelid, and quizrole before starting the task.")
         return
-    now = datetime.datetime.utcnow()
-    scheduled_time = datetime.time(hour=18, minute=0)  # Adjust the time as necessary
-    # Calculate the time until the next scheduled time
-    if now.time() < scheduled_time:
-        wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
-    else:
-        wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
-    # Wait for the calculated time
-    print(f"Waiting for {wait_time} seconds before starting task loop")
-    await asyncio.sleep(wait_time)
-    # Start the task loop
-    send_message_and_quiz.start(client, guildid, channelid, quizrole)
-    print(f"Quiz Task loop started")
+    try:
+        now = datetime.datetime.utcnow()
+        scheduled_time = datetime.time(hour=18, minute=0)  # Adjust the time as necessary
+        # Calculate the time until the next scheduled time
+        if now.time() < scheduled_time:
+            wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
+        else:
+            wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
+        # Wait for the calculated time
+        print(f"Waiting for {wait_time} seconds before starting task loop")
+        await asyncio.sleep(wait_time)
+        # Start the task loop
+        send_message_and_quiz.start(client, guildid, channelid, quizrole)
+        print(f"Quiz Task loop started")
+    except Exception as e:
+        print(f"An error occurred while setting up send_message_and_quiz: {e}")
 
 # Define the A+ quiz task to run at 4:00pm every day
 @tasks.loop(hours=24, minutes=60*16)
 async def send_message_and_quiz_aplus():
-    task_aplus(client, guildid, channelid, aplusrole)
+    try:
+        task_aplus(client, guildid, channelid, aplusrole)
+    except Exception as e:
+        print(f"An error occurred while running send_message_and_quiz_aplus: {e}")
 
 @send_message_and_quiz_aplus.before_loop
 async def before_send_message_and_quiz_aplus():
     await client.wait_until_ready()
     if guildid is None or channelid is None or aplusrole is None:
+        print("Missing required input parameters. Please make sure to set guildid, channelid, and aplusrole before starting the task.")
         return
-    now = datetime.datetime.utcnow()
-    scheduled_time = datetime.time(hour=16, minute=0)  # Adjust the time as necessary
-    # Calculate the time until the next scheduled time
-    if now.time() < scheduled_time:
-        wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
-    else:
-        wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
-    # Wait for the calculated time
-    print(f"Waiting for {wait_time} seconds before starting task loop")
-    await asyncio.sleep(wait_time)
-    # Start the task loop
-    send_message_and_quiz_aplus.start(client, guildid, channelid, aplusrole)
-    print(f"Aplus Task loop started")
-
+    try:
+        now = datetime.datetime.utcnow()
+        scheduled_time = datetime.time(hour=16, minute=0)  # Adjust the time as necessary
+        # Calculate the time until the next scheduled time
+        if now.time() < scheduled_time:
+            wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
+        else:
+            wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
+        # Wait for the calculated time
+        print(f"Waiting for {wait_time} seconds before starting task loop")
+        await asyncio.sleep(wait_time)
+        # Start the task loop
+        send_message_and_quiz_aplus.start(client, guildid, channelid, aplusrole)
+        print(f"Aplus Task loop started")
+    except Exception as e:
+        print(f"An error occurred while setting up send_message_and_quiz_aplus: {e}")
 
 # Define the Network+ quiz task to run every minute
 @tasks.loop(minutes=1)
 async def send_message_and_quiz_netplus():
-    task_netplus(client, guildid, channelid, netplusrole)
+    try:
+        task_netplus(client, guildid, channelid, netplusrole)
+    except Exception as e:
+        print(f"An error occurred while running the 'task_netplus' task: {e}")
 
 @send_message_and_quiz_netplus.before_loop
 async def before_send_message_and_quiz_netplus():
     await client.wait_until_ready()
     if guildid is None or channelid is None or netplusrole is None:
+        print("Network+ task not started. Required environment variables not found.")
         return
-    send_message_and_quiz_netplus.start()
-    print(f"Netplus Task loop started")
-
-
+    try:
+        send_message_and_quiz_netplus.start()
+        print(f"Netplus Task loop started")
+    except Exception as e:
+        print(f"An error occurred while starting the 'send_message_and_quiz_netplus' task loop: {e}")
 
 # Define the Security+ quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=60*12)
 async def send_message_and_quiz_secplus():
-    task_secplus(client, guildid, channelid, secplusrole)
+    try:
+        task_secplus(client, guildid, channelid, secplusrole)
+    except Exception as e:
+        print(f"An error occurred while running the 'task_secplus' command: {e}")
+        return
 
 @send_message_and_quiz_secplus.before_loop
 async def before_send_message_and_quiz_secplus():
-    await client.wait_until_ready()
-    if guildid is None or channelid is None or secplusrole is None:
+    try:
+        await client.wait_until_ready()
+        if guildid is None or channelid is None or secplusrole is None:
+            return
+        now = datetime.datetime.utcnow()
+        scheduled_time = datetime.time(hour=12, minute=0)  # Adjust the time as necessary
+        # Calculate the time until the next scheduled time
+        if now.time() < scheduled_time:
+            wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
+        else:
+            wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
+        # Wait for the calculated time
+        print(f"Waiting for {wait_time} seconds before starting task loop")
+        await asyncio.sleep(wait_time)
+        # Start the task loop
+        send_message_and_quiz_secplus(client, guildid, channelid, secplusrole)
+        print(f"Secplus Task loop started")
+    except Exception as e:
+        print(f"An error occurred while running the 'before_send_message_and_quiz_secplus' command: {e}")
         return
-    now = datetime.datetime.utcnow()
-    scheduled_time = datetime.time(hour=12, minute=0)  # Adjust the time as necessary
-    # Calculate the time until the next scheduled time
-    if now.time() < scheduled_time:
-        wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
-    else:
-        wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
-    # Wait for the calculated time
-    print(f"Waiting for {wait_time} seconds before starting task loop")
-    await asyncio.sleep(wait_time)
-    # Start the task loop
-    send_message_and_quiz_secplus(client, guildid, channelid, secplusrole)
-    print(f"Secplus Task loop started")
 
 # Define the on_ready event handler
 @client.event
@@ -241,27 +267,27 @@ async def on_ready():
             try:
                 send_message_and_quiz_secplus.start(client, guildid, channelid, secplusrole)
                 print(f"Sec Plus Task Scheduled Successfully")
-            except:
-                print(f"Sec Plus Task Failed to Start")
+            except Exception as e:
+                print(f"Error starting Sec Plus Task: {e}")
         if guildid is not None and channelid is not None and netplusrole is not None:
             try:
                 send_message_and_quiz_netplus.start()
                 print(f"Net Plus Task Scheduled Successfully")
-            except:
-                print(f"Net Plus Task Failed to Start")
+            except Exception as e:
+                print(f"Error starting Net Plus Task: {e}")
         if guildid is not None and channelid is not None and aplusrole is not None:    
             try:
                 send_message_and_quiz_aplus.start(client, guildid, channelid, aplusrole)
                 print(f"A Plus Task Scheduled Successfully")
-            except:
-                print(f"A Plus Task Failed to Start")
+            except Exception as e:
+                print(f"Error starting A Plus Task: {e}")
         if guildid is not None and channelid is not None and quizrole is not None: 
             try:  
                 send_message_and_quiz.start(client, guildid, channelid, quizrole)
                 print(f"Quiz Task Scheduled Successfully")
-            except:
-                print(f"Quiz Task Failed to Start")
-    except:
-        print(f"Tasks Failed")
+            except Exception as e:
+                print(f"Error starting Quiz Task: {e}")
+    except Exception as e:
+        print(f"Error starting scheduled tasks: {e}")
 
 client.run(bottoken)
