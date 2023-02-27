@@ -179,8 +179,8 @@ async def before_send_message_and_quiz_aplus():
     print(f"Aplus Task loop started")
 
 
-# Define the Network+ quiz task to run at 2:00pm every day
-@tasks.loop(hours=24, minutes=60*14)
+# Define the Network+ quiz task to run every minute
+@tasks.loop(minutes=1)
 async def send_message_and_quiz_netplus():
     task_netplus(client, guildid, channelid, netplusrole)
 
@@ -189,19 +189,9 @@ async def before_send_message_and_quiz_netplus():
     await client.wait_until_ready()
     if guildid is None or channelid is None or netplusrole is None:
         return
-    now = datetime.datetime.utcnow()
-    scheduled_time = datetime.time(hour=14, minute=0)  # Adjust the time as necessary
-    # Calculate the time until the next scheduled time
-    if now.time() < scheduled_time:
-        wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
-    else:
-        wait_time = (datetime.datetime.combine(now.date() + datetime.timedelta(days=1), scheduled_time) - now).total_seconds()
-    # Wait for the calculated time
-    print(f"Waiting for {wait_time} seconds before starting task loop")
-    await asyncio.sleep(wait_time)
-    # Start the task loop
     send_message_and_quiz_netplus.start(client, guildid, channelid, netplusrole)
     print(f"Netplus Task loop started")
+
 
 
 # Define the Security+ quiz task to run at 12:00pm every day
