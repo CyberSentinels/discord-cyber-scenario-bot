@@ -160,7 +160,7 @@ async def send_message_and_quiz_aplus(client, guildid, channelid, aplusrole):
     task_aplus(client, guildid, channelid, aplusrole)
 
 @send_message_and_quiz_aplus.before_loop
-async def before_send_message_and_quiz_aplus(client, guildid, channelid, netplusrole):
+async def before_send_message_and_quiz_aplus(client, guildid, channelid, aplusrole):
     await client.wait_until_ready()
     if guildid is None or channelid is None or aplusrole is None:
         return
