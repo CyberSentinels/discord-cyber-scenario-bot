@@ -203,14 +203,6 @@ async def send_message_and_quiz_netplus():
 @send_message_and_quiz_netplus.before_loop
 async def before_send_message_and_quiz_netplus():
     await client.wait_until_ready()
-    if guildid is None or channelid is None or netplusrole is None:
-        print("Network+ task not started. Required environment variables not found.")
-        return
-    try:
-        send_message_and_quiz_netplus.start()
-        print(f"Netplus Task loop started")
-    except Exception as e:
-        print(f"An error occurred while starting the 'send_message_and_quiz_netplus' task loop: {e}")
 
 # Define the Security+ quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=60*12)
