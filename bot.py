@@ -189,7 +189,7 @@ async def before_send_message_and_quiz_netplus():
     await client.wait_until_ready()
     if guildid is None or channelid is None or netplusrole is None:
         return
-    send_message_and_quiz_netplus.start(client, guildid, channelid, netplusrole)
+    send_message_and_quiz_netplus.start()
     print(f"Netplus Task loop started")
 
 
