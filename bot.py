@@ -149,7 +149,7 @@ async def before_send_message_and_quiz():
         return
     try:
         now = datetime.datetime.utcnow()
-        scheduled_time = datetime.time(hour=24, minute=0)  # Adjust the time as necessary
+        scheduled_time = datetime.time(hour=0, minute=0)  # Adjust the time as necessary
         # Calculate the time until the next scheduled time
         if now.time() < scheduled_time:
             wait_time = (datetime.datetime.combine(now.date(), scheduled_time) - now).total_seconds()
