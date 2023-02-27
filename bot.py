@@ -132,7 +132,7 @@ async def socials(ctx):
 
 # Define a function to send the message and run the quiz command
 @tasks.loop(hours=24, minutes=60*18)
-async def send_message_and_quiz(client, guildid, channelid, quizrole):
+async def send_message_and_quiz():
     task_quiz(client, guildid, channelid, quizrole)
 
 @send_message_and_quiz.before_loop
@@ -156,7 +156,7 @@ async def before_send_message_and_quiz():
 
 # Define the A+ quiz task to run at 4:00pm every day
 @tasks.loop(hours=24, minutes=60*16)
-async def send_message_and_quiz_aplus(client, guildid, channelid, aplusrole):
+async def send_message_and_quiz_aplus():
     task_aplus(client, guildid, channelid, aplusrole)
 
 @send_message_and_quiz_aplus.before_loop
@@ -181,7 +181,7 @@ async def before_send_message_and_quiz_aplus():
 
 # Define the Network+ quiz task to run at 2:00pm every day
 @tasks.loop(hours=24, minutes=60*14)
-async def send_message_and_quiz_netplus(client, guildid, channelid, netplusrole):
+async def send_message_and_quiz_netplus():
     task_netplus(client, guildid, channelid, netplusrole)
 
 @send_message_and_quiz_netplus.before_loop
@@ -206,7 +206,7 @@ async def before_send_message_and_quiz_netplus():
 
 # Define the Security+ quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=60*12)
-async def send_message_and_quiz_secplus(client, guildid, channelid, secplusrole):
+async def send_message_and_quiz_secplus():
     task_secplus(client, guildid, channelid, secplusrole)
 
 @send_message_and_quiz_secplus.before_loop
