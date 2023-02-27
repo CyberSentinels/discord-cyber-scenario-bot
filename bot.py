@@ -134,7 +134,7 @@ async def socials(ctx):
 @tasks.loop(hours=24, minutes=60*18)
 async def send_message_and_quiz():
     try:
-        task_quiz(client, guildid, channelid, quizrole)
+        await task_quiz(client, guildid, channelid, quizrole)
     except Exception as e:
         print(f"An error occurred while running send_message_and_quiz: {e}")
 
@@ -165,7 +165,7 @@ async def before_send_message_and_quiz():
 @tasks.loop(hours=24, minutes=60*16)
 async def send_message_and_quiz_aplus():
     try:
-        task_aplus(client, guildid, channelid, aplusrole)
+        await task_aplus(client, guildid, channelid, aplusrole)
     except Exception as e:
         print(f"An error occurred while running send_message_and_quiz_aplus: {e}")
 
@@ -196,7 +196,7 @@ async def before_send_message_and_quiz_aplus():
 @tasks.loop(minutes=1)
 async def send_message_and_quiz_netplus():
     try:
-        task_netplus(client, guildid, channelid, netplusrole)
+        await task_netplus(client, guildid, channelid, netplusrole)
     except Exception as e:
         print(f"An error occurred while running the 'task_netplus' task: {e}")
 
@@ -208,7 +208,7 @@ async def before_send_message_and_quiz_netplus():
 @tasks.loop(hours=24, minutes=60*12)
 async def send_message_and_quiz_secplus():
     try:
-        task_secplus(client, guildid, channelid, secplusrole)
+        await task_secplus(client, guildid, channelid, secplusrole)
     except Exception as e:
         print(f"An error occurred while running the 'task_secplus' command: {e}")
         return
