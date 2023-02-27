@@ -279,7 +279,7 @@ async def on_ready():
     try:
         if guildid is not None and channelid is not None and secplusrole is not None:
             try:
-                send_message_and_quiz_secplus.start(client, guildid, channelid, secplusrole)
+                send_message_and_quiz_secplus.start()
                 print(f"Sec Plus Task Scheduled Successfully")
             except Exception as e:
                 print(f"Error starting Sec Plus Task: {e}")
@@ -291,13 +291,13 @@ async def on_ready():
                 print(f"Error starting Net Plus Task: {e}")
         if guildid is not None and channelid is not None and aplusrole is not None:    
             try:
-                send_message_and_quiz_aplus.start(client, guildid, channelid, aplusrole)
+                send_message_and_quiz_aplus.start()
                 print(f"A Plus Task Scheduled Successfully")
             except Exception as e:
                 print(f"Error starting A Plus Task: {e}")
         if guildid is not None and channelid is not None and quizrole is not None: 
             try:  
-                send_message_and_quiz.start(client, guildid, channelid, quizrole)
+                send_message_and_quiz.start()
                 print(f"Quiz Task Scheduled Successfully")
             except Exception as e:
                 print(f"Error starting Quiz Task: {e}")
