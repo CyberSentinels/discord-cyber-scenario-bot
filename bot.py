@@ -158,9 +158,6 @@ async def before_send_message_and_quiz():
         # Wait for the calculated time
         print(f"Waiting for {wait_time} seconds before starting task loop")
         await asyncio.sleep(wait_time)
-        # Start the task loop
-        send_message_and_quiz.start()
-        print(f"Quiz Task loop started")
     except Exception as e:
         print(f"An error occurred while setting up send_message_and_quiz: {e}")
 
@@ -189,9 +186,6 @@ async def before_send_message_and_quiz_aplus():
         # Wait for the calculated time
         print(f"Waiting for {wait_time} seconds before starting task loop")
         await asyncio.sleep(wait_time)
-        # Start the task loop
-        send_message_and_quiz_aplus.start()
-        print(f"Aplus Task loop started")
     except Exception as e:
         print(f"An error occurred while setting up send_message_and_quiz_aplus: {e}")
 
@@ -219,9 +213,6 @@ async def before_send_message_and_quiz_netplus():
         # Wait for the calculated time
         print(f"Waiting for {wait_time} seconds before starting task loop")
         await asyncio.sleep(wait_time)
-        # Start the task loop
-        send_message_and_quiz_netplus.start()
-        print(f"Netplus Task loop started")
     except Exception as e:
         print(f"An error occurred while running the 'send_message_and_quiz_netplus.before_loop' command: {e}")
         return
@@ -251,9 +242,6 @@ async def before_send_message_and_quiz_secplus():
         # Wait for the calculated time
         print(f"Waiting for {wait_time} seconds before starting task loop")
         await asyncio.sleep(wait_time)
-        # Start the task loop
-        send_message_and_quiz_secplus()
-        print(f"Secplus Task loop started")
     except Exception as e:
         print(f"An error occurred while running the 'before_send_message_and_quiz_secplus' command: {e}")
         return
