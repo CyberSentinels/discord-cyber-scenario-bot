@@ -13,6 +13,7 @@ from features.netplus.handle_netplus import handle_netplus
 from features.aplus.handle_aplus import handle_aplus
 from features.secplus.handle_secplus import handle_secplus
 from features.ccna.handle_ccna import handle_ccna
+from features.cissp.handle_cissp import handle_cissp
 from features.subnet.handle_subnet import handle_subnet
 
 #import tasks
@@ -119,6 +120,14 @@ async def ccna(ctx):
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 @client.hybrid_command()
+async def cissp(ctx):
+    try:
+        response = handle_cissp()
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.hybrid_command()
 async def subnet(ctx, ip: str, mask: str):
     try:
         response = handle_subnet(ip, mask)
@@ -146,6 +155,8 @@ async def commands(ctx):
 **Secplus**: Replies with CompTIA's Security+ related prompts.
 
 **CCNA**: Replies with Cisco CCNA related multiple choice prompts.
+
+**CISSP**: Replies with Replies with a ISC2's CISSP multiple choice prompt.
 
 **Commands**: Replies with this message.
 
