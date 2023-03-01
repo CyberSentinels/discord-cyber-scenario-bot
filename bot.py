@@ -129,7 +129,27 @@ async def subnet(ctx, ip: str, mask: str):
 @client.hybrid_command()
 async def commands(ctx):
     try:
-        response = f"**Command prefix**: '!', '/'\n\n**Quiz**: Replies with a random Cyber Security Awareness Question.\n\n**Scenario**: Replies with either a red team or blue team scenario. \n\n**Bluescenario**: Replies with a blue team scenario. \n\n**Redscenario**: Replies with a redteam scenario.\n\n**Aplus**: Replies with CompTIA's A+ related prompts.\n\n**Netplus**: Replies with CompTIA's Network+ related prompts.\n\n**Secplus**: Replies with CompTIA's Security+ related prompts.\n\n**Commands**: Replies with this message.\n\n**Socials**: Replies with the various bot social media accounts and websites."
+        response = """**Command prefix**: '!', '/'
+
+**Quiz**: Replies with a random Cyber Security Awareness Question.
+
+**Scenario**: Replies with either a red team or blue team scenario.
+
+**Bluescenario**: Replies with a blue team scenario.
+
+**Redscenario**: Replies with a red team scenario.
+
+**Aplus**: Replies with CompTIA's A+ related prompts.
+
+**Netplus**: Replies with CompTIA's Network+ related prompts.
+
+**Secplus**: Replies with CompTIA's Security+ related prompts.
+
+**CCNA**: Replies with Cisco CCNA related multiple choice prompts.
+
+**Commands**: Replies with this message.
+
+**Socials**: Replies with the various bot social media accounts and websites."""
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
