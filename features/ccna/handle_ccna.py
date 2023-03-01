@@ -12,8 +12,8 @@ def handle_ccna():
     options = []
     for key, value in answers.items():
         if key != "correctanswer":
-            options.append(f"{key}. {value}")
+            options.append(f"**{key.upper()}**: {value}")
     options = "\n".join(options)
     correct_answer = answers["correctanswer"]
-    response = f"**Here's a CCNA question for you**:\n\n**Question**: {prompt}\n\n**Options**: {options}\n\n**Correct Answer**: ||{correct_answer}||"
+    response = f"**Here's a CCNA question for you**:\n\n**Question**: {prompt}\n\n**Options**: \n{options}\n\n**Correct Answer**: ||{correct_answer}||"
     return response
