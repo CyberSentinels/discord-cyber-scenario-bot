@@ -111,9 +111,9 @@ async def secplus(ctx):
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 @client.hybrid_command()
-async def handle_ccna(ctx):
+async def ccna(ctx):
     try:
-        response = handle_secplus()
+        response = handle_ccna()
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
