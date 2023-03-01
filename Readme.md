@@ -21,6 +21,8 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 
 - **Secplus**: Replies with CompTIA's Security+ related prompt.
 
+- **CCNA**: Replies with Replies with a Cisco's CCNA multiple choice prompt.
+
 - **Commands**: Replies with this message.
 
 - **Socials**: replies with the various bot social media accounts and websites.
