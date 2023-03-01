@@ -12,6 +12,7 @@ from features.quiz.handle_quiz import handle_quiz
 from features.netplus.handle_netplus import handle_netplus
 from features.aplus.handle_aplus import handle_aplus
 from features.secplus.handle_secplus import handle_secplus
+from features.ccna.handle_ccna import handle_ccna
 from features.subnet.handle_subnet import handle_subnet
 
 #import tasks
@@ -103,6 +104,14 @@ async def netplus(ctx):
 
 @client.hybrid_command()
 async def secplus(ctx):
+    try:
+        response = handle_secplus()
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.hybrid_command()
+async def handle_ccna(ctx):
     try:
         response = handle_secplus()
         await ctx.send(response)
