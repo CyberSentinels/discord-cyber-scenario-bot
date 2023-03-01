@@ -285,6 +285,15 @@ async def before_send_message_and_quiz_secplus():
     except Exception as e:
         print(f"An error occurred while running the 'before_send_message_and_quiz_secplus' command: {e}")
         return
+    
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        print(f"Unsupported command detected: {ctx.message.content}")
+    else:
+        print(f"Unsupported command detected: {error}")
+
 
 # Define the on_ready event handler
 @client.event
