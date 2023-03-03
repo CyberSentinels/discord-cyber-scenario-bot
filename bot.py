@@ -6,21 +6,21 @@ from discord import app_commands
 from discord.ext import commands, tasks
 
 # import features
-from features.aplus.handle_aplus import handle_aplus
-from features.bluescenarios.handle_bluescenarios import handle_bluescenarios
-from features.ccna.handle_ccna import handle_ccna
-from features.cissp.handle_cissp import handle_cissp
-from features.dns.handle_dns import handle_dns
-from features.hash.handle_hash import handle_hash
-from features.netplus.handle_netplus import handle_netplus
-from features.ping.handle_ping import handle_ping
-from features.quiz.handle_quiz import handle_quiz
-from features.redscenarios.handle_redscenarios import handle_redscenarios
-from features.scenarios.handle_scenarios import handle_scenarios
-from features.secplus.handle_secplus import handle_secplus
-from features.shodan.handle_shodanip import handle_shodanip
-from features.subnet.handle_subnet import handle_subnet
-from features.whois.handle_whois import handle_whois
+from features.aplus.handle_aplus import *
+from features.bluescenarios.handle_bluescenarios import *
+from features.ccna.handle_ccna import *
+from features.cissp.handle_cissp import *
+from features.dns.handle_dns import *
+from features.hash.handle_hash import *
+from features.netplus.handle_netplus import *
+from features.ping.handle_ping import *
+from features.quiz.handle_quiz import *
+from features.redscenarios.handle_redscenarios import *
+from features.scenarios.handle_scenarios import *
+from features.secplus.handle_secplus import *
+from features.shodan.handle_shodanip import *
+from features.subnet.handle_subnet import *
+from features.whois.handle_whois import *
 
 # import tasks
 from tasks.aplus.task_aplus import task_aplus
