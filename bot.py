@@ -1,4 +1,5 @@
 import discord
+from discord import app_commands
 from discord.ext import commands, tasks
 import os
 import datetime
@@ -29,6 +30,7 @@ tracemalloc.start()
 intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix=["!", "/"], intents=intents)
+tree = app_commands.CommandTree(client)
 
 # setup variables
 # always needed
