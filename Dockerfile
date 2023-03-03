@@ -8,7 +8,13 @@ WORKDIR /
 COPY . /
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --upgrade pip && pip install --upgrade setuptools && pip install discord.py discord-py-slash-command discord-py-interactions requests dnspython hashlib python-whois subprocess && pip install --user requests dnspython hashlib python-whois subprocess && pip show requests 
+RUN pip install --upgrade pip && \
+pip install --upgrade setuptools --user python && \
+pip install --upgrade setuptools && \
+pip install discord.py discord-py-slash-command discord-py-interactions requests dnspython hashlib python-whois subprocess && \
+pip install --user requests dnspython hashlib python-whois subprocess && \
+pip show requests && \
+pip list
 
 # Set the environment variable for the bot token
 ENV BOT_TOKEN=${BOT_TOKEN}
