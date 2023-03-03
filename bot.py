@@ -289,10 +289,7 @@ async def before_send_message_and_quiz_secplus():
 
 @client.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        print(f"Unsupported command detected: {ctx.message.content}")
-    else:
-        print(f"Unsupported command detected: {error}")
+    print(f"Unsupported command detected: {error}")
 
 
 # Define the on_ready event handler
@@ -311,6 +308,12 @@ async def on_ready():
     print(f"Logged in as {bot_username} ({client.user.id})")
     print(f"Connected to Discord server '{guild.name}' ({guild.id})")
     print(f"Bot is ready and listening for commands in channel '{channel.name}' ({channel.id})")
+
+    try:
+        synced = await client.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
+    except Exception as e:
+        print(e)
 
     print(f"Starting Scheduled Task Loops")
     try:
