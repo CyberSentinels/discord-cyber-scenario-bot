@@ -7,12 +7,12 @@ WORKDIR /
 # Copy the current directory contents into the container at /
 COPY . /
 
-RUN apt-get update && apt-get -y upgrade
-RUN apt-get install -y python3-setuptools python3-dev build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
+RUN apt-get update && apt-get -y full-upgrade -y
+RUN apt-get install -y python3-setuptools python3-dev python-dev build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip && \
-pip install discord.py discord-py-slash-command discord-py-interactions requests dnspython hashlib python-whois subprocess && \
+pip install python-dev discord.py discord-py-slash-command discord-py-interactions requests dnspython hashlib python-whois subprocess && \
 pip install --user requests dnspython hashlib python-whois subprocess && \
 pip show requests && \
 pip list
