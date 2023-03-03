@@ -177,7 +177,7 @@ async def dns(ctx, domain: str):
 @client.hybrid_command(
     name="hash",
     description="Hashes a message using the specified algorithm.",
-    choices=["md5", "sha1", "sha256", "sha512"]
+    algorithm=["md5", "sha1", "sha256", "sha512"]
 )
 async def hash(ctx, algorithm: str, message: str):
     try:
