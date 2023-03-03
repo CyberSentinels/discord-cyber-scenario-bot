@@ -16,6 +16,7 @@ from features.secplus.handle_secplus import handle_secplus
 from features.ccna.handle_ccna import handle_ccna
 from features.cissp.handle_cissp import handle_cissp
 from features.subnet.handle_subnet import handle_subnet
+from features.shodan.handle_shodanip import handle_shodanip
 
 # import tasks
 from tasks.aplus.task_aplus import task_aplus
@@ -167,6 +168,16 @@ async def subnet(ctx, ip: str, mask: str):
     try:
         response = handle_subnet(ip, mask)
         await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. Invalid input format.")
+
+@client.hybrid_command(
+    name="shodanip", description="Gives you useful information about a given subnet."
+)
+async def subnet(ctx, ip: str):
+    try:
+        response = handle_shodanip(ip)
+        await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 

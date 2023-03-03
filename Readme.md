@@ -7,6 +7,7 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 ## Commands Available:
 *Command prefix: '!', '/'*
 
+### Quiz and Scenario Commands
 - **Quiz**: Replies with a random Cyber Security Awareness Question.
 
 - **Scenario**: Replies with either a red team or blue team scenario. 
@@ -25,6 +26,12 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 
 - **CISSP**: Replies with Replies with a ISC2's CISSP multiple choice prompt.
 
+### Tool Commands:
+- **Subnet**: Takes in an IP address and a Subnet Mask and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts
+
+- **Shodanip**: Takes in an IP address and outputs useful information from [https://internetdb.shodan.io/](https://internetdb.shodan.io/)
+
+### Informational Commands
 - **Commands**: Replies with this message.
 
 - **Socials**: Replies with the various bot social media accounts and websites.
