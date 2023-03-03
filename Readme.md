@@ -8,41 +8,25 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 *Command prefix: '!', '/'*
 
 ### Quiz and Scenario Commands
-- **Quiz**: Replies with a random Cyber Security Awareness Question.
-
-- **Scenario**: Replies with either a red team or blue team scenario. 
-
-- **Bluescenario**: Replies with a blue team scenario. 
-
-- **Redscenario**: Replies with a redteam scenario.
-
 - **Aplus**: Replies with CompTIA's A+ related prompt.
-
+- **Bluescenario**: Replies with a blue team scenario.
+- **CCNA**: Replies with Cisco's CCNA multiple choice prompt.
+- **CISSP**: Replies with ISC2's CISSP multiple choice prompt.
 - **Netplus**: Replies with CompTIA's Network+ related prompt.
-
+- **Quiz**: Replies with a random Cyber Security Awareness Question.
+- **Redscenario**: Replies with a redteam scenario.
 - **Secplus**: Replies with CompTIA's Security+ related prompt.
 
-- **CCNA**: Replies with Replies with a Cisco's CCNA multiple choice prompt.
-
-- **CISSP**: Replies with Replies with a ISC2's CISSP multiple choice prompt.
-
 ### Tool Commands:
-
 - **Dns**: Takes in a `domain name` and returns A, AAAA, NS, TXT, etc. records.
-
 - **Hash**: Takes in `1 of 4 supported algos` and a `string` and outputs a corresponding hash.
-
 - **Ping**: Takes in an `IP address` and returns with a success message and average latency or a failure message.
-
-- **Shodanip**: Takes in an `IP address` and outputs useful information from [https://internetdb.shodan.io/](https://internetdb.shodan.io/).
-
+- **Shodanip**: Takes in an `IP address` and outputs useful information from https://internetdb.shodan.io/.
 - **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts.
-
 - **Whois**: Takes in a `domain name` and outputs domain whois information.
 
 ### Informational Commands
 - **Commands**: Replies with this message.
-
 - **Socials**: Replies with the various bot social media accounts and websites.
 
 ## How to run:
