@@ -52,7 +52,15 @@ print(f"NETPLUSROLE: {netplusrole}")
 print(f"SECPLUSROLE: {secplusrole}")
 print(f"QUIZROLE: {quizrole}")
 
-@client.hybrid_command()
+@client.hybrid_command(name="quiz", description="Replies with CompTIA's A+ related prompt.")
+async def quiz(ctx):
+    try:
+        response = handle_quiz()
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.hybrid_command(name="scenario", description="Replies with either a red team or blue team scenario.")
 async def scenario(ctx):
     try:
         response = handle_scenarios()
@@ -61,7 +69,7 @@ async def scenario(ctx):
         print(f"An error occurred while running the 'scenario' command: {e}")
         await ctx.send("Sorry, an error occurred while running that command.")
 
-@client.hybrid_command()
+@client.hybrid_command(name="bluescenario", description="Replies with a blue team scenario.")
 async def bluescenario(ctx):
     try:
         response = handle_bluescenarios()
@@ -71,7 +79,7 @@ async def bluescenario(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.hybrid_command()
+@client.hybrid_command(name="redscenario", description="Replies with a redteam scenario.")
 async def redscenario(ctx):
     try:
         response = handle_redscenarios()
@@ -81,15 +89,7 @@ async def redscenario(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.hybrid_command()
-async def quiz(ctx):
-    try:
-        response = handle_quiz()
-        await ctx.send(response)
-    except Exception as e:
-        await ctx.send(f"Error: {e}. An unexpected error occurred.")
-
-@client.hybrid_command()
+@client.hybrid_command(name="aplus", description="Replies with CompTIA's A+ related prompt.")
 async def aplus(ctx):
     try:
         response = handle_aplus()
@@ -97,7 +97,7 @@ async def aplus(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.hybrid_command()
+@client.hybrid_command(name="netplus", description="Replies with CompTIA's Network+ related prompt.")
 async def netplus(ctx):
     try:
         response = handle_netplus()
@@ -105,7 +105,7 @@ async def netplus(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.hybrid_command()
+@client.hybrid_command(name="secplus", description="Replies with CompTIA's Security+ related prompt.")
 async def secplus(ctx):
     try:
         response = handle_secplus()
@@ -113,7 +113,7 @@ async def secplus(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.hybrid_command()
+@client.hybrid_command(name="ccna", description="Replies with Replies with a Cisco's CCNA multiple choice prompt.")
 async def ccna(ctx):
     try:
         response = handle_ccna()
@@ -121,7 +121,7 @@ async def ccna(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.hybrid_command()
+@client.hybrid_command(name="cissp", description="Replies with Replies with a ISC2's CISSP multiple choice prompt.")
 async def cissp(ctx):
     try:
         response = handle_cissp()
@@ -129,7 +129,7 @@ async def cissp(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.hybrid_command()
+@client.hybrid_command(name="subnet", description="Gives you useful information about a given subnet.")
 async def subnet(ctx, ip: str, mask: str):
     try:
         response = handle_subnet(ip, mask)
@@ -137,7 +137,7 @@ async def subnet(ctx, ip: str, mask: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
-@client.hybrid_command()
+@client.hybrid_command(name="commands", description="Describes the available commands.")
 async def commands(ctx):
     try:
         response = """**Command prefix**: '!', '/'
@@ -167,7 +167,7 @@ async def commands(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-@client.hybrid_command()
+@client.hybrid_command(name="socials", description="Replies with the various bot social media accounts and websites.")
 async def socials(ctx):
     try:
         response = f"**Website**: https://cybersentinels.com\n\n**GitHub**: https://github.com/cybersentinels"
