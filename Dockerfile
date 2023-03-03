@@ -7,6 +7,9 @@ WORKDIR /
 # Copy the current directory contents into the container at /
 COPY . /
 
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get install -y --no-install-recommends build-essential gcc
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools --user python && pip install --upgrade setuptools
