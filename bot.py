@@ -176,7 +176,7 @@ async def subnet(ctx, ip: str, mask: str):
 )
 async def subnet(ctx, ip: str):
     try:
-        response = handle_shodanip(ip)
+        response = await handle_shodanip(ip)
         await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
