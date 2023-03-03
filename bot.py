@@ -187,27 +187,34 @@ async def commands(ctx):
     try:
         response = """**Command prefix**: '!', '/'
 
-**Quiz**: Replies with a random Cyber Security Awareness Question.
+### Quiz and Scenario Commands
+- **Quiz**: Replies with a random Cyber Security Awareness Question.
 
-**Scenario**: Replies with either a red team or blue team scenario.
+- **Scenario**: Replies with either a red team or blue team scenario. 
 
-**Bluescenario**: Replies with a blue team scenario.
+- **Bluescenario**: Replies with a blue team scenario. 
 
-**Redscenario**: Replies with a red team scenario.
+- **Redscenario**: Replies with a redteam scenario.
 
-**Aplus**: Replies with CompTIA's A+ related prompts.
+- **Aplus**: Replies with CompTIA's A+ related prompt.
 
-**Netplus**: Replies with CompTIA's Network+ related prompts.
+- **Netplus**: Replies with CompTIA's Network+ related prompt.
 
-**Secplus**: Replies with CompTIA's Security+ related prompts.
+- **Secplus**: Replies with CompTIA's Security+ related prompt.
 
-**CCNA**: Replies with Cisco CCNA related multiple choice prompts.
+- **CCNA**: Replies with Replies with a Cisco's CCNA multiple choice prompt.
 
-**CISSP**: Replies with Replies with a ISC2's CISSP multiple choice prompt.
+- **CISSP**: Replies with Replies with a ISC2's CISSP multiple choice prompt.
 
-**Commands**: Replies with this message.
+### Tool Commands:
+- **Subnet**: Takes in an IP address and a Subnet Mask and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts
 
-**Socials**: Replies with the various bot social media accounts and websites."""
+- **Shodanip**: Takes in an IP address and outputs useful information from [https://internetdb.shodan.io/](https://internetdb.shodan.io/)
+
+### Informational Commands
+- **Commands**: Replies with this message.
+
+- **Socials**: Replies with the various bot social media accounts and websites."""
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
