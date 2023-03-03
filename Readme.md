@@ -27,9 +27,12 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 - **CISSP**: Replies with Replies with a ISC2's CISSP multiple choice prompt.
 
 ### Tool Commands:
-- **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts
+
+- **Dns**: Takes in a domain name and returns A, AAAA, NS, TXT, etc. records.
 
 - **Shodanip**: Takes in an `IP address` and outputs useful information from [https://internetdb.shodan.io/](https://internetdb.shodan.io/)
+
+- **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts
 
 ### Informational Commands
 - **Commands**: Replies with this message.

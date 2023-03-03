@@ -17,7 +17,7 @@ from features.ccna.handle_ccna import handle_ccna
 from features.cissp.handle_cissp import handle_cissp
 from features.subnet.handle_subnet import handle_subnet
 from features.shodan.handle_shodanip import handle_shodanip
-
+from features.dns.handle_dns import handle_dns
 # import tasks
 from tasks.aplus.task_aplus import task_aplus
 from tasks.netplus.task_netplus import task_netplus
@@ -172,11 +172,21 @@ async def subnet(ctx, ip: str, mask: str):
         await ctx.send(f"Error: {e}. Invalid input format.")
 
 @client.hybrid_command(
-    name="shodanip", description="Gives you useful information about a given subnet."
+    name="shodanip", description="Gives you useful information about a given ip address."
 )
-async def subnet(ctx, ip: str):
+async def shodanip(ctx, ip: str):
     try:
         response = await handle_shodanip(ip)
+        await ctx.send(embed=response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. Invalid input format.")
+
+@client.hybrid_command(
+    name="dns", description="Gives you useful information about a dns name."
+)
+async def dns(ctx, domain: str):
+    try:
+        response = await handle_dns(domain)
         await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
@@ -207,9 +217,12 @@ async def commands(ctx):
 - **CISSP**: Replies with Replies with a ISC2's CISSP multiple choice prompt.
 
 ### Tool Commands:
-- **Subnet**: Takes in an IP address and a Subnet Mask and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts
 
-- **Shodanip**: Takes in an IP address and outputs useful information from [https://internetdb.shodan.io/](https://internetdb.shodan.io/)
+- **Dns**: Takes in a domain name and returns A, AAAA, NS, TXT, etc. records.
+
+- **Shodanip**: Takes in an `IP address` and outputs useful information from [https://internetdb.shodan.io/](https://internetdb.shodan.io/)
+
+- **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts
 
 ### Informational Commands
 - **Commands**: Replies with this message.
