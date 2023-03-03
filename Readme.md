@@ -27,7 +27,7 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 
 - **Commands**: Replies with this message.
 
-- **Socials**: replies with the various bot social media accounts and websites.
+- **Socials**: Replies with the various bot social media accounts and websites.
 
 ## How to run:
 ### Python:
