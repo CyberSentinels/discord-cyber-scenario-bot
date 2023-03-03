@@ -1,28 +1,32 @@
+import asyncio
+import datetime
 import discord
+import os
 from discord import app_commands
 from discord.ext import commands, tasks
-import os
-import datetime
-import asyncio
 
 # import features
-from features.bluescenarios.handle_bluescenarios import handle_bluescenarios
-from features.redscenarios.handle_redscenarios import handle_redscenarios
-from features.scenarios.handle_scenarios import handle_scenarios
-from features.quiz.handle_quiz import handle_quiz
-from features.netplus.handle_netplus import handle_netplus
 from features.aplus.handle_aplus import handle_aplus
-from features.secplus.handle_secplus import handle_secplus
+from features.bluescenarios.handle_bluescenarios import handle_bluescenarios
 from features.ccna.handle_ccna import handle_ccna
 from features.cissp.handle_cissp import handle_cissp
-from features.subnet.handle_subnet import handle_subnet
-from features.shodan.handle_shodanip import handle_shodanip
 from features.dns.handle_dns import handle_dns
+from features.hash.handle_hash import handle_hash
+from features.netplus.handle_netplus import handle_netplus
+from features.ping.handle_ping import handle_ping
+from features.quiz.handle_quiz import handle_quiz
+from features.redscenarios.handle_redscenarios import handle_redscenarios
+from features.scenarios.handle_scenarios import handle_scenarios
+from features.secplus.handle_secplus import handle_secplus
+from features.shodan.handle_shodanip import handle_shodanip
+from features.subnet.handle_subnet import handle_subnet
+from features.whois.handle_whois import handle_whois
+
 # import tasks
 from tasks.aplus.task_aplus import task_aplus
 from tasks.netplus.task_netplus import task_netplus
-from tasks.secplus.task_secplus import task_secplus
 from tasks.quiz.task_quiz import task_quiz
+from tasks.secplus.task_secplus import task_secplus
 
 import tracemalloc
 
@@ -160,16 +164,37 @@ async def cissp(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-
 @client.hybrid_command(
-    name="subnet", description="Gives you useful information about a given subnet."
+    name="dns", description="Gives you useful information about a dns name."
 )
-async def subnet(ctx, ip: str, mask: str):
+async def dns(ctx, domain: str):
     try:
-        response = handle_subnet(ip, mask)
-        await ctx.send(response)
+        response = await handle_dns(domain)
+        await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
+
+@client.hybrid_command(
+    name="hash",
+    description="Hashes a message using the specified algorithm.",
+    choices=["md5", "sha1", "sha256", "sha512"]
+)
+async def hash(ctx, algorithm: str, message: str):
+    try:
+        response = await handle_hash(message, algorithm)
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. Invalid input format or unsupported hashing algorithm.")
+
+@client.hybrid_command(
+    name="ping", description="Sends a ping packet to a specified IP address to check if it is reachable."
+)
+async def ping(ctx, ip: str):
+    try:
+        response = await handle_ping(ip)
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. Invalid input format or IP address not reachable.")
 
 @client.hybrid_command(
     name="shodanip", description="Gives you useful information about a given ip address."
@@ -182,15 +207,24 @@ async def shodanip(ctx, ip: str):
         await ctx.send(f"Error: {e}. Invalid input format.")
 
 @client.hybrid_command(
-    name="dns", description="Gives you useful information about a dns name."
+    name="subnet", description="Gives you useful information about a given subnet."
 )
-async def dns(ctx, domain: str):
+async def subnet(ctx, ip: str, mask: str):
     try:
-        response = await handle_dns(domain)
-        await ctx.send(embed=response)
+        response = await handle_subnet(ip, mask)
+        await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
+@client.hybrid_command(
+    name="whois", description="Gives you useful information about a given subnet."
+)
+async def whois(ctx, domain: str):
+    try:
+        response = await handle_whois(domain)
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. Invalid input format.")
 
 @client.hybrid_command(name="commands", description="Describes the available commands.")
 async def commands(ctx):
@@ -218,11 +252,17 @@ async def commands(ctx):
 
 ### Tool Commands:
 
-- **Dns**: Takes in a domain name and returns A, AAAA, NS, TXT, etc. records.
+- **Dns**: Takes in a `domain name` and returns A, AAAA, NS, TXT, etc. records.
 
-- **Shodanip**: Takes in an `IP address` and outputs useful information from [https://internetdb.shodan.io/](https://internetdb.shodan.io/)
+- **Hash**: Takes in `1 of 4 supported algos` and a `string` and outputs a corresponding hash.
 
-- **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts
+- **Ping**: Takes in an `IP address` and returns with a success message and average latency or a failure message.
+
+- **Shodanip**: Takes in an `IP address` and outputs useful information from [https://internetdb.shodan.io/](https://internetdb.shodan.io/).
+
+- **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts.
+
+- **Whois**: Takes in a `domain name` and outputs domain whois information.
 
 ### Informational Commands
 - **Commands**: Replies with this message.
