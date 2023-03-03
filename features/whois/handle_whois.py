@@ -1,6 +1,6 @@
 import whois
 
-async def handle_whois(domain):
+async def handle_whois(domain: str):
     # Get the WHOIS information for the specified domain
     try:
         w = whois.whois(domain)

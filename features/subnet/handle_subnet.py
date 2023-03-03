@@ -1,6 +1,6 @@
 import ipaddress
 
-def handle_subnet(ip: str, mask: str):
+async def handle_subnet(ip: str, mask: str):
     network = ipaddress.ip_network(f"{ip}/{mask}", strict=False)
     net_addr = str(network.network_address)
     broadcast_addr = str(network.broadcast_address)
