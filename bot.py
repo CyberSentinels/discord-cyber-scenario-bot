@@ -30,7 +30,7 @@ tracemalloc.start()
 intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix=["!", "/"], intents=intents)
-tree = app_commands.CommandTree(client)
+#tree = app_commands.CommandTree(client)
 
 # setup variables
 # always needed
