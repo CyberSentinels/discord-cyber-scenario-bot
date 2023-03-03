@@ -8,10 +8,9 @@ WORKDIR /
 COPY . /
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --upgrade pip && \
-pip install --upgrade setuptools --user python && \
-pip install --upgrade setuptools && \
-pip install discord.py discord-py-slash-command discord-py-interactions requests dnspython hashlib python-whois subprocess && \
+RUN pip install --upgrade pip
+RUN pip install --upgrade setuptools --user python && pip install --upgrade setuptools
+RUN pip install discord.py discord-py-slash-command discord-py-interactions requests dnspython hashlib python-whois subprocess && \
 pip install --user requests dnspython hashlib python-whois subprocess && \
 pip show requests && \
 pip list
