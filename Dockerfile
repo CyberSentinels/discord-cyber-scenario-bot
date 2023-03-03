@@ -12,7 +12,7 @@ RUN apt-get install -y python3-setuptools python3-dev python3-pip python-dev bui
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip && \
-pip install discord.py discord-py-slash-command discord-py-interactions requests dnspython hashlib python-whois subprocess && \
+pip install discord.py discord-py-slash-command discord-py-interactions requests dnspython pycryptodome python-whois subprocess && \
 pip install --user requests dnspython pycryptodome python-whois subprocess && \
 pip show requests && \
 pip list
