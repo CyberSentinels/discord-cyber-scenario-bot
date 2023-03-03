@@ -1,17 +1,20 @@
-import hashlib
+from cryptography.hazmat.primitives import hashes
 
 async def handle_hash(message, algorithm):
     # Hash the message using the specified algorithm
     if algorithm == "md5":
-        hashed = hashlib.md5(message.encode()).hexdigest()
+        digest = hashes.Hash(hashes.MD5())
     elif algorithm == "sha1":
-        hashed = hashlib.sha1(message.encode()).hexdigest()
+        digest = hashes.Hash(hashes.SHA1())
     elif algorithm == "sha256":
-        hashed = hashlib.sha256(message.encode()).hexdigest()
+        digest = hashes.Hash(hashes.SHA256())
     elif algorithm == "sha512":
-        hashed = hashlib.sha512(message.encode()).hexdigest()
+        digest = hashes.Hash(hashes.SHA512())
     else:
         return f"Invalid algorithm. Supported algorithms are 'md5', 'sha1', 'sha256', and 'sha512'."
 
+    digest.update(message.encode())
+    hashed = digest.finalize()
+
     # Return the hashed message
-    return f"Hashed message: {hashed}"
+    return f"Hashed message: {hashed.hex()}"
