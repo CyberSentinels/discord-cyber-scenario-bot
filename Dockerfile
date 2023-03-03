@@ -12,7 +12,7 @@ RUN apt-get install -y --no-install-recommends build-essential gcc
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip
-RUN pip install --upgrade setuptools --user python && pip install --upgrade setuptools
+#RUN pip install --upgrade setuptools --user python && pip install --upgrade setuptools
 RUN pip install ez_setup unroll 
 RUN easy_install -U setuptools
 RUN pip install ez_setup unroll 
