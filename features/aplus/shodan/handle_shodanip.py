@@ -2,7 +2,6 @@ import re
 import json
 import discord
 import requests
-from dotenv import load_dotenv
 from discord.ext import commands
 
 def is_valid_ip(ip):
