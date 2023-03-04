@@ -177,7 +177,11 @@ async def dns(ctx, domain: str):
 @client.hybrid_command(
     name="hash",
     description="Hashes a message using the specified algorithm.",
-    algorithm=["md5", "sha1", "sha256", "sha512"]
+    algorithm={
+        "name": "algorithm",
+        "description": "The hashing algorithm to use.",
+        "choices": ["md5", "sha1", "sha256", "sha512"]
+    }
 )
 async def hash(ctx, algorithm: str, message: str):
     try:
@@ -185,6 +189,7 @@ async def hash(ctx, algorithm: str, message: str):
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format or unsupported hashing algorithm.")
+
 
 @client.hybrid_command(
     name="ping", description="Sends a ping packet to a specified IP address to check if it is reachable."
