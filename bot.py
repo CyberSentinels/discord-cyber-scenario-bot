@@ -4,7 +4,6 @@ import discord
 import os
 from discord import app_commands
 from discord.ext import commands, tasks
-from discord.app_commands import Option, OptionChoice
 
 # import features
 from features.aplus.handle_aplus import *
@@ -175,31 +174,9 @@ async def dns(ctx, domain: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
-from discord.app_commands import Option, OptionChoice
-
 @client.hybrid_command(
     name="hash",
-    description="Hashes a message using the specified algorithm.",
-    options=[
-        Option(
-            name="algorithm",
-            description="The hashing algorithm to use.",
-            type=OptionType.STRING,
-            required=True,
-            choices=[
-                OptionChoice(name="MD5", value="md5"),
-                OptionChoice(name="SHA-1", value="sha1"),
-                OptionChoice(name="SHA-256", value="sha256"),
-                OptionChoice(name="SHA-512", value="sha512")
-            ]
-        ),
-        Option(
-            name="message",
-            description="The message to hash.",
-            type=OptionType.STRING,
-            required=True
-        )
-    ]
+    description="Hashes a message using the specified algorithm."
 )
 async def hash(ctx, algorithm: str, message: str):
     try:
@@ -207,8 +184,6 @@ async def hash(ctx, algorithm: str, message: str):
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format or unsupported hashing algorithm.")
-
-
 
 @client.hybrid_command(
     name="ping", description="Sends a ping packet to a specified IP address to check if it is reachable."
