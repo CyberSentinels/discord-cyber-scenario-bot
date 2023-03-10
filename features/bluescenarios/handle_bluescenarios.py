@@ -3,6 +3,7 @@ import random
 from .bluescenariosdict import bluescenarios
 
 def handle_bluescenarios():
+    random.shuffle(bluescenarios)
     scenario = random.choice(bluescenarios)
     prompt = scenario["prompt"]
     prevent = "\n".join(scenario["ways_to_prevent"])

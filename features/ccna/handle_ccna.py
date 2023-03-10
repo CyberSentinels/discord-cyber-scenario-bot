@@ -6,6 +6,7 @@ from .ccnadict import ccnadict
 import random
 
 def handle_ccna():
+    random.shuffle(ccnadict)
     question = random.choice(ccnadict)
     prompt = question["question"]
     answers = question["answers"]

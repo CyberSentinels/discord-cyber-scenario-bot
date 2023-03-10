@@ -3,6 +3,7 @@ import random
 from .quizdict import quizdict
 
 def handle_quiz():
+    random.shuffle(quizdict)
     question = random.choice(quizdict)
     prompt = question["question"]
     answer = question["answer"]

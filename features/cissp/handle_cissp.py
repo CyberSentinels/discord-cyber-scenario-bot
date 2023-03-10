@@ -6,6 +6,7 @@ from .cisspdict import cisspdict
 import random
 
 def handle_cissp():
+    random.shuffle(cisspdict)
     question = random.choice(cisspdict)
     prompt = question["question"]
     answers = question["answers"]

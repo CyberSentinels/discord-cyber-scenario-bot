@@ -2,6 +2,7 @@ from .secplusdict import secplusdict
 import random
 
 def handle_secplus():
+    random.shuffle(secplusdict)
     question = random.choice(secplusdict)
     prompt = question["question"]
     answer = question["answer"]

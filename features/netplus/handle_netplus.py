@@ -3,6 +3,7 @@ import random
 from .netplusdict import netplusdict
 
 def handle_netplus():
+    random.shuffle(netplusdict)
     question = random.choice(netplusdict)
     prompt = question["question"]
     answer = question["answer"]

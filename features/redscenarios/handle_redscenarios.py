@@ -3,6 +3,7 @@ from .redscenariosdict import redscenarios
 import random
 
 def handle_redscenarios():
+    random.shuffle(redscenarios)
     scenario = random.choice(redscenarios)
     prompt = scenario["prompt"]
     solution = scenario["solution"]
