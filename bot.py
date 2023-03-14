@@ -3,7 +3,7 @@ import datetime
 import discord
 import os
 import random
-from discord import app_commands
+from discord import Activity, ActivityType, Status, app_commands
 from discord.ext import commands, tasks
 
 # import features
@@ -34,7 +34,7 @@ import tracemalloc
 tracemalloc.start()
 
 # setup the discord.py client and intents
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.message_content = True
 client = commands.Bot(command_prefix=["!", "/"], intents=intents)
 # tree = app_commands.CommandTree(client)
@@ -415,16 +415,8 @@ async def send_message_and_random():
 #         return
 
 # # Define the Security+ quiz task to run at 12:00pm every day
-# @tasks.loop(hours=24, minutes=60 * 12)
+# @tasks.loop(hours=24, minutes=0)
 # async def send_message_and_quiz_secplus():
-#     try:
-#         await task_secplus(client, guildid, channelid, secplusrole)
-#     except Exception as e:
-#         print(f"An error occurred while running the 'task_secplus' command: {e}")
-#         return
-
-# @send_message_and_quiz_secplus.before_loop
-# async def before_send_message_and_quiz_secplus():
 #     try:
 #         await client.wait_until_ready()
 #         if guildid is None or channelid is None or secplusrole is None:
@@ -448,17 +440,21 @@ async def send_message_and_random():
 #         # Wait for the calculated time
 #         print(f"Waiting for {wait_time} seconds before starting task loop")
 #         await asyncio.sleep(wait_time)
+#         try:
+#             await task_secplus(client, guildid, channelid, secplusrole)
+#         except Exception as e:
+#             print(f"An error occurred while running the 'task_secplus' command: {e}")
+#             return
 #     except Exception as e:
 #         print(
 #             f"An error occurred while running the 'before_send_message_and_quiz_secplus' command: {e}"
 #         )
 #         return
 
-
 @client.event
 async def on_command_error(ctx, error):
-    print(f"Unsupported command detected: {error}")
-
+    if isinstance(error, commands.CommandNotFound):
+        print(f"Unsupported command: {ctx.message.content}")
 
 # Define the on_ready event handler
 @client.event
@@ -478,12 +474,28 @@ async def on_ready():
     print(
         f"Bot is ready and listening for commands in channel '{channel.name}' ({channel.id})"
     )
+    print("\nLogged in as:")
+    print(" Username", client.user.name)
+    print(" User ID", client.user.id)
+    print(
+        "To invite the bot in your server use this link:\n https://discord.com/api/oauth2/authorize?client_id="
+        + str(client.user.id)
+        + "&permissions=8&scope=bot%20applications.commands"
+    )
+    print("Time now", str(datetime.datetime.now()))
 
     try:
         synced = await client.tree.sync()
         print(f"Synced {len(synced)} command(s)")
     except Exception as e:
         print(e)
+
+    await client.change_presence(
+        activity=Activity(
+            type=ActivityType.custom, name="cybersentinels.org", url="https://cybersentinels.org/"
+        ),
+        status=Status.online,
+    )
 
     print(f"Starting Scheduled Task Loops")
     send_message_and_random.start()
