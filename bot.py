@@ -2,6 +2,7 @@ import asyncio
 import datetime
 import discord
 import os
+import random
 from discord import app_commands
 from discord.ext import commands, tasks
 
@@ -268,26 +269,12 @@ async def socials(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-# Define the Security+ quiz task to run at 12:00pm every day
-@tasks.loop(hours=24, minutes=60 * 12)
+# Define the random quiz task to run at 12:00pm every day
+@tasks.loop(hours=24, minutes=0)
 async def send_message_and_random():
     try:
-        quiz = await task_quiz(client, guildid, channelid, quizrole)
-        aplus = await task_aplus(client, guildid, channelid, aplusrole)
-        netplus = await task_netplus(client, guildid, channelid, netplusrole)
-        secplus = await task_secplus(client, guildid, channelid, secplusrole)
-        random.choice(quiz, aplus, netplus, secplus)
-        await random
-    except Exception as e:
-        print(f"An error occurred while running the 'task_secplus' command: {e}")
-        return
-
-
-@send_message_and_random.before_loop
-async def before_send_message_and_random():
-    try:
         await client.wait_until_ready()
-        if guildid is None or channelid is None or secplusrole is None:
+        if guildid is None or channelid is None or secplusrole or aplusrole or netplusrole or quizrole is None:
             return
         now = datetime.datetime.utcnow()
         scheduled_time = datetime.time(
@@ -308,12 +295,18 @@ async def before_send_message_and_random():
         # Wait for the calculated time
         print(f"Waiting for {wait_time} seconds before starting task loop")
         await asyncio.sleep(wait_time)
+        try:
+            tasks = [task_quiz, task_aplus, task_netplus, task_secplus]
+            selected_task = random.choice(tasks)
+            await selected_task(client, guildid, channelid, quizrole)
+        except Exception as e:
+            print(f"An error occurred while running the 'send_message_and_random' task: {e}")
+            return
     except Exception as e:
         print(
-            f"An error occurred while running the 'before_send_message_and_quiz_secplus' command: {e}"
+            f"An error occurred while running the 'send_message_and_random' command: {e}"
         )
         return
-
 
 # # Define a function to send the message and run the quiz command
 # @tasks.loop(hours=24, minutes=60 * 18)
