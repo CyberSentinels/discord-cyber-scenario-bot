@@ -490,12 +490,28 @@ async def on_ready():
     except Exception as e:
         print(e)
 
-    await client.change_presence(
-        activity=Activity(
-            type=ActivityType.custom, name="cybersentinels.org", url="https://cybersentinels.org/"
-        ),
-        status=Status.online,
-    )
+    if bot_username = "Cyber Sentinel"
+        activity = Activity(
+            type=ActivityType.streaming,
+            name="cybersentinels.org",
+            url="https://cybersentinels.org/",
+            state="Creating Content",
+            details="Creating Content for the Cyber Sentinels",
+            timestamps={"start": 1647427200, "end": 1647430800},
+            assets={
+                "large_image": "cybersentinels_logo",
+                "large_text": "Cyber Sentinels Logo",
+                "small_image": "cybersentinels_logo",
+                "small_text": "Cyber Sentinels Logo",
+            },
+            party={"id": "1234567890", "size": [2, 4]},
+            buttons=["Button 1", "Button 2"],
+            emoji=None,
+        )
+        await client.change_presence(activity=activity, status=Status.online)
+    else:
+        activity = Activity(type=ActivityType.streaming, name="cybersentinels.org", url="https://cybersentinels.org/")
+        await client.change_presence(activity=activity, status=Status.online)
 
     print(f"Starting Scheduled Task Loops")
     send_message_and_random.start()
