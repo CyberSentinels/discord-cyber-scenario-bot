@@ -309,16 +309,8 @@ async def send_message_and_random():
         return
 
 # # Define a function to send the message and run the quiz command
-# @tasks.loop(hours=24, minutes=60 * 18)
+# @tasks.loop(hours=24, minutes=0)
 # async def send_message_and_quiz():
-#     try:
-#         await task_quiz(client, guildid, channelid, quizrole)
-#     except Exception as e:
-#         print(f"An error occurred while running send_message_and_quiz: {e}")
-
-
-# @send_message_and_quiz.before_loop
-# async def before_send_message_and_quiz():
 #     await client.wait_until_ready()
 #     if guildid is None or channelid is None or quizrole is None:
 #         print(
@@ -343,21 +335,16 @@ async def send_message_and_random():
 #         # Wait for the calculated time
 #         print(f"Waiting for {wait_time} seconds before starting task loop")
 #         await asyncio.sleep(wait_time)
+#         try:
+#             await task_quiz(client, guildid, channelid, quizrole)
+#         except Exception as e:
+#             print(f"An error occurred while running send_message_and_quiz: {e}")
 #     except Exception as e:
 #         print(f"An error occurred while setting up send_message_and_quiz: {e}")
 
-
 # # Define the A+ quiz task to run at 4:00pm every day
-# @tasks.loop(hours=24, minutes=60 * 16)
+# @tasks.loop(hours=24, minutes=0)
 # async def send_message_and_quiz_aplus():
-#     try:
-#         await task_aplus(client, guildid, channelid, aplusrole)
-#     except Exception as e:
-#         print(f"An error occurred while running send_message_and_quiz_aplus: {e}")
-
-
-# @send_message_and_quiz_aplus.before_loop
-# async def before_send_message_and_quiz_aplus():
 #     await client.wait_until_ready()
 #     if guildid is None or channelid is None or aplusrole is None:
 #         print(
@@ -384,21 +371,16 @@ async def send_message_and_random():
 #         # Wait for the calculated time
 #         print(f"Waiting for {wait_time} seconds before starting task loop")
 #         await asyncio.sleep(wait_time)
+#         try:
+#             await task_aplus(client, guildid, channelid, aplusrole)
+#         except Exception as e:
+#             print(f"An error occurred while running send_message_and_quiz_aplus: {e}")
 #     except Exception as e:
 #         print(f"An error occurred while setting up send_message_and_quiz_aplus: {e}")
 
-
 # # Define the Network+ quiz task to run at 2:00pm every day
-# @tasks.loop(hours=24, minutes=60 * 14)
+# @tasks.loop(hours=24, minutes=0)
 # async def send_message_and_quiz_netplus():
-#     try:
-#         await task_netplus(client, guildid, channelid, netplusrole)
-#     except Exception as e:
-#         print(f"An error occurred while running send_message_and_quiz_netplus: {e}")
-
-
-# @send_message_and_quiz_netplus.before_loop
-# async def before_send_message_and_quiz_netplus():
 #     try:
 #         await client.wait_until_ready()
 #         if guildid is None or channelid is None or netplusrole is None:
@@ -422,12 +404,15 @@ async def send_message_and_random():
 #         # Wait for the calculated time
 #         print(f"Waiting for {wait_time} seconds before starting task loop")
 #         await asyncio.sleep(wait_time)
+#         try:
+#             await task_netplus(client, guildid, channelid, netplusrole)
+#         except Exception as e:
+#             print(f"An error occurred while running send_message_and_quiz_netplus: {e}")
 #     except Exception as e:
 #         print(
 #             f"An error occurred while running the 'send_message_and_quiz_netplus.before_loop' command: {e}"
 #         )
 #         return
-
 
 # # Define the Security+ quiz task to run at 12:00pm every day
 # @tasks.loop(hours=24, minutes=60 * 12)
