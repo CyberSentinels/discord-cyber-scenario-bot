@@ -503,13 +503,19 @@ async def on_ready():
                 "small_image": "cybersentinels_logo",
                 "small_text": "Cyber Sentinels Logo",
             },
-            party={"id": "1234567890", "size": [2, 4]},
             buttons=["Try", "Harder"],
             emoji=None,
         )
         await client.change_presence(activity=activity, status=Status.online)
     else:
-        activity = Activity(type=ActivityType.streaming, name="cybersentinels.org", url="https://cybersentinels.org/")
+        activity = Activity(
+            type=ActivityType.streaming,
+            name="cybersentinels.org",
+            url="https://cybersentinels.org/",
+            state="Creating Content",
+            details="Creating Content for the Cyber Sentinels",
+            emoji=None,
+        )
         await client.change_presence(activity=activity, status=Status.online)
 
     print(f"Starting Scheduled Task Loops")
