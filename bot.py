@@ -88,7 +88,7 @@ async def on_reaction_add(reaction, user):
         question_id = reaction.message.embeds[0].footer.text  # Get question ID from message footer
         prefix, question_number = question_id.split("_")  # Extract prefix and question number
         question_number = int(question_number)
-        answer = emoji_to_answer[reaction.emoji]  # Convert the emoji to the corresponding answer option
+        answer = emoji_to_answer[reaction.emoji].lower()  # Convert the emoji to the corresponding answer option
         user_id = user.id  # Get the user's Discord ID
 
         # Update the response for this question for all users
@@ -104,7 +104,7 @@ async def on_reaction_add(reaction, user):
         # Check if the answer is correct and send an ephemeral message to the user
         question_dict = question_dict_mapping[prefix]
         question = question_dict[question_number]
-        correct_answer = question["correctanswer"]
+        correct_answer = question["correctanswer"].lower()  # Convert the correct answer to lowercase
         if answer == correct_answer:
             await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
         else:

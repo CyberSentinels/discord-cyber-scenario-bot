@@ -12,12 +12,12 @@ def handle_cissp(user_responses):
         # Get the question ID and correct answer
         prefix = "cissp_"  # Unique prefix for CISSP questions
         question_id = prefix + str(i)
-        correct_answer = question["correctanswer"]
+        correct_answer = question["correctanswer"].lower()
 
         # Compute the weight based on user responses
         weight = 1
         if question_id in user_responses:
-            user_answer = user_responses[question_id]
+            user_answer = user_responses[question_id].lower()
             if user_answer != correct_answer:
                 weight += 1  # Increase weight for incorrect answers
             else:
