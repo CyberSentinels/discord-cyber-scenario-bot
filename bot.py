@@ -3,7 +3,7 @@ import datetime
 import discord
 import os
 import random
-from discord import Activity, ActivityType, Status, app_commands
+from discord import Activity, ActivityType, Status, app_commands, Embed
 from discord.ext import commands, tasks
 
 # import features
@@ -58,6 +58,38 @@ print(f"APLUSROLE: {aplusrole}")
 print(f"NETPLUSROLE: {netplusrole}")
 print(f"SECPLUSROLE: {secplusrole}")
 print(f"QUIZROLE: {quizrole}")
+
+user_responses = {}  # Format: {message_id: {question_id: {user_id: answer}}}
+valid_emojis = ["🇦", "🇧", "🇨", "🇩"]  # :regional_indicator_a:, :regional_indicator_b:, :regional_indicator_c:, :regional_indicator_d:
+emoji_to_answer = {
+    "🇦": "A",
+    "🇧": "B",
+    "🇨": "C",
+    "🇩": "D",
+}
+
+@client.event
+async def on_reaction_add(reaction, user):
+    if user == client.user or reaction.message.author != client.user:
+        return
+
+    if reaction.emoji in valid_emojis:
+        message_id = reaction.message.id  # Get the message ID
+        question_id = reaction.message.embeds[0].footer.text  # Get question ID from message footer
+        prefix, question_number = question_id.split("_")  # Extract prefix and question number
+        question_number = int(question_number)
+        answer = emoji_to_answer[reaction.emoji]  # Convert the emoji to the corresponding answer option
+        user_id = user.id  # Get the user's Discord ID
+
+        # Update the response for this question for all users
+        if message_id not in user_responses:
+            user_responses[message_id] = {}
+        if question_id not in user_responses[message_id]:
+            user_responses[message_id][question_id] = {}
+        user_responses[message_id][question_id][user_id] = answer
+
+        # Remove the user's reaction to prevent duplicate responses
+        await reaction.remove(user)
 
 
 @client.hybrid_command(
@@ -149,7 +181,6 @@ async def secplus(ctx):
 async def ccna(ctx):
     try:
         response = handle_ccna()
-        await ctx.send(response)
         message = await ctx.send(response)
         # Add reactions for each answer choice
         for emoji in ["🇦", "🇧", "🇨", "🇩"]:
@@ -164,10 +195,12 @@ async def ccna(ctx):
 )
 async def cissp(ctx):
     try:
-        response = handle_cissp()
-        message = await ctx.send(response)
+        response, question_id = handle_cissp(user_responses)
+        embed = Embed(description=response)
+        embed.set_footer(text=question_id)
+        message = await ctx.send(embed=embed)
         # Add reactions for each answer choice
-        for emoji in ["🇦", "🇧", "🇨", "🇩"]:
+        for emoji in valid_emojis:
             await message.add_reaction(emoji)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
