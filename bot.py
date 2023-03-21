@@ -110,6 +110,7 @@ async def on_reaction_add(reaction, user):
         else:
             await reaction.message.reply(f"{user.mention} 🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.", mention_author=False, ephemeral=True)
 
+
 @client.hybrid_command(
     name="quiz", description="Replies with CompTIA's A+ related prompt."
 )
