@@ -30,7 +30,7 @@ def handle_cissp(user_responses):
     question_id = random.choice(weighted_question_ids)
 
     # Retrieve the selected question
-    question = cisspdict[int(question_id)]
+    question = cisspdict[int(question_id.split('_')[1])]
     prompt = question["question"]
     answers = question["answers"]
     correct_answer = question["correctanswer"]
