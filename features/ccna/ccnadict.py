@@ -892,7 +892,7 @@ ccnadict = [
     {
         "question": "How many hosts are in a /28 subnet?",
         "answers": {"A": "14", "B": "15", "C": "16", "D": "17"},
-        "correctanswer": "14",
+        "correctanswer": "A",
     },
     {
         "question": "What is the network address for the IP address 192.168.1.50/26?",
@@ -902,7 +902,7 @@ ccnadict = [
             "C": "192.168.1.48",
             "D": "192.168.1.64",
         },
-        "correctanswer": "192.168.1.0",
+        "correctanswer": "A",
     },
     {
         "question": "What is the subnet mask for a /27 network?",
@@ -917,7 +917,7 @@ ccnadict = [
     {
         "question": "How many subnets are in a /22 network?",
         "answers": {"A": "2", "B": "4", "C": "8", "D": "16"},
-        "correctanswer": "4",
+        "correctanswer": "B",
     },
     {
         "question": "What is the broadcast address for the IP address 192.168.10.99/27?",
@@ -932,7 +932,7 @@ ccnadict = [
     {
         "question": "How many bits are used for the host portion in a /28 subnet?",
         "answers": {"A": "4", "B": "6", "C": "8", "D": "10"},
-        "correctanswer": "4",
+        "correctanswer": "A",
     },
     {
         "question": "What is the CIDR notation for the subnet mask 255.255.254.0?",
@@ -942,7 +942,7 @@ ccnadict = [
     {
         "question": "How many hosts are in a /29 subnet?",
         "answers": {"A": "6", "B": "8", "C": "14", "D": "16"},
-        "correctanswer": "6",
+        "correctanswer": "A",
     },
     {
         "question": "What is the first usable host address in the subnet 192.168.1.128/25?",
@@ -952,7 +952,7 @@ ccnadict = [
             "C": "192.168.1.131",
             "D": "192.168.1.132",
         },
-        "correctanswer": "192.168.1.129",
+        "correctanswer": "A",
     },
     {
         "question": "What is the last usable host address in the subnet 192.168.1.64/26?",
@@ -962,7 +962,7 @@ ccnadict = [
             "C": "192.168.1.126",
             "D": "192.168.1.127",
         },
-        "correctanswer": "192.168.1.62",
+        "correctanswer": "A",
     },
     {
         "question": "What is the subnet mask for a /30 network?",
