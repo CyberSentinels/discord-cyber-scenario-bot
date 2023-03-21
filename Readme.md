@@ -8,6 +8,7 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 *Command prefix: '!', '/'*
 
 ### Quiz and Scenario Commands
+*Multiple-choice questions are dynamically weighted similar to the real exams based on if they are answered correctly or incorrectly*
 - **Aplus**: Replies with CompTIA's A+ related prompt.
 - **Bluescenario**: Replies with a blue team scenario.
 - **CCNA**: Replies with Cisco's CCNA multiple choice prompt.
