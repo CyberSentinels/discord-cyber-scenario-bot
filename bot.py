@@ -180,12 +180,15 @@ async def secplus(ctx):
 )
 async def ccna(ctx):
     try:
-        response = handle_ccna()
-        message = await ctx.send(response)
+        response, question_id = handle_ccna(user_responses)
+        embed = Embed(description=response)
+        embed.set_footer(text=question_id)
+        message = await ctx.send(embed=embed)
         # Add reactions for each answer choice
-        for emoji in ["🇦", "🇧", "🇨", "🇩"]:
+        for emoji in valid_emojis:
             await message.add_reaction(emoji)
     except Exception as e:
+        print({e})
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 @client.hybrid_command(
