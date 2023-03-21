@@ -188,7 +188,6 @@ async def ccna(ctx):
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
-
 @client.hybrid_command(
     name="cissp",
     description="Replies with Replies with a ISC2's CISSP multiple choice prompt.",
@@ -203,6 +202,7 @@ async def cissp(ctx):
         for emoji in valid_emojis:
             await message.add_reaction(emoji)
     except Exception as e:
+        print({e})
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 @client.hybrid_command(
