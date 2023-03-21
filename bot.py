@@ -106,10 +106,9 @@ async def on_reaction_add(reaction, user):
         question = question_dict[question_number]
         correct_answer = question["correctanswer"]
         if answer == correct_answer:
-            await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
+            await reaction.message.reply(f"{user.mention} 🎉 Congratulations, your answer '{answer}' is correct!", mention_author=False, ephemeral=True)
         else:
-            await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
-
+            await reaction.message.reply(f"{user.mention} 🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.", mention_author=False, ephemeral=True)
 
 @client.hybrid_command(
     name="quiz", description="Replies with CompTIA's A+ related prompt."
