@@ -150,6 +150,10 @@ async def ccna(ctx):
     try:
         response = handle_ccna()
         await ctx.send(response)
+        message = await ctx.send(response)
+        # Add reactions for each answer choice
+        for emoji in ["🇦", "🇧", "🇨", "🇩"]:
+            await message.add_reaction(emoji)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
@@ -161,7 +165,10 @@ async def ccna(ctx):
 async def cissp(ctx):
     try:
         response = handle_cissp()
-        await ctx.send(response)
+        message = await ctx.send(response)
+        # Add reactions for each answer choice
+        for emoji in ["🇦", "🇧", "🇨", "🇩"]:
+            await message.add_reaction(emoji)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
