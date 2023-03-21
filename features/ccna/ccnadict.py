@@ -6,18 +6,13 @@ ccnadict = [
             "B": "To identify the host portion of an IP address",
             "C": "To identify the default gateway of a network",
             "D": "To identify the DNS server of a network",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the maximum number of hosts that can be addressed on a /25 network?",
-        "answers": {
-            "A": "128",
-            "B": "254",
-            "C": "512",
-            "D": "1024",
-            "correctanswer": "C"
-        }
+        "answers": {"A": "128", "B": "254", "C": "512", "D": "1024"},
+        "correctanswer": "C",
     },
     {
         "question": "What is the purpose of a VLAN?",
@@ -26,8 +21,8 @@ ccnadict = [
             "B": "To connect multiple physical networks together",
             "C": "To provide redundancy for network devices",
             "D": "To filter traffic based on MAC addresses",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between a router and a switch?",
@@ -36,8 +31,8 @@ ccnadict = [
             "B": "A router operates at Layer 2 of the OSI model, while a switch operates at Layer 3",
             "C": "A router connects multiple LANs together, while a switch connects multiple devices together on a single LAN",
             "D": "A switch connects multiple LANs together, while a router connects multiple devices together on a single LAN",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a routing protocol?",
@@ -46,8 +41,8 @@ ccnadict = [
             "B": "A protocol used to encrypt network traffic",
             "C": "A protocol used to segment a network into multiple VLANs",
             "D": "A protocol used to translate IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the purpose of NAT (Network Address Translation)?",
@@ -56,8 +51,8 @@ ccnadict = [
             "B": "To provide encryption for network traffic",
             "C": "To segment a network into multiple VLANs",
             "D": "To translate domain names into IP addresses",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a firewall?",
@@ -66,8 +61,8 @@ ccnadict = [
             "B": "A device used to connect multiple physical networks together",
             "C": "A protocol used to exchange routing information between routers",
             "D": "A protocol used to translate IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a VPN (Virtual Private Network)?",
@@ -76,28 +71,18 @@ ccnadict = [
             "B": "A protocol used to encrypt network traffic",
             "C": "A protocol used to segment a network into multiple VLANs",
             "D": "A protocol used to translate IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
-        {
+    {
         "question": "What is the maximum number of hosts that can be connected in a single subnet using /23 subnet mask?",
-        "answers": {
-            "A": "254",
-            "B": "510",
-            "C": "1022",
-            "D": "2046",
-            "correctanswer": "B"
-        }
+        "answers": {"A": "254", "B": "510", "C": "1022", "D": "2046"},
+        "correctanswer": "B",
     },
     {
         "question": "Which routing protocol is considered to be the most scalable?",
-        "answers": {
-            "A": "RIP",
-            "B": "OSPF",
-            "C": "BGP",
-            "D": "EIGRP",
-            "correctanswer": "C"
-        }
+        "answers": {"A": "RIP", "B": "OSPF", "C": "BGP", "D": "EIGRP"},
+        "correctanswer": "C",
     },
     {
         "question": "What is the purpose of the command 'ip route 0.0.0.0 0.0.0.0 <next-hop-ip>' in a Cisco router?",
@@ -106,18 +91,13 @@ ccnadict = [
             "B": "To configure a default static route",
             "C": "To configure a dynamic route",
             "D": "To configure a floating static route",
-            "correctanswer": "B"
-        }
+        },
+        "correctanswer": "B",
     },
     {
         "question": "Which layer of the OSI model is responsible for routing packets?",
-        "answers": {
-            "A": "Layer 1",
-            "B": "Layer 2",
-            "C": "Layer 3",
-            "D": "Layer 4",
-            "correctanswer": "C"
-        }
+        "answers": {"A": "Layer 1", "B": "Layer 2", "C": "Layer 3", "D": "Layer 4"},
+        "correctanswer": "C",
     },
     {
         "question": "What is the advantage of using dynamic routing protocols instead of static routing?",
@@ -126,8 +106,8 @@ ccnadict = [
             "B": "Dynamic routing protocols are more secure than static routing",
             "C": "Dynamic routing protocols automatically adjust to changes in the network topology",
             "D": "Dynamic routing protocols require less bandwidth than static routing",
-            "correctanswer": "C"
-        }
+        },
+        "correctanswer": "C",
     },
     {
         "question": "Which security feature can prevent unauthorized access to a network by blocking traffic from unknown MAC addresses?",
@@ -136,18 +116,13 @@ ccnadict = [
             "B": "Access control lists (ACLs)",
             "C": "Virtual LANs (VLANs)",
             "D": "Dynamic Host Configuration Protocol (DHCP) snooping",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "Which routing protocol uses bandwidth and delay as metrics to determine the best path to a destination network?",
-        "answers": {
-            "A": "RIP",
-            "B": "OSPF",
-            "C": "BGP",
-            "D": "EIGRP",
-            "correctanswer": "D"
-        }
+        "answers": {"A": "RIP", "B": "OSPF", "C": "BGP", "D": "EIGRP"},
+        "correctanswer": "D",
     },
     {
         "question": "What is the purpose of the command 'switchport port-security violation restrict' on a Cisco switch interface?",
@@ -156,28 +131,23 @@ ccnadict = [
             "B": "To restrict the number of MAC addresses allowed on the switchport",
             "C": "To log a security violation but allow the traffic to pass",
             "D": "To disable the switchport after multiple security violations",
-            "correctanswer": "C"
-        }
+        },
+        "correctanswer": "C",
     },
-        {
+    {
         "question": "What is the purpose of a subnet mask?",
         "answers": {
             "A": "To identify the network portion of an IP address",
             "B": "To identify the host portion of an IP address",
             "C": "To identify the default gateway of a network",
             "D": "To identify the DNS server of a network",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the maximum number of hosts that can be addressed on a /25 network?",
-        "answers": {
-            "A": "128",
-            "B": "254",
-            "C": "512",
-            "D": "1024",
-            "correctanswer": "C"
-        }
+        "answers": {"A": "128", "B": "254", "C": "512", "D": "1024"},
+        "correctanswer": "C",
     },
     {
         "question": "What is the purpose of a VLAN?",
@@ -186,8 +156,8 @@ ccnadict = [
             "B": "To connect multiple physical networks together",
             "C": "To provide redundancy for network devices",
             "D": "To filter traffic based on MAC addresses",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between a router and a switch?",
@@ -196,8 +166,8 @@ ccnadict = [
             "B": "A router operates at Layer 2 of the OSI model, while a switch operates at Layer 3",
             "C": "A router connects multiple LANs together, while a switch connects multiple devices together on a single LAN",
             "D": "A switch connects multiple LANs together, while a router connects multiple devices together on a single LAN",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a routing protocol?",
@@ -206,8 +176,8 @@ ccnadict = [
             "B": "A protocol used to encrypt network traffic",
             "C": "A protocol used to segment a network into multiple VLANs",
             "D": "A protocol used to translate IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the purpose of NAT (Network Address Translation)?",
@@ -216,8 +186,8 @@ ccnadict = [
             "B": "To provide encryption for network traffic",
             "C": "To segment a network into multiple VLANs",
             "D": "To translate domain names into IP addresses",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a firewall?",
@@ -226,8 +196,8 @@ ccnadict = [
             "B": "A device used to connect multiple physical networks together",
             "C": "A protocol used to exchange routing information between routers",
             "D": "A protocol used to translate IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a VPN (Virtual Private Network)?",
@@ -236,18 +206,18 @@ ccnadict = [
             "B": "A protocol used to encrypt network traffic",
             "C": "A protocol used to segment a network into multiple VLANs",
             "D": "A protocol used to translate IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
-        {
+    {
         "question": "What is the difference between a hub and a switch?",
         "answers": {
             "A": "A hub operates at Layer 1 of the OSI model, while a switch operates at Layer 2",
             "B": "A switch operates at Layer 1 of the OSI model, while a hub operates at Layer 2",
             "C": "A hub connects multiple devices together on a single LAN, while a switch connects multiple LANs together",
             "D": "A switch connects multiple devices together on a single LAN, while a hub connects multiple LANs together",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a MAC address?",
@@ -256,8 +226,8 @@ ccnadict = [
             "B": "An IP address assigned to a network device",
             "C": "A protocol used to exchange routing information between routers",
             "D": "A protocol used to translate IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a DHCP server?",
@@ -266,8 +236,8 @@ ccnadict = [
             "B": "A server that provides DNS lookup services",
             "C": "A server that provides file sharing services",
             "D": "A server that provides web hosting services",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the purpose of a default gateway?",
@@ -276,8 +246,8 @@ ccnadict = [
             "B": "To provide encryption for network traffic",
             "C": "To segment a network into multiple VLANs",
             "D": "To translate domain names into IP addresses",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a packet?",
@@ -286,8 +256,8 @@ ccnadict = [
             "B": "A physical network device that connects multiple networks together",
             "C": "A protocol used to exchange routing information between routers",
             "D": "A protocol used to translate IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the purpose of ICMP (Internet Control Message Protocol)?",
@@ -296,8 +266,8 @@ ccnadict = [
             "B": "To encrypt network traffic",
             "C": "To segment a network into multiple VLANs",
             "D": "To translate domain names into IP addresses",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a DNS server?",
@@ -306,8 +276,8 @@ ccnadict = [
             "B": "A server that assigns IP addresses to network devices",
             "C": "A server that provides file sharing services",
             "D": "A server that provides web hosting services",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a VLAN tag?",
@@ -316,18 +286,18 @@ ccnadict = [
             "B": "A protocol used to exchange routing information between routers",
             "C": "A protocol used to encrypt network traffic",
             "D": "A protocol used to segment a network into multiple VLANs",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
-        {
+    {
         "question": "What is a loopback address and why is it useful?",
         "answers": {
             "A": "An IP address used to test network communication on a device",
             "B": "An IP address assigned to a router's WAN interface",
             "C": "An IP address assigned to a device's Ethernet interface",
             "D": "An IP address assigned to a device's loopback interface",
-            "correctanswer": "D"
-        }
+        },
+        "correctanswer": "D",
     },
     {
         "question": "What is a trunk port?",
@@ -336,8 +306,8 @@ ccnadict = [
             "B": "A port used to connect a switch to a router",
             "C": "A port used to carry traffic for multiple VLANs",
             "D": "A port used to connect two switches together",
-            "correctanswer": "C"
-        }
+        },
+        "correctanswer": "C",
     },
     {
         "question": "What is a link-state routing protocol?",
@@ -346,8 +316,8 @@ ccnadict = [
             "B": "A protocol that uses a simple metric to determine the best path",
             "C": "A protocol that exchanges routing information with all neighboring routers",
             "D": "A protocol that uses distance-vector algorithms to determine the best path",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is an ACL (Access Control List)?",
@@ -356,8 +326,8 @@ ccnadict = [
             "B": "A list of users who are authorized to access a network resource",
             "C": "A protocol used to exchange routing information between routers",
             "D": "A protocol used to translate IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a rogue access point?",
@@ -366,8 +336,8 @@ ccnadict = [
             "B": "A physical network device that connects multiple networks together",
             "C": "A protocol used to exchange routing information between routers",
             "D": "A protocol used to translate IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a redundant link?",
@@ -376,8 +346,8 @@ ccnadict = [
             "B": "A link used to connect a switch to a router",
             "C": "A link used to carry traffic for multiple VLANs",
             "D": "A link used to connect two switches together",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a port security violation?",
@@ -386,18 +356,18 @@ ccnadict = [
             "B": "When a switch detects a loop in the network",
             "C": "When a switch is overloaded with too much network traffic",
             "D": "When a switch experiences a hardware failure",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
-        {
+    {
         "question": "What is a broadcast storm and how can it be prevented?",
         "answers": {
             "A": "A network condition where broadcast packets continuously flood the network",
             "B": "A security threat caused by a malicious user broadcasting false network information",
             "C": "A network condition caused by a malfunctioning switch or router",
             "D": "A security threat caused by a malicious user broadcasting spam messages",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a network address translation (NAT) overload?",
@@ -406,8 +376,8 @@ ccnadict = [
             "B": "A process of translating public IP addresses into private IP addresses",
             "C": "A process of translating MAC addresses into IP addresses",
             "D": "A process of translating IP addresses into domain names",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a WAN and what are some common WAN technologies?",
@@ -416,8 +386,8 @@ ccnadict = [
             "B": "A wireless network that provides Internet access to mobile devices",
             "C": "A type of LAN used in homes and small businesses",
             "D": "A type of VPN used to connect remote workers to a corporate network",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is an OSPF adjacency?",
@@ -426,8 +396,8 @@ ccnadict = [
             "B": "A security mechanism used to control access to a network resource",
             "C": "A protocol used to encrypt network traffic",
             "D": "A protocol used to segment a network into multiple VLANs",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a route summarization and why is it important?",
@@ -436,8 +406,8 @@ ccnadict = [
             "B": "A process of breaking down a large network into smaller subnets",
             "C": "A process of encrypting network traffic to protect it from unauthorized access",
             "D": "A process of segmenting a network into multiple VLANs",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a stateless firewall?",
@@ -446,8 +416,8 @@ ccnadict = [
             "B": "A firewall that filters traffic based on packet content only",
             "C": "A firewall that filters traffic based on stateful information only",
             "D": "A firewall that does not filter traffic at all",
-            "correctanswer": "B"
-        }
+        },
+        "correctanswer": "B",
     },
     {
         "question": "What is a static route?",
@@ -456,8 +426,8 @@ ccnadict = [
             "B": "A network route that is learned dynamically through a routing protocol",
             "C": "A network route that is learned dynamically through a broadcast",
             "D": "A network route that is used for testing network communication",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between TCP and UDP?",
@@ -466,8 +436,8 @@ ccnadict = [
             "B": "TCP is connectionless and provides reliable data delivery, while UDP is connection-oriented and provides unreliable data delivery",
             "C": "TCP and UDP are both connection-oriented and provide reliable data delivery",
             "D": "TCP and UDP are both connectionless and provide unreliable data delivery",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a virtual private network (VPN) and why is it used?",
@@ -476,8 +446,8 @@ ccnadict = [
             "B": "A wireless network that provides Internet access to mobile devices",
             "C": "A type of LAN used in homes and small businesses",
             "D": "A type of WAN used by service providers to connect multiple customer networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a Layer 2 switch and how does it differ from a Layer 3 switch?",
@@ -486,8 +456,8 @@ ccnadict = [
             "B": "A Layer 2 switch operates at the network layer of the OSI model and makes forwarding decisions based on IP addresses, while a Layer 3 switch operates at the data link layer and makes forwarding decisions based on MAC addresses",
             "C": "A Layer 2 switch operates at the transport layer of the OSI model and makes forwarding decisions based on TCP and UDP ports, while a Layer 3 switch operates at the network layer and makes forwarding decisions based on IP addresses",
             "D": "A Layer 2 switch and a Layer 3 switch are the same thing and operate at the same layer of the OSI model",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a routing protocol and why is it used?",
@@ -496,8 +466,8 @@ ccnadict = [
             "B": "A protocol used to encrypt network traffic",
             "C": "A protocol used to segment a network into multiple VLANs",
             "D": "A protocol used to assign IP addresses to network devices",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a subnet mask and how is it used?",
@@ -506,18 +476,18 @@ ccnadict = [
             "B": "A number that identifies a specific network device, such as a router or switch",
             "C": "A protocol used to assign IP addresses to network devices",
             "D": "A protocol used to exchange routing information between routers",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
-        {
+    {
         "question": "What is a subnet and why is it used?",
         "answers": {
             "A": "A subdivision of a network that allows for more efficient use of IP addresses",
             "B": "A type of VPN used to connect remote workers to a corporate network",
             "C": "A protocol used to assign IP addresses to network devices",
             "D": "A protocol used to exchange routing information between routers",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a VLAN and how is it used?",
@@ -526,8 +496,8 @@ ccnadict = [
             "B": "A type of WAN used by service providers to connect multiple customer networks",
             "C": "A protocol used to encrypt network traffic",
             "D": "A protocol used to segment a network into multiple subnets",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a MAC address and how is it used?",
@@ -536,8 +506,8 @@ ccnadict = [
             "B": "A unique identifier assigned to a network device, such as a router or switch",
             "C": "A protocol used to assign IP addresses to network devices",
             "D": "A protocol used to exchange routing information between routers",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a default gateway and why is it important?",
@@ -546,8 +516,8 @@ ccnadict = [
             "B": "The IP address of the DNS server used to resolve domain names to IP addresses",
             "C": "The IP address of the DHCP server used to assign IP addresses to network devices",
             "D": "The IP address of the NTP server used to synchronize network clocks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a domain name system (DNS) and how does it work?",
@@ -556,8 +526,8 @@ ccnadict = [
             "B": "A system that encrypts network traffic to protect it from unauthorized access",
             "C": "A system that segments a network into multiple VLANs",
             "D": "A system that assigns IP addresses to network devices",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a quality of service (QoS) and why is it important?",
@@ -566,8 +536,8 @@ ccnadict = [
             "B": "A protocol used to encrypt network traffic",
             "C": "A protocol used to assign IP addresses to network devices",
             "D": "A protocol used to exchange routing information between routers",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a packet and how does it relate to networking?",
@@ -576,8 +546,8 @@ ccnadict = [
             "B": "A network device that connects multiple networks together",
             "C": "A protocol used to segment a network into multiple subnets",
             "D": "A protocol used to assign IP addresses to network devices",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between a hub and a switch?",
@@ -586,8 +556,8 @@ ccnadict = [
             "B": "A hub is a Layer 2 device that broadcasts data to all connected devices, while a switch is a Layer 1 device that forwards data to specific devices based on their MAC addresses",
             "C": "A hub and a switch are the same thing and perform the same functions",
             "D": "A hub and a switch are both Layer 3 devices that route data between different networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a router and how does it differ from a switch?",
@@ -596,18 +566,18 @@ ccnadict = [
             "B": "A Layer 2 device that connects multiple networks together and makes forwarding decisions based on MAC addresses, while a router is a Layer 3 device that forwards data to specific devices based on their IP addresses",
             "C": "A router and a switch are the same thing and perform the same functions",
             "D": "A router and a switch are both Layer 4 devices that route data between different networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
-        {
+    {
         "question": "What is a router and how does it differ from a switch?",
         "answers": {
             "A": "A Layer 3 device that connects multiple networks together and makes forwarding decisions based on IP addresses, while a switch is a Layer 2 device that forwards data to specific devices based on their MAC addresses",
             "B": "A Layer 2 device that connects multiple networks together and makes forwarding decisions based on MAC addresses, while a router is a Layer 3 device that forwards data to specific devices based on their IP addresses",
             "C": "A router and a switch are the same thing and perform the same functions",
             "D": "A router and a switch are both Layer 4 devices that route data between different networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is network address translation (NAT) and why is it used?",
@@ -616,8 +586,8 @@ ccnadict = [
             "B": "A technique used to encrypt network traffic to protect it from unauthorized access",
             "C": "A technique used to segment a network into multiple VLANs for security purposes",
             "D": "A technique used to assign IP addresses to network devices automatically",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between a static IP address and a dynamic IP address?",
@@ -626,8 +596,8 @@ ccnadict = [
             "B": "A static IP address is assigned automatically by a DHCP server and can change over time, while a dynamic IP address is manually assigned to a device and does not change",
             "C": "A static IP address and a dynamic IP address are the same thing and can be used interchangeably",
             "D": "A static IP address is used for wireless networks, while a dynamic IP address is used for wired networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a firewall and why is it important for network security?",
@@ -636,8 +606,8 @@ ccnadict = [
             "B": "A type of VPN used to connect remote workers to a corporate network",
             "C": "A network device that connects multiple networks together",
             "D": "A protocol used to encrypt network traffic",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between a private IP address and a public IP address?",
@@ -646,58 +616,8 @@ ccnadict = [
             "B": "A private IP address is assigned to a device that is reachable from the Internet, while a public IP address is used within a private network and is not reachable from the Internet",
             "C": "A private IP address and a public IP address are the same thing and can be used interchangeably",
             "D": "A private IP address is used for wired networks, while a public IP address is used for wireless networks",
-            "correctanswer": "A"
-        }
-    },
-        {
-        "question": "What is the difference between a router and a switch?",
-        "answers": {
-            "A": "A router is a Layer 3 device that connects multiple networks together and makes forwarding decisions based on IP addresses, while a switch is a Layer 2 device that forwards data to specific devices based on their MAC addresses",
-            "B": "A switch is a Layer 3 device that connects multiple networks together and makes forwarding decisions based on IP addresses, while a router is a Layer 2 device that forwards data to specific devices based on their MAC addresses",
-            "C": "A router and a switch are the same thing and perform the same functions",
-            "D": "A router and a switch are both Layer 4 devices that route data between different networks",
-            "correctanswer": "A"
-        }
-    },
-    {
-        "question": "What is network address translation (NAT) and why is it used?",
-        "answers": {
-            "A": "A technique used to map one public IP address to multiple private IP addresses to conserve public IP addresses",
-            "B": "A technique used to encrypt network traffic to protect it from unauthorized access",
-            "C": "A technique used to segment a network into multiple VLANs for security purposes",
-            "D": "A technique used to assign IP addresses to network devices automatically",
-            "correctanswer": "A"
-        }
-    },
-    {
-        "question": "What is the difference between a static IP address and a dynamic IP address?",
-        "answers": {
-            "A": "A static IP address is manually assigned to a device and does not change, while a dynamic IP address is assigned automatically by a DHCP server and can change over time",
-            "B": "A static IP address is assigned automatically by a DHCP server and can change over time, while a dynamic IP address is manually assigned to a device and does not change",
-            "C": "A static IP address and a dynamic IP address are the same thing and can be used interchangeably",
-            "D": "A static IP address is used for wireless networks, while a dynamic IP address is used for wired networks",
-            "correctanswer": "A"
-        }
-    },
-    {
-        "question": "What is a firewall and why is it important for network security?",
-        "answers": {
-            "A": "A network security device that monitors and controls incoming and outgoing network traffic based on predetermined security policies",
-            "B": "A type of VPN used to connect remote workers to a corporate network",
-            "C": "A network device that connects multiple networks together",
-            "D": "A protocol used to encrypt network traffic",
-            "correctanswer": "A"
-        }
-    },
-    {
-        "question": "What is the difference between a private IP address and a public IP address?",
-        "answers": {
-            "A": "A private IP address is used within a private network and is not reachable from the Internet, while a public IP address is assigned to a device that is reachable from the Internet",
-            "B": "A private IP address is assigned to a device that is reachable from the Internet, while a public IP address is used within a private network and is not reachable from the Internet",
-            "C": "A private IP address and a public IP address are the same thing and can be used interchangeably",
-            "D": "A private IP address is used for wired networks, while a public IP address is used for wireless networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between a router and a switch?",
@@ -706,8 +626,8 @@ ccnadict = [
             "B": "A switch is a Layer 3 device that connects multiple networks together and makes forwarding decisions based on IP addresses, while a router is a Layer 2 device that forwards data to specific devices based on their MAC addresses",
             "C": "A router and a switch are the same thing and perform the same functions",
             "D": "A router and a switch are both Layer 4 devices that route data between different networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is network address translation (NAT) and why is it used?",
@@ -716,8 +636,8 @@ ccnadict = [
             "B": "A technique used to encrypt network traffic to protect it from unauthorized access",
             "C": "A technique used to segment a network into multiple VLANs for security purposes",
             "D": "A technique used to assign IP addresses to network devices automatically",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between a static IP address and a dynamic IP address?",
@@ -726,8 +646,8 @@ ccnadict = [
             "B": "A static IP address is assigned automatically by a DHCP server and can change over time, while a dynamic IP address is manually assigned to a device and does not change",
             "C": "A static IP address and a dynamic IP address are the same thing and can be used interchangeably",
             "D": "A static IP address is used for wireless networks, while a dynamic IP address is used for wired networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a firewall and why is it important for network security?",
@@ -736,8 +656,8 @@ ccnadict = [
             "B": "A type of VPN used to connect remote workers to a corporate network",
             "C": "A network device that connects multiple networks together",
             "D": "A protocol used to encrypt network traffic",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between a private IP address and a public IP address?",
@@ -746,18 +666,18 @@ ccnadict = [
             "B": "A private IP address is assigned to a device that is reachable from the Internet, while a public IP address is used within a private network and is not reachable from the Internet",
             "C": "A private IP address and a public IP address are the same thing and can be used interchangeably",
             "D": "A private IP address is used for wired networks, while a public IP address is used for wireless networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
-        {
+    {
         "question": "What is the difference between a router and a switch?",
         "answers": {
             "A": "A router is a Layer 3 device that connects multiple networks together and makes forwarding decisions based on IP addresses, while a switch is a Layer 2 device that forwards data to specific devices based on their MAC addresses",
             "B": "A switch is a Layer 3 device that connects multiple networks together and makes forwarding decisions based on IP addresses, while a router is a Layer 2 device that forwards data to specific devices based on their MAC addresses",
             "C": "A router and a switch are the same thing and perform the same functions",
             "D": "A router and a switch are both Layer 4 devices that route data between different networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is network address translation (NAT) and why is it used?",
@@ -766,8 +686,8 @@ ccnadict = [
             "B": "A technique used to encrypt network traffic to protect it from unauthorized access",
             "C": "A technique used to segment a network into multiple VLANs for security purposes",
             "D": "A technique used to assign IP addresses to network devices automatically",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between a static IP address and a dynamic IP address?",
@@ -776,8 +696,8 @@ ccnadict = [
             "B": "A static IP address is assigned automatically by a DHCP server and can change over time, while a dynamic IP address is manually assigned to a device and does not change",
             "C": "A static IP address and a dynamic IP address are the same thing and can be used interchangeably",
             "D": "A static IP address is used for wireless networks, while a dynamic IP address is used for wired networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is a firewall and why is it important for network security?",
@@ -786,8 +706,8 @@ ccnadict = [
             "B": "A type of VPN used to connect remote workers to a corporate network",
             "C": "A network device that connects multiple networks together",
             "D": "A protocol used to encrypt network traffic",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between a private IP address and a public IP address?",
@@ -796,8 +716,58 @@ ccnadict = [
             "B": "A private IP address is assigned to a device that is reachable from the Internet, while a public IP address is used within a private network and is not reachable from the Internet",
             "C": "A private IP address and a public IP address are the same thing and can be used interchangeably",
             "D": "A private IP address is used for wired networks, while a public IP address is used for wireless networks",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
+    },
+    {
+        "question": "What is the difference between a router and a switch?",
+        "answers": {
+            "A": "A router is a Layer 3 device that connects multiple networks together and makes forwarding decisions based on IP addresses, while a switch is a Layer 2 device that forwards data to specific devices based on their MAC addresses",
+            "B": "A switch is a Layer 3 device that connects multiple networks together and makes forwarding decisions based on IP addresses, while a router is a Layer 2 device that forwards data to specific devices based on their MAC addresses",
+            "C": "A router and a switch are the same thing and perform the same functions",
+            "D": "A router and a switch are both Layer 4 devices that route data between different networks",
+        },
+        "correctanswer": "A",
+    },
+    {
+        "question": "What is network address translation (NAT) and why is it used?",
+        "answers": {
+            "A": "A technique used to map one public IP address to multiple private IP addresses to conserve public IP addresses",
+            "B": "A technique used to encrypt network traffic to protect it from unauthorized access",
+            "C": "A technique used to segment a network into multiple VLANs for security purposes",
+            "D": "A technique used to assign IP addresses to network devices automatically",
+        },
+        "correctanswer": "A",
+    },
+    {
+        "question": "What is the difference between a static IP address and a dynamic IP address?",
+        "answers": {
+            "A": "A static IP address is manually assigned to a device and does not change, while a dynamic IP address is assigned automatically by a DHCP server and can change over time",
+            "B": "A static IP address is assigned automatically by a DHCP server and can change over time, while a dynamic IP address is manually assigned to a device and does not change",
+            "C": "A static IP address and a dynamic IP address are the same thing and can be used interchangeably",
+            "D": "A static IP address is used for wireless networks, while a dynamic IP address is used for wired networks",
+        },
+        "correctanswer": "A",
+    },
+    {
+        "question": "What is a firewall and why is it important for network security?",
+        "answers": {
+            "A": "A network security device that monitors and controls incoming and outgoing network traffic based on predetermined security policies",
+            "B": "A type of VPN used to connect remote workers to a corporate network",
+            "C": "A network device that connects multiple networks together",
+            "D": "A protocol used to encrypt network traffic",
+        },
+        "correctanswer": "A",
+    },
+    {
+        "question": "What is the difference between a private IP address and a public IP address?",
+        "answers": {
+            "A": "A private IP address is used within a private network and is not reachable from the Internet, while a public IP address is assigned to a device that is reachable from the Internet",
+            "B": "A private IP address is assigned to a device that is reachable from the Internet, while a public IP address is used within a private network and is not reachable from the Internet",
+            "C": "A private IP address and a public IP address are the same thing and can be used interchangeably",
+            "D": "A private IP address is used for wired networks, while a public IP address is used for wireless networks",
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the subnet mask for a /24 network?",
@@ -806,8 +776,8 @@ ccnadict = [
             "B": "255.255.255.0",
             "C": "255.0.0.0",
             "D": "255.255.255.255",
-            "correctanswer": "B"
-        }
+        },
+        "correctanswer": "B",
     },
     {
         "question": "What is the broadcast address for the network 192.168.1.0/24?",
@@ -816,18 +786,13 @@ ccnadict = [
             "B": "192.168.1.255",
             "C": "192.168.0.255",
             "D": "192.168.2.0",
-            "correctanswer": "B"
-        }
+        },
+        "correctanswer": "B",
     },
     {
         "question": "What is the CIDR notation for the subnet mask 255.255.248.0?",
-        "answers": {
-            "A": "/20",
-            "B": "/21",
-            "C": "/22",
-            "D": "/23",
-            "correctanswer": "A"
-        }
+        "answers": {"A": "/20", "B": "/21", "C": "/22", "D": "/23"},
+        "correctanswer": "A",
     },
     {
         "question": "What is BGP and what is its role in Internet routing?",
@@ -836,8 +801,8 @@ ccnadict = [
             "B": "Basic Gateway Protocol, a protocol used to configure basic network settings",
             "C": "Broadcast Gateway Protocol, a protocol used to broadcast network traffic between different networks",
             "D": "Border Group Protocol, a protocol used to group multiple routers together in a single autonomous system (AS)",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is OSPF and how does it differ from BGP?",
@@ -846,18 +811,13 @@ ccnadict = [
             "B": "Open Shortest Path First, a distance-vector routing protocol that uses hop count to determine the best path for routing packets, while BGP is a link-state routing protocol that uses a shortest-path-first algorithm",
             "C": "Open Shortest Path First, a protocol used to configure basic network settings, while BGP is a protocol used to exchange routing information between different autonomous systems (AS)",
             "D": "Open Source Path Forwarding, a protocol used to forward network traffic between different networks, while BGP is a protocol used to group multiple routers together in a single autonomous system (AS)",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the administrative distance of OSPF?",
-        "answers": {
-            "A": "90",
-            "B": "100",
-            "C": "110",
-            "D": "120",
-            "correctanswer": "C"
-        }
+        "answers": {"A": "90", "B": "100", "C": "110", "D": "120"},
+        "correctanswer": "C",
     },
     {
         "question": "What is the purpose of a route map in BGP?",
@@ -866,18 +826,18 @@ ccnadict = [
             "B": "To configure the routing tables of BGP routers",
             "C": "To advertise BGP routes to other autonomous systems (AS)",
             "D": "To establish a peering relationship between BGP routers in different autonomous systems (AS)",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
-        {
+    {
         "question": "What is the subnet mask for a /28 network?",
         "answers": {
             "A": "255.255.255.0",
             "B": "255.255.255.128",
             "C": "255.255.255.192",
             "D": "255.255.255.240",
-            "correctanswer": "D"
-        }
+        },
+        "correctanswer": "D",
     },
     {
         "question": "What is the purpose of a VLAN?",
@@ -886,18 +846,13 @@ ccnadict = [
             "B": "To increase the security of a network by separating traffic into different virtual networks",
             "C": "To reduce network congestion by dividing a single physical network into multiple logical networks",
             "D": "To enable communication between different networks using different protocols",
-            "correctanswer": "B"
-        }
+        },
+        "correctanswer": "B",
     },
     {
         "question": "What is the administrative distance of OSPF?",
-        "answers": {
-            "A": "90",
-            "B": "100",
-            "C": "110",
-            "D": "120",
-            "correctanswer": "C"
-        }
+        "answers": {"A": "90", "B": "100", "C": "110", "D": "120"},
+        "correctanswer": "C",
     },
     {
         "question": "What is the difference between an intra-area OSPF route and an inter-area OSPF route?",
@@ -906,8 +861,8 @@ ccnadict = [
             "B": "An intra-area OSPF route is a route within the same autonomous system (AS), while an inter-area OSPF route is a route between different ASes",
             "C": "An intra-area OSPF route is a route within the same subnet, while an inter-area OSPF route is a route between different subnets",
             "D": "There is no difference between intra-area OSPF routes and inter-area OSPF routes",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the purpose of a route map in BGP?",
@@ -916,8 +871,8 @@ ccnadict = [
             "B": "To configure the routing tables of BGP routers",
             "C": "To advertise BGP routes to other autonomous systems (AS)",
             "D": "To establish a peering relationship between BGP routers in different autonomous systems (AS)",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "What is the difference between an eBGP session and an iBGP session?",
@@ -926,28 +881,18 @@ ccnadict = [
             "B": "An eBGP session is between routers in the same AS, while an iBGP session is between routers in different ASes",
             "C": "An eBGP session uses a distance-vector routing protocol, while an iBGP session uses a link-state routing protocol",
             "D": "An eBGP session uses a link-state routing protocol, while an iBGP session uses a distance-vector routing protocol",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
-        {
+    {
         "question": "What is the CIDR notation for the subnet mask 255.255.255.192?",
-        "answers": {
-            "A": "/24",
-            "B": "/25",
-            "C": "/26",
-            "D": "/27",
-            "correctanswer": "C"
-        }
+        "answers": {"A": "/24", "B": "/25", "C": "/26", "D": "/27"},
+        "correctanswer": "C",
     },
     {
         "question": "How many hosts are in a /28 subnet?",
-        "answers": {
-            "A": "14",
-            "B": "15",
-            "C": "16",
-            "D": "17",
-            "correctanswer": "14"
-        }
+        "answers": {"A": "14", "B": "15", "C": "16", "D": "17"},
+        "correctanswer": "14",
     },
     {
         "question": "What is the network address for the IP address 192.168.1.50/26?",
@@ -956,8 +901,8 @@ ccnadict = [
             "B": "192.168.1.32",
             "C": "192.168.1.48",
             "D": "192.168.1.64",
-            "correctanswer": "192.168.1.0"
-        }
+        },
+        "correctanswer": "192.168.1.0",
     },
     {
         "question": "What is the subnet mask for a /27 network?",
@@ -966,58 +911,38 @@ ccnadict = [
             "B": "255.255.255.128",
             "C": "255.255.255.192",
             "D": "255.255.255.224",
-            "correctanswer": "D"
-        }
+        },
+        "correctanswer": "D",
     },
     {
         "question": "How many subnets are in a /22 network?",
-        "answers": {
-            "A": "2",
-            "B": "4",
-            "C": "8",
-            "D": "16",
-            "correctanswer": "4"
-        }
+        "answers": {"A": "2", "B": "4", "C": "8", "D": "16"},
+        "correctanswer": "4",
     },
-        {
+    {
         "question": "What is the broadcast address for the IP address 192.168.10.99/27?",
         "answers": {
             "A": "192.168.10.127",
             "B": "192.168.10.95",
             "C": "192.168.10.63",
             "D": "192.168.10.31",
-            "correctanswer": "A"
-        }
+        },
+        "correctanswer": "A",
     },
     {
         "question": "How many bits are used for the host portion in a /28 subnet?",
-        "answers": {
-            "A": "4",
-            "B": "6",
-            "C": "8",
-            "D": "10",
-            "correctanswer": "4"
-        }
+        "answers": {"A": "4", "B": "6", "C": "8", "D": "10"},
+        "correctanswer": "4",
     },
     {
         "question": "What is the CIDR notation for the subnet mask 255.255.254.0?",
-        "answers": {
-            "A": "/22",
-            "B": "/23",
-            "C": "/24",
-            "D": "/25",
-            "correctanswer": "B"
-        }
+        "answers": {"A": "/22", "B": "/23", "C": "/24", "D": "/25"},
+        "correctanswer": "B",
     },
     {
         "question": "How many hosts are in a /29 subnet?",
-        "answers": {
-            "A": "6",
-            "B": "8",
-            "C": "14",
-            "D": "16",
-            "correctanswer": "6"
-        }
+        "answers": {"A": "6", "B": "8", "C": "14", "D": "16"},
+        "correctanswer": "6",
     },
     {
         "question": "What is the first usable host address in the subnet 192.168.1.128/25?",
@@ -1026,8 +951,8 @@ ccnadict = [
             "B": "192.168.1.130",
             "C": "192.168.1.131",
             "D": "192.168.1.132",
-            "correctanswer": "192.168.1.129"
-        }
+        },
+        "correctanswer": "192.168.1.129",
     },
     {
         "question": "What is the last usable host address in the subnet 192.168.1.64/26?",
@@ -1036,8 +961,8 @@ ccnadict = [
             "B": "192.168.1.63",
             "C": "192.168.1.126",
             "D": "192.168.1.127",
-            "correctanswer": "192.168.1.62"
-        }
+        },
+        "correctanswer": "192.168.1.62",
     },
     {
         "question": "What is the subnet mask for a /30 network?",
@@ -1046,127 +971,67 @@ ccnadict = [
             "B": "255.255.255.128",
             "C": "255.255.255.192",
             "D": "255.255.255.252",
-            "correctanswer": "D"
-        }
+        },
+        "correctanswer": "D",
     },
     {
         "question": "How many subnets are in a /27 network?",
-        "answers": {
-            "A": "2",
-            "B": "4",
-            "C": "8",
-            "D": "16",
-            "correctanswer": "8"
-        }
+        "answers": {"A": "2", "B": "4", "C": "8", "D": "16"},
+        "correctanswer": "8",
     },
     {
         "question": "What is the CIDR notation for the subnet mask 255.255.248.0?",
-        "answers": {
-            "A": "/20",
-            "B": "/21",
-            "C": "/22",
-            "D": "/23",
-            "correctanswer": "A"
-        }
+        "answers": {"A": "/20", "B": "/21", "C": "/22", "D": "/23"},
+        "correctanswer": "A",
     },
-        {
+    {
         "question": "How many host addresses are in a /26 subnet?",
-        "answers": {
-            "A": "62",
-            "B": "64",
-            "C": "126",
-            "D": "128",
-            "correctanswer": "62"
-        }
+        "answers": {"A": "62", "B": "64", "C": "126", "D": "128"},
+        "correctanswer": "62",
     },
     {
         "question": "How many usable host addresses are in a /28 subnet?",
-        "answers": {
-            "A": "14",
-            "B": "15",
-            "C": "16",
-            "D": "17",
-            "correctanswer": "14"
-        }
+        "answers": {"A": "14", "B": "15", "C": "16", "D": "17"},
+        "correctanswer": "14",
     },
     {
         "question": "How many host addresses are in a /22 subnet?",
-        "answers": {
-            "A": "1022",
-            "B": "1024",
-            "C": "2046",
-            "D": "2048",
-            "correctanswer": "1024"
-        }
+        "answers": {"A": "1022", "B": "1024", "C": "2046", "D": "2048"},
+        "correctanswer": "1024",
     },
     {
         "question": "How many usable host addresses are in a /27 subnet?",
-        "answers": {
-            "A": "28",
-            "B": "30",
-            "C": "62",
-            "D": "64",
-            "correctanswer": "30"
-        }
+        "answers": {"A": "28", "B": "30", "C": "62", "D": "64"},
+        "correctanswer": "30",
     },
     {
         "question": "How many host addresses are in a /30 subnet?",
-        "answers": {
-            "A": "2",
-            "B": "4",
-            "C": "6",
-            "D": "8",
-            "correctanswer": "4"
-        }
+        "answers": {"A": "2", "B": "4", "C": "6", "D": "8"},
+        "correctanswer": "4",
     },
     {
         "question": "How many usable host addresses are in a /24 subnet?",
-        "answers": {
-            "A": "254",
-            "B": "256",
-            "C": "510",
-            "D": "512",
-            "correctanswer": "254"
-        }
+        "answers": {"A": "254", "B": "256", "C": "510", "D": "512"},
+        "correctanswer": "254",
     },
     {
         "question": "How many host addresses are in a /20 subnet?",
-        "answers": {
-            "A": "4062",
-            "B": "4094",
-            "C": "8190",
-            "D": "8192",
-            "correctanswer": "4094"
-        }
+        "answers": {"A": "4062", "B": "4094", "C": "8190", "D": "8192"},
+        "correctanswer": "4094",
     },
     {
         "question": "How many usable host addresses are in a /26 subnet?",
-        "answers": {
-            "A": "30",
-            "B": "62",
-            "C": "126",
-            "D": "254",
-            "correctanswer": "62"
-        }
+        "answers": {"A": "30", "B": "62", "C": "126", "D": "254"},
+        "correctanswer": "62",
     },
     {
         "question": "How many host addresses are in a /23 subnet?",
-        "answers": {
-            "A": "254",
-            "B": "512",
-            "C": "1022",
-            "D": "2046",
-            "correctanswer": "512"
-        }
+        "answers": {"A": "254", "B": "512", "C": "1022", "D": "2046"},
+        "correctanswer": "512",
     },
     {
         "question": "How many usable host addresses are in a /25 subnet?",
-        "answers": {
-            "A": "126",
-            "B": "128",
-            "C": "254",
-            "D": "256",
-            "correctanswer": "128"
-        }
-    }
+        "answers": {"A": "126", "B": "128", "C": "254", "D": "256"},
+        "correctanswer": "128",
+    },
 ]

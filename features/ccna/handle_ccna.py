@@ -13,7 +13,7 @@ def handle_ccna(user_responses):
         # Get the question ID and correct answer
         prefix = "ccna_"  # Unique prefix for CISSP questions
         question_id = prefix + str(i)
-        correct_answer = answers["correctanswer"]
+        correct_answer = question["correctanswer"]
 
         # Compute the weight based on user responses
         weight = 1
