@@ -47,4 +47,5 @@ def handle_ccna(user_responses):
         response = f"**Here's a CCNA question for you**:\n\n**Question**: {prompt}\n\n**Options**: \n{options}\n\n**Correct Answer**: ||{correct_answer}||\n\n**Reasoning**: ||{reasoning}||"
     else:
         response = f"**Here's a CCNA question for you**:\n\n**Question**: {prompt}\n\n**Options**: \n{options}\n\n**Correct Answer**: ||{correct_answer}||"
-    return response
+
+    return response, question_id
