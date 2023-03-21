@@ -35,7 +35,6 @@ def handle_ccna(user_responses):
     prompt = question["question"]
     answers = question["answers"]
     correct_answer = question["correctanswer"]
-    reasoning = question["reasoning"] or None
 
     # Format the response
     options = []
