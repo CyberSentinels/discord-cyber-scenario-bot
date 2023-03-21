@@ -68,6 +68,16 @@ emoji_to_answer = {
     "🇩": "D",
 }
 
+question_dict_mapping = {
+    "cissp": cisspdict,
+    "ccna": ccnadict,
+    "aplus": aplusdict,
+    "netplus": netplusdict,
+    "secplus": secplusdict,
+    "quiz": quizdict
+    # Add more prefixes and corresponding question dictionaries as needed
+}
+
 @client.event
 async def on_reaction_add(reaction, user):
     if user == client.user or reaction.message.author != client.user:
@@ -91,6 +101,14 @@ async def on_reaction_add(reaction, user):
         # Remove the user's reaction to prevent duplicate responses
         await reaction.remove(user)
 
+        # Check if the answer is correct and send an ephemeral message to the user
+        question_dict = question_dict_mapping[prefix]
+        question = question_dict[question_number]
+        correct_answer = question["correctanswer"]
+        if answer == correct_answer:
+            await reaction.message.channel.send(content=f"{user.mention} got it right!", ephemeral=True)
+        else:
+            await reaction.message.channel.send(content=f"{user.mention} got it wrong. The correct answer is {correct_answer}.", ephemeral=True)
 
 @client.hybrid_command(
     name="quiz", description="Replies with CompTIA's A+ related prompt."
