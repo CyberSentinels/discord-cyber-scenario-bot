@@ -987,51 +987,51 @@ ccnadict = [
     {
         "question": "How many host addresses are in a /26 subnet?",
         "answers": {"A": "62", "B": "64", "C": "126", "D": "128"},
-        "correctanswer": "62",
+        "correctanswer": "A",
     },
     {
         "question": "How many usable host addresses are in a /28 subnet?",
         "answers": {"A": "14", "B": "15", "C": "16", "D": "17"},
-        "correctanswer": "14",
+        "correctanswer": "A",
     },
     {
         "question": "How many host addresses are in a /22 subnet?",
         "answers": {"A": "1022", "B": "1024", "C": "2046", "D": "2048"},
-        "correctanswer": "1024",
+        "correctanswer": "B",
     },
     {
         "question": "How many usable host addresses are in a /27 subnet?",
         "answers": {"A": "28", "B": "30", "C": "62", "D": "64"},
-        "correctanswer": "30",
+        "correctanswer": "B",
     },
     {
         "question": "How many host addresses are in a /30 subnet?",
         "answers": {"A": "2", "B": "4", "C": "6", "D": "8"},
-        "correctanswer": "4",
+        "correctanswer": "B",
     },
     {
         "question": "How many usable host addresses are in a /24 subnet?",
         "answers": {"A": "254", "B": "256", "C": "510", "D": "512"},
-        "correctanswer": "254",
+        "correctanswer": "A",
     },
     {
         "question": "How many host addresses are in a /20 subnet?",
         "answers": {"A": "4062", "B": "4094", "C": "8190", "D": "8192"},
-        "correctanswer": "4094",
+        "correctanswer": "B",
     },
     {
         "question": "How many usable host addresses are in a /26 subnet?",
         "answers": {"A": "30", "B": "62", "C": "126", "D": "254"},
-        "correctanswer": "62",
+        "correctanswer": "B",
     },
     {
         "question": "How many host addresses are in a /23 subnet?",
         "answers": {"A": "254", "B": "512", "C": "1022", "D": "2046"},
-        "correctanswer": "512",
+        "correctanswer": "B",
     },
     {
         "question": "How many usable host addresses are in a /25 subnet?",
         "answers": {"A": "126", "B": "128", "C": "254", "D": "256"},
-        "correctanswer": "128",
+        "correctanswer": "B",
     },
 ]
