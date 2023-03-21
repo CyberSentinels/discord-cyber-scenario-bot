@@ -108,7 +108,7 @@ async def on_reaction_add(reaction, user):
         if answer == correct_answer:
             await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
         else:
-            #await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
+            await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
             return
 
 
