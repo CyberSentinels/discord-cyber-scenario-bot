@@ -217,7 +217,7 @@ async def ccna(ctx):
 
 @client.hybrid_command(
     name="cissp",
-    description="Replies with Replies with a ISC2's CISSP multiple choice prompt.",
+    description="Replies with Replies with an ISC2's CISSP multiple choice prompt.",
 )
 async def cissp(ctx):
     try:
@@ -251,7 +251,7 @@ async def linuxplus(ctx):
 
 @client.hybrid_command(
     name="ceh",
-    description="Replies with Replies with a EC-Council's CEH multiple choice prompt.",
+    description="Replies with Replies with an EC-Council's CEH multiple choice prompt.",
 )
 async def ceh(ctx):
     try:
