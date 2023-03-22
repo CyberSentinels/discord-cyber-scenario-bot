@@ -233,10 +233,10 @@ async def cissp(ctx):
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 @client.hybrid_command(
-    name="linusplus",
+    name="linuxplus",
     description="Replies with Replies with a Comptia's Linux+ multiple choice prompt.",
 )
-async def linusplus(ctx):
+async def linuxplus(ctx):
     try:
         response, question_id = handle_linuxplus(user_responses)
         embed = Embed(description=response)
