@@ -10,9 +10,11 @@ from discord.ext import commands, tasks
 from features.aplus.handle_aplus import *
 from features.bluescenarios.handle_bluescenarios import *
 from features.ccna.handle_ccna import *
+from features.ceh.handle_ceh import *
 from features.cissp.handle_cissp import *
 from features.dns.handle_dns import *
 from features.hash.handle_hash import *
+from features.linuxplus.handle_linuxplus import *
 from features.netplus.handle_netplus import *
 from features.ping.handle_ping import *
 from features.quiz.handle_quiz import *
@@ -70,9 +72,11 @@ emoji_to_answer = {
 
 question_dict_mapping = {
     "cissp": cisspdict,
+    "ceh": cehdict,
     "ccna": ccnadict,
     "aplus": aplusdict,
     "netplus": netplusdict,
+    "linuxplus": linuxplusdict,
     "secplus": secplusdict,
     "quiz": quizdict
     # Add more prefixes and corresponding question dictionaries as needed
@@ -229,6 +233,40 @@ async def cissp(ctx):
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 @client.hybrid_command(
+    name="linusplus",
+    description="Replies with Replies with a Comptia's Linux+ multiple choice prompt.",
+)
+async def linusplus(ctx):
+    try:
+        response, question_id = handle_linuxplus(user_responses)
+        embed = Embed(description=response)
+        embed.set_footer(text=question_id)
+        message = await ctx.send(embed=embed)
+        # Add reactions for each answer choice
+        for emoji in valid_emojis:
+            await message.add_reaction(emoji)
+    except Exception as e:
+        print({e})
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.hybrid_command(
+    name="ceh",
+    description="Replies with Replies with a EC-Council's CEH multiple choice prompt.",
+)
+async def ceh(ctx):
+    try:
+        response, question_id = handle_ceh(user_responses)
+        embed = Embed(description=response)
+        embed.set_footer(text=question_id)
+        message = await ctx.send(embed=embed)
+        # Add reactions for each answer choice
+        for emoji in valid_emojis:
+            await message.add_reaction(emoji)
+    except Exception as e:
+        print({e})
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.hybrid_command(
     name="dns", description="Gives you useful information about a dns name."
 )
 async def dns(ctx, domain: str):
@@ -293,13 +331,17 @@ async def whois(ctx, domain: str):
 @client.hybrid_command(name="commands", description="Describes the available commands.")
 async def commands(ctx):
     try:
-        response = """**Command prefix**: '!', '/'
+        response = """## Commands Available:
+*Command prefix: '!', '/'*
 
 ### Quiz and Scenario Commands
+*Multiple-choice questions are dynamically weighted similar to the real exams based on if they are answered correctly or incorrectly*
 - **Aplus**: Replies with CompTIA's A+ related prompt.
 - **Bluescenario**: Replies with a blue team scenario.
 - **CCNA**: Replies with Cisco's CCNA multiple choice prompt.
+- **CEH**: Replies with EC-Council's CEH multiple choice prompt.
 - **CISSP**: Replies with ISC2's CISSP multiple choice prompt.
+- **Linuxplus**: Replies with CompTIA's Linux+ multiple choice prompt.
 - **Netplus**: Replies with CompTIA's Network+ related prompt.
 - **Quiz**: Replies with a random Cyber Security Awareness Question.
 - **Redscenario**: Replies with a redteam scenario.

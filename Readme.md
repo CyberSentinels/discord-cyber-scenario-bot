@@ -12,7 +12,9 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 - **Aplus**: Replies with CompTIA's A+ related prompt.
 - **Bluescenario**: Replies with a blue team scenario.
 - **CCNA**: Replies with Cisco's CCNA multiple choice prompt.
+- **CEH**: Replies with EC-Council's CEH multiple choice prompt.
 - **CISSP**: Replies with ISC2's CISSP multiple choice prompt.
+- **Linuxplus**: Replies with CompTIA's Linux+ multiple choice prompt.
 - **Netplus**: Replies with CompTIA's Network+ related prompt.
 - **Quiz**: Replies with a random Cyber Security Awareness Question.
 - **Redscenario**: Replies with a redteam scenario.
