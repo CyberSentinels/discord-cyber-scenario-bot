@@ -369,7 +369,7 @@ async def commands(ctx):
 )
 async def socials(ctx):
     try:
-        response = f"**Website**: https://cybersentinels.com\n\n**GitHub**: https://github.com/cybersentinels"
+        response = f"**Website**: https://cybersentinels.org\n\n**GitHub**: https://github.com/cybersentinels"
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
