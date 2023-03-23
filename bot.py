@@ -46,6 +46,7 @@ client = commands.Bot(command_prefix=["!", "/"], intents=intents)
 bottoken = os.environ.get("BOT_TOKEN")
 # only needed if you want the timed quizes
 guildid = os.environ.get("GUILD_ID")
+leaderboardid = os.environ.get("LEADERBOARD_CHANNEL_ID")
 channelid = os.environ.get("CHANNEL_ID")
 aplusrole = os.environ.get("APLUSROLE")
 netplusrole = os.environ.get("NETPLUSROLE")
@@ -82,6 +83,8 @@ question_dict_mapping = {
     # Add more prefixes and corresponding question dictionaries as needed
 }
 
+user_scores = {}
+
 @client.event
 async def on_reaction_add(reaction, user):
     if user == client.user or reaction.message.author != client.user:
@@ -105,16 +108,177 @@ async def on_reaction_add(reaction, user):
         # Remove the user's reaction to prevent duplicate responses
         await reaction.remove(user)
 
-        # Check if the answer is correct and send an ephemeral message to the user
+        # Check if the answer is correct and update the user's score
         question_dict = question_dict_mapping[prefix]
         question = question_dict[question_number]
         correct_answer = question["correctanswer"].lower()  # Convert the correct answer to lowercase
         if answer == correct_answer:
+            if user_id not in user_scores:
+                user_scores[user_id] = {"aplus": 0, "netplus": 0, "secplus": 0}  # Initialize the user's score if it doesn't exist
+            user_scores[user_id][prefix] += 1  # Increment the user's score for this prefix
             await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
         else:
             await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
             return
 
+async def update_leaderboard():
+    if leaderboardid:
+        try:
+            # Get the top 5 users based on their scores for each prefix
+            top_users = {}
+            for prefix in question_dict_mapping.keys():
+                top_users[prefix] = []
+                sorted_users = sorted(user_scores.items(), key=lambda x: x[1][prefix], reverse=True)
+                top_users[prefix] = [(client.get_user(user_id).name, score) for user_id, score in sorted_users[:5]]
+
+            # Get the overall top users
+            overall_scores = {}
+            for user_id, scores in user_scores.items():
+                overall_score = sum(scores.values())
+                overall_scores[user_id] = overall_score
+            sorted_overall_users = sorted(overall_scores.items(), key=lambda x: x[1], reverse=True)
+            overall_top_users = [(client.get_user(user_id).name, score) for user_id, score in sorted_overall_users[:5]]
+
+            # Create the leaderboard embed
+            leaderboard_channel = client.get_channel(leaderboardid)
+            embed = Embed(title="Leaderboard", color=0x00ff00)
+
+            # Add overall category to the leaderboard embed
+            if overall_top_users:
+                overall_user_list = "\n".join([f"{i+1}. {user[0]} - {user[1]} total questions" for i, user in enumerate(overall_top_users)])
+            else:
+                overall_user_list = "No users yet"
+            embed.add_field(name="Overall", value=overall_user_list, inline=False)
+
+            # Add fields for each prefix and their corresponding top users
+            for prefix, users in top_users.items():
+                prefix_name = prefix.capitalize()
+                if users:
+                    user_list = "\n".join([f"{i+1}. {user[0]} - {user[1]} {prefix_name} questions" for i, user in enumerate(users)])
+                else:
+                    user_list = "No users yet"
+                embed.add_field(name=prefix_name, value=user_list, inline=False)
+
+            # Update the leaderboard channel with the embed
+            await leaderboard_channel.purge()  # Clear the channel
+            await leaderboard_channel.send(embed=embed)
+
+        except Exception as e:
+            print(f"Error updating leaderboard: {e}")
+    else:
+        return
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        print(f"Unsupported command: {ctx.message.content}")
+
+@client.hybrid_command(
+    name="socials",
+    description="Replies with the various bot social media accounts and websites.",
+)
+async def socials(ctx):
+    try:
+        response = f"**Website**: https://cybersentinels.org\n\n**GitHub**: https://github.com/cybersentinels"
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+@client.hybrid_command(name="commands", description="Describes the available commands.")
+async def commands(ctx):
+    try:
+        response = """## Commands Available:
+*Command prefix: '!', '/'*
+
+### Quiz and Scenario Commands
+*Multiple-choice questions are dynamically weighted similar to the real exams based on if they are answered correctly or incorrectly*
+- **Aplus**: Replies with CompTIA's A+ related prompt.
+- **Bluescenario**: Replies with a blue team scenario.
+- **CCNA**: Replies with Cisco's CCNA multiple choice prompt.
+- **CEH**: Replies with EC-Council's CEH multiple choice prompt.
+- **CISSP**: Replies with ISC2's CISSP multiple choice prompt.
+- **Linuxplus**: Replies with CompTIA's Linux+ multiple choice prompt.
+- **Netplus**: Replies with CompTIA's Network+ related prompt.
+- **Quiz**: Replies with a random Cyber Security Awareness Question.
+- **Redscenario**: Replies with a redteam scenario.
+- **Secplus**: Replies with CompTIA's Security+ related prompt.
+
+### Tool Commands:
+- **Dns**: Takes in a `domain name` and returns A, AAAA, NS, TXT, etc. records.
+- **Hash**: Takes in `1 of 4 supported algos` and a `string` and outputs a corresponding hash.
+- **Ping**: Takes in an `IP address` and returns with a success message and average latency or a failure message.
+- **Shodanip**: Takes in an `IP address` and outputs useful information from https://internetdb.shodan.io/.
+- **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts.
+- **Whois**: Takes in a `domain name` and outputs domain whois information.
+
+### Informational Commands
+- **Commands**: Replies with this message.
+- **Socials**: Replies with the various bot social media accounts and websites."""
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
+# Define the on_ready event handler
+@client.event
+async def on_ready():
+    # Get the name of the bot user
+    bot_username = client.user.name
+
+    # Find the Discord guild object based on its ID
+    guild = client.get_guild(int(guildid))
+
+    # Find the channel object based on its ID
+    channel = guild.get_channel(int(channelid))
+
+    # Print a message indicating that the bot is logged in and ready
+    print(f"Logged in as {bot_username} ({client.user.id})")
+    print(f"Connected to Discord server '{guild.name}' ({guild.id})")
+    print(
+        f"Bot is ready and listening for commands in channel '{channel.name}' ({channel.id})"
+    )
+    print("\nLogged in as:")
+    print(" Username", client.user.name)
+    print(" User ID", client.user.id)
+    print(
+        "To invite the bot in your server use this link:\n https://discord.com/api/oauth2/authorize?client_id="
+        + str(client.user.id)
+        + "&permissions=8&scope=bot%20applications.commands"
+    )
+    print("Time now", str(datetime.datetime.now()))
+
+    try:
+        synced = await client.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
+    except Exception as e:
+        print(e)
+
+    if bot_username == "Cyber Sentinel":
+        activity = Activity(
+            type=ActivityType.streaming,
+            name="cybersentinels.org",
+            url="https://cybersentinels.org/",
+            state="Creating Content",
+            details="Creating Content for the Cyber Sentinels",
+            assets={
+                "large_image": "cybersentinels_logo",
+                "large_text": "Cyber Sentinels Logo",
+                "small_image": "cybersentinels_logo",
+                "small_text": "Cyber Sentinels Logo",
+            },
+            buttons=["Try", "Harder"],
+            emoji=None,
+        )
+        await client.change_presence(activity=activity, status=Status.online)
+    else:
+        activity = Activity(
+            type=ActivityType.streaming,
+            name="cybersentinels.org",
+            url="https://cybersentinels.org/",
+            state="Creating Content",
+            details="Creating Content for the Cyber Sentinels",
+            emoji=None,
+        )
+        await client.change_presence(activity=activity, status=Status.online)
 
 @client.hybrid_command(
     name="quiz", description="Replies with CompTIA's A+ related prompt."
@@ -328,52 +492,6 @@ async def whois(ctx, domain: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
-@client.hybrid_command(name="commands", description="Describes the available commands.")
-async def commands(ctx):
-    try:
-        response = """## Commands Available:
-*Command prefix: '!', '/'*
-
-### Quiz and Scenario Commands
-*Multiple-choice questions are dynamically weighted similar to the real exams based on if they are answered correctly or incorrectly*
-- **Aplus**: Replies with CompTIA's A+ related prompt.
-- **Bluescenario**: Replies with a blue team scenario.
-- **CCNA**: Replies with Cisco's CCNA multiple choice prompt.
-- **CEH**: Replies with EC-Council's CEH multiple choice prompt.
-- **CISSP**: Replies with ISC2's CISSP multiple choice prompt.
-- **Linuxplus**: Replies with CompTIA's Linux+ multiple choice prompt.
-- **Netplus**: Replies with CompTIA's Network+ related prompt.
-- **Quiz**: Replies with a random Cyber Security Awareness Question.
-- **Redscenario**: Replies with a redteam scenario.
-- **Secplus**: Replies with CompTIA's Security+ related prompt.
-
-### Tool Commands:
-- **Dns**: Takes in a `domain name` and returns A, AAAA, NS, TXT, etc. records.
-- **Hash**: Takes in `1 of 4 supported algos` and a `string` and outputs a corresponding hash.
-- **Ping**: Takes in an `IP address` and returns with a success message and average latency or a failure message.
-- **Shodanip**: Takes in an `IP address` and outputs useful information from https://internetdb.shodan.io/.
-- **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts.
-- **Whois**: Takes in a `domain name` and outputs domain whois information.
-
-### Informational Commands
-- **Commands**: Replies with this message.
-- **Socials**: Replies with the various bot social media accounts and websites."""
-        await ctx.send(response)
-    except Exception as e:
-        await ctx.send(f"Error: {e}. An unexpected error occurred.")
-
-
-@client.hybrid_command(
-    name="socials",
-    description="Replies with the various bot social media accounts and websites.",
-)
-async def socials(ctx):
-    try:
-        response = f"**Website**: https://cybersentinels.org\n\n**GitHub**: https://github.com/cybersentinels"
-        await ctx.send(response)
-    except Exception as e:
-        await ctx.send(f"Error: {e}. An unexpected error occurred.")
-
 # Define the random quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=0)
 async def send_message_and_random():
@@ -556,74 +674,13 @@ async def send_message_and_random():
 #         )
 #         return
 
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        print(f"Unsupported command: {ctx.message.content}")
-
-# Define the on_ready event handler
-@client.event
-async def on_ready():
-    # Get the name of the bot user
-    bot_username = client.user.name
-
-    # Find the Discord guild object based on its ID
-    guild = client.get_guild(int(guildid))
-
-    # Find the channel object based on its ID
-    channel = guild.get_channel(int(channelid))
-
-    # Print a message indicating that the bot is logged in and ready
-    print(f"Logged in as {bot_username} ({client.user.id})")
-    print(f"Connected to Discord server '{guild.name}' ({guild.id})")
-    print(
-        f"Bot is ready and listening for commands in channel '{channel.name}' ({channel.id})"
-    )
-    print("\nLogged in as:")
-    print(" Username", client.user.name)
-    print(" User ID", client.user.id)
-    print(
-        "To invite the bot in your server use this link:\n https://discord.com/api/oauth2/authorize?client_id="
-        + str(client.user.id)
-        + "&permissions=8&scope=bot%20applications.commands"
-    )
-    print("Time now", str(datetime.datetime.now()))
-
-    try:
-        synced = await client.tree.sync()
-        print(f"Synced {len(synced)} command(s)")
-    except Exception as e:
-        print(e)
-
-    if bot_username == "Cyber Sentinel":
-        activity = Activity(
-            type=ActivityType.streaming,
-            name="cybersentinels.org",
-            url="https://cybersentinels.org/",
-            state="Creating Content",
-            details="Creating Content for the Cyber Sentinels",
-            assets={
-                "large_image": "cybersentinels_logo",
-                "large_text": "Cyber Sentinels Logo",
-                "small_image": "cybersentinels_logo",
-                "small_text": "Cyber Sentinels Logo",
-            },
-            buttons=["Try", "Harder"],
-            emoji=None,
-        )
-        await client.change_presence(activity=activity, status=Status.online)
-    else:
-        activity = Activity(
-            type=ActivityType.streaming,
-            name="cybersentinels.org",
-            url="https://cybersentinels.org/",
-            state="Creating Content",
-            details="Creating Content for the Cyber Sentinels",
-            emoji=None,
-        )
-        await client.change_presence(activity=activity, status=Status.online)
+    # Define the leaderboard update task
+    @tasks.loop(minutes=5)
+    async def update_leaderboard_task():
+        await update_leaderboard()
 
     print(f"Starting Scheduled Task Loops")
+    update_leaderboard_task.start()
     send_message_and_random.start()
     # try:
     #     if guildid is not None and channelid is not None and secplusrole is not None:

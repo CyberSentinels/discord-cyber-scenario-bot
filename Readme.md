@@ -4,6 +4,8 @@
 
 This bot may be useful in a cybersecurity training or awareness program, where users can be exposed to various cybersecurity scenarios and learn how to prevent or respond to them. By using a Discord bot, the scenarios can be easily shared with users in a server environment, and the bot can be customized to include additional commands or functionality as needed. Additionally, the bot can be run in a Docker container, making it easy to deploy and manage in various environments.
 
+[See the bot in action](https://discord.io/cybersentinels)
+
 ## Commands Available:
 *Command prefix: '!', '/'*
 
@@ -38,6 +40,7 @@ Assuming you are using a Unix-based system, open a terminal and navigate to the 
 ```bash
 export BOT_TOKEN="INSERT YOUR BOT TOKEN HERE"
 export GUILD_ID="INSERT YOUR GUILD ID HERE (only needed for timed quizes)"
+export LEADERBOARD_CHANNEL_ID="INSERT YOUR LEADERBOARD CHANNEL ID HERE (Only needed for leaderboard for prompts)" 
 export CHANNEL_ID="INSERT YOUR CHANNEL ID HERE (only needed for timed quizes)"
 export APLUSROLE="INSERT YOUR A+ ROLE ID HERE (only needed for timed quizes)"
 export NETPLUSROLE="INSERT YOUR Network+ ROLE ID HERE (only needed for timed quizes)"
@@ -49,6 +52,7 @@ Note that if you are using a Windows-based system, you'll need to use a slightly
 ```powershell
 set BOT_TOKEN="INSERT YOUR BOT TOKEN HERE"
 set GUILD_ID="INSERT YOUR GUILD ID HERE (only needed for timed quizes)"
+set LEADERBOARD_CHANNEL_ID="INSERT YOUR LEADERBOARD CHANNEL ID HERE (Only needed for leaderboard for prompts)" 
 set CHANNEL_ID="INSERT YOUR CHANNEL ID HERE (only needed for timed quizes)"
 set APLUSROLE="INSERT YOUR A+ ROLE ID HERE (only needed for timed quizes)"
 set NETPLUSROLE="INSERT YOUR Network+ ROLE ID HERE (only needed for timed quizes)"
@@ -73,6 +77,7 @@ To run the bot in the background with all scheduled prompts and roles:
 docker run -td --name scenario-bot \
 -e BOT_TOKEN="INSERT YOUR BOT TOKEN HERE" \
 -e GUILD_ID="INSERT YOUR GUILD ID HERE" \
+-e LEADERBOARD_CHANNEL_ID="INSERT YOUR LEADERBOARD CHANNEL ID HERE"
 -e CHANNEL_ID="INSERT YOUR CHANNEL ID HERE" \
 -e APLUSROLE="INSERT YOUR A+ ROLE ID HERE" \
 -e NETPLUSROLE="INSERT YOUR NET+ ROLE ID HERE" \
