@@ -108,65 +108,93 @@ async def on_reaction_add(reaction, user):
         # Remove the user's reaction to prevent duplicate responses
         await reaction.remove(user)
 
-        # Check if the answer is correct and update the user's score
+        # Check if the answer is correct and update the user's score for the appropriate prefix
         question_dict = question_dict_mapping[prefix]
         question = question_dict[question_number]
         correct_answer = question["correctanswer"].lower()  # Convert the correct answer to lowercase
         if answer == correct_answer:
             if user_id not in user_scores:
-                user_scores[user_id] = {"aplus": 0, "netplus": 0, "secplus": 0}  # Initialize the user's score if it doesn't exist
-            user_scores[user_id][prefix] += 1  # Increment the user's score for this prefix
+                user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
+            user_scores[user_id][prefix]["correct"] += 1  # Increment the user's score for this prefix
             await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
         else:
+            if user_id not in user_scores:
+                user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
+            user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
             await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
             return
 
 async def update_leaderboard():
-    if leaderboardid:
-        try:
-            # Get the top 5 users based on their scores for each prefix
-            top_users = {}
-            for prefix in question_dict_mapping.keys():
-                top_users[prefix] = []
-                sorted_users = sorted(user_scores.items(), key=lambda x: x[1][prefix], reverse=True)
-                top_users[prefix] = [(client.get_user(user_id).name, score) for user_id, score in sorted_users[:5]]
+    guild = client.get_guild(int(guildid))
+    leaderboard_channel = guild.get_channel(int(leaderboardid))
+    
+    # Compute the scores for each user and prefix
+    prefix_scores = {p: {} for p in question_dict_mapping}
+    for user_id, scores in user_scores.items():
+        for prefix, score in scores.items():
+            prefix_scores[prefix][user_id] = {"correct": score["correct"], "incorrect": score["incorrect"]}
 
-            # Get the overall top users
-            overall_scores = {}
-            for user_id, scores in user_scores.items():
-                overall_score = sum(scores.values())
-                overall_scores[user_id] = overall_score
-            sorted_overall_users = sorted(overall_scores.items(), key=lambda x: x[1], reverse=True)
-            overall_top_users = [(client.get_user(user_id).name, score) for user_id, score in sorted_overall_users[:5]]
+    # Compute the overall scores for each user
+    overall_scores = {}
+    for user_id, scores in user_scores.items():
+        overall_correct = sum([s["correct"] for s in scores.values()])
+        overall_incorrect = sum([s["incorrect"] for s in scores.values()])
+        overall_scores[user_id] = {"correct": overall_correct, "incorrect": overall_incorrect}
 
-            # Create the leaderboard embed
-            leaderboard_channel = client.get_channel(leaderboardid)
-            embed = Embed(title="Leaderboard", color=0x00ff00)
+    # Sort the users by their overall score and number of incorrect answers
+    sorted_users = sorted(overall_scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]))
+    sorted_users.reverse()  # Reverse the list to sort in descending order
 
-            # Add overall category to the leaderboard embed
-            if overall_top_users:
-                overall_user_list = "\n".join([f"{i+1}. {user[0]} - {user[1]} total questions" for i, user in enumerate(overall_top_users)])
+    # Create the leaderboard embed
+    leaderboard_embed = Embed(title="Leaderboard", color=0x00ff00)
+
+    # Add the overall leaderboard to the embed
+    overall_leaderboard_desc = ""
+    rank = 1
+    for user_id, scores in sorted_users:
+        member = guild.get_member(user_id)
+        if member is not None:
+            username = member.display_name
+        else:
+            username = f"Unknown User ({user_id})"
+        correct = scores["correct"]
+        incorrect = scores["incorrect"]
+        overall_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
+        rank += 1
+        if rank > 5:
+            break
+    leaderboard_embed.add_field(name="Overall", value=overall_leaderboard_desc, inline=False)
+
+    # Add the leaderboard for each prefix to the embed
+    for prefix, scores in prefix_scores.items():
+        prefix_leaderboard_desc = ""
+        sorted_users = sorted(scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]))
+        sorted_users.reverse()
+        rank = 1
+        for user_id, user_scores in sorted_users:
+            member = guild.get_member(user_id)
+            if member is not None:
+                username = member.display_name
             else:
-                overall_user_list = "No users yet"
-            embed.add_field(name="Overall", value=overall_user_list, inline=False)
+                username = f"Unknown User ({user_id})"
+            correct = user_scores["correct"]
+            incorrect = user_scores["incorrect"]
+            prefix_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
+            rank += 1
+            if rank > 5:
+                break
+        leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
 
-            # Add fields for each prefix and their corresponding top users
-            for prefix, users in top_users.items():
-                prefix_name = prefix.capitalize()
-                if users:
-                    user_list = "\n".join([f"{i+1}. {user[0]} - {user[1]} {prefix_name} questions" for i, user in enumerate(users)])
-                else:
-                    user_list = "No users yet"
-                embed.add_field(name=prefix_name, value=user_list, inline=False)
-
-            # Update the leaderboard channel with the embed
-            await leaderboard_channel.purge()  # Clear the channel
-            await leaderboard_channel.send(embed=embed)
-
-        except Exception as e:
-            print(f"Error updating leaderboard: {e}")
+    # Update the leaderboard message in the leaderboard channel
+    leaderboard_message = None
+    async for message in leaderboard_channel.history():
+        if message.author == client.user:
+            leaderboard_message = message
+            break
+    if leaderboard_message is None:
+        leaderboard_message = await leaderboard_channel.send(embed=leaderboard_embed)
     else:
-        return
+        await leaderboard_message.edit(embed=leaderboard_embed
 
 @client.event
 async def on_command_error(ctx, error):
@@ -709,6 +737,5 @@ async def send_message_and_random():
     #             print(f"Error starting Quiz Task: {e}")
     # except Exception as e:
     #     print(f"Error starting scheduled tasks: {e}")
-
 
 client.run(bottoken)
