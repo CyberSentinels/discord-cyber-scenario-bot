@@ -6,6 +6,7 @@ import random
 from discord import Activity, ActivityType, Status, app_commands, Embed
 from discord.ext import commands, tasks
 import traceback
+import random
 import time
 
 # import features
