@@ -149,27 +149,25 @@ async def update_leaderboard():
     prefix_scores = {p: {} for p in question_dict_mapping}
     for user_id, scores in user_scores.items():
         for prefix, score in scores.items():
-            prefix_scores[prefix][user_id] = {"correct": score["correct"], "incorrect": score["incorrect"]}
+            if prefix not in prefix_scores:
+                prefix_scores[prefix] = {}
+            if user_id not in prefix_scores[prefix]:
+                prefix_scores[prefix][user_id] = 0
+            prefix_scores[prefix][user_id] += score["correct"] - score["incorrect"]
 
     # Compute the overall scores for each user
     overall_scores = {}
     for user_id, scores in user_scores.items():
         overall_correct = sum([s["correct"] for s in scores.values()])
         overall_incorrect = sum([s["incorrect"] for s in scores.values()])
-        overall_scores[user_id] = {"correct": overall_correct, "incorrect": overall_incorrect}
+        overall_scores[user_id] = overall_correct - overall_incorrect
 
-    # Compute the scores for each user
-    user_score = {}
-    for user_id, scores in user_scores.items():
-        user_score[user_id] = sum([1 if s["correct"] else -1 for s in scores.values()])
-
-    # Sort the users by their overall score and number of incorrect answers
-    sorted_users = sorted(user_score.items(), key=lambda x: x[1], reverse=True)
+    # Sort the users by their overall score
+    sorted_users = sorted(overall_scores.items(), key=lambda x: x[1], reverse=True)
 
     # Create the leaderboard embed
-    leaderboard_embed = Embed(title="Leaderboard", color=0x006400)
+    leaderboard_embed = Embed(title="Leaderboard", color=0x00ff00)
     leaderboard_embed.set_footer(text="Note: The leaderboard is updated once per hour. To learn more about the quiz commands, run `commands` in #bot-commands")
-
 
     # Add the overall leaderboard to the embed
     overall_leaderboard_desc = ""
@@ -178,11 +176,9 @@ async def update_leaderboard():
         member = guild.get_member(user_id)
         if member is not None:
             username = member.display_name
-            mention = member.mention
         else:
             username = f"Unknown User ({user_id})"
-            mention = username
-        overall_leaderboard_desc += f"{rank}. {mention}: {score}\n"
+        overall_leaderboard_desc += f"{rank}. **{username}**: {score}\n"
         rank += 1
         if rank > 5:
             break
@@ -191,23 +187,23 @@ async def update_leaderboard():
     # Add the leaderboard for each prefix to the embed
     for prefix, scores in prefix_scores.items():
         prefix_leaderboard_desc = ""
-        sorted_users = sorted(scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
+        sorted_users = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         rank = 1
-        for user_id, user_scores in sorted_users:
+        for user_id, score in sorted_users:
             member = guild.get_member(user_id)
             if member is not None:
                 username = member.display_name
-                mention = member.mention
             else:
                 username = f"Unknown User ({user_id})"
-                mention = username
-            prefix_score = sum([1 if s["correct"] else -1 for s in user_scores.values()])
-            prefix_leaderboard_desc += f"{rank}. {mention}: {prefix_score}\n"
+            prefix_leaderboard_desc += f"{rank}. **{username}**: {score}\n"
             rank += 1
             if rank > 5:
                 break
         leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
-        
+
+    # Add disclaimer in the footer of the embed
+    leaderboard_embed.set_footer(text="Disclaimer: Leaderboard is updated once per hour. To learn more about the quiz commands, run `commands` in #bot-commands.")
+
     # Update the leaderboard message in the leaderboard channel
     leaderboard_message = None
     async for message in leaderboard_channel.history():
