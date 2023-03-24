@@ -11,7 +11,7 @@ RUN apt-get update && apt-get -y full-upgrade -y && apt-get install -y python3-s
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip && \
-pip install discord.py requests dnspython pycryptodome cryptography python-whois && \
+pip install discord.py discord-py-slash-command discord-py-interactions requests dnspython pycryptodome cryptography python-whois && \
 pip install --user requests dnspython pycryptodome cryptography python-whois && \
 pip show requests && \
 pip list
