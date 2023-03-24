@@ -6,6 +6,8 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 
 [See the bot in action](https://discord.io/cybersentinels)
 
+![](https://discord.io/cybersentinels/badge)
+
 ## Commands Available:
 *Command prefix: '!', '/'*
 
