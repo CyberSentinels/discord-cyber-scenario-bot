@@ -158,24 +158,31 @@ async def update_leaderboard():
         overall_incorrect = sum([s["incorrect"] for s in scores.values()])
         overall_scores[user_id] = {"correct": overall_correct, "incorrect": overall_incorrect}
 
+    # Compute the scores for each user
+    user_score = {}
+    for user_id, scores in user_scores.items():
+        user_score[user_id] = sum([1 if s["correct"] else -1 for s in scores.values()])
+
     # Sort the users by their overall score and number of incorrect answers
-    sorted_users = sorted(overall_scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
+    sorted_users = sorted(user_score.items(), key=lambda x: x[1], reverse=True)
 
     # Create the leaderboard embed
-    leaderboard_embed = Embed(title="Leaderboard", color=0x00ff00)
+    leaderboard_embed = Embed(title="Leaderboard", color=0x006400)
+    leaderboard_embed.set_footer(text="Note: The leaderboard is updated once per hour. To learn more about the quiz commands, run `commands` in #bot-commands")
+
 
     # Add the overall leaderboard to the embed
     overall_leaderboard_desc = ""
     rank = 1
-    for user_id, scores in sorted_users:
+    for user_id, score in sorted_users:
         member = guild.get_member(user_id)
         if member is not None:
             username = member.display_name
+            mention = member.mention
         else:
             username = f"Unknown User ({user_id})"
-        correct = scores["correct"]
-        incorrect = scores["incorrect"]
-        overall_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
+            mention = username
+        overall_leaderboard_desc += f"{rank}. {mention}: {score}\n"
         rank += 1
         if rank > 5:
             break
@@ -190,16 +197,17 @@ async def update_leaderboard():
             member = guild.get_member(user_id)
             if member is not None:
                 username = member.display_name
+                mention = member.mention
             else:
                 username = f"Unknown User ({user_id})"
-            correct = user_scores["correct"]
-            incorrect = user_scores["incorrect"]
-            prefix_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
+                mention = username
+            prefix_score = sum([1 if s["correct"] else -1 for s in user_scores.values()])
+            prefix_leaderboard_desc += f"{rank}. {mention}: {prefix_score}\n"
             rank += 1
             if rank > 5:
                 break
         leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
-
+        
     # Update the leaderboard message in the leaderboard channel
     leaderboard_message = None
     async for message in leaderboard_channel.history():
