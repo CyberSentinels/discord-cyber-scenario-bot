@@ -735,6 +735,7 @@ try:
 #             print(f"Quiz Task Scheduled Successfully")
 #         except Exception as e:
 #             print(f"Error starting Quiz Task: {e}")
+    print(f"Finished Starting Tasks")
 except Exception as e:
     print(f"Error starting scheduled tasks: {e}")
 
