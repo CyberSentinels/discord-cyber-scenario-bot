@@ -136,7 +136,8 @@ async def on_reaction_add(reaction, user):
 async def update_leaderboard():
     print("Updating leaderboard")
     await client.wait_until_ready()
-    if guildid is None or leaderboardid:
+    if guildid is None or leaderboardid is None:
+        print(f"missing required guild or leaderboard channel id")
         return
     guild = client.get_guild(int(guildid))
     leaderboard_channel = guild.get_channel(int(leaderboardid))
@@ -177,24 +178,24 @@ async def update_leaderboard():
             break
     leaderboard_embed.add_field(name="Overall", value=overall_leaderboard_desc, inline=False)
 
-    # # Add the leaderboard for each prefix to the embed
-    # for prefix, scores in prefix_scores.items():
-    #     prefix_leaderboard_desc = ""
-    #     sorted_users = sorted(scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
-    #     rank = 1
-    #     for user_id, user_scores in sorted_users:
-    #         member = guild.get_member(user_id)
-    #         if member is not None:
-    #             username = member.display_name
-    #         else:
-    #             username = f"Unknown User ({user_id})"
-    #         correct = user_scores["correct"]
-    #         incorrect = user_scores["incorrect"]
-    #         prefix_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
-    #         rank += 1
-    #         if rank > 5:
-    #             break
-    #     leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
+    # Add the leaderboard for each prefix to the embed
+    for prefix, scores in prefix_scores.items():
+        prefix_leaderboard_desc = ""
+        sorted_users = sorted(scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
+        rank = 1
+        for user_id, user_scores in sorted_users:
+            member = guild.get_member(user_id)
+            if member is not None:
+                username = member.display_name
+            else:
+                username = f"Unknown User ({user_id})"
+            correct = user_scores["correct"]
+            incorrect = user_scores["incorrect"]
+            prefix_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
+            rank += 1
+            if rank > 5:
+                break
+        leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
 
     # Update the leaderboard message in the leaderboard channel
     leaderboard_message = None
