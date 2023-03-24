@@ -8,6 +8,7 @@ import traceback
 from discord import Activity, ActivityType, Status, app_commands, Embed
 from discord.ext import commands, tasks
 
+
 # import features
 from features.aplus.handle_aplus import *
 from features.bluescenarios.handle_bluescenarios import *
@@ -86,7 +87,6 @@ question_dict_mapping = {
 }
 
 user_scores = {}
-leaderboard_data = []
 
 @client.event
 async def on_reaction_add(reaction, user):
@@ -104,7 +104,6 @@ async def on_reaction_add(reaction, user):
         # Check if the user has already responded to this question
         if message_id in user_responses and question_id in user_responses[message_id] and user_id in user_responses[message_id][question_id]:
             # User has already responded to this question, do not update their response or score
-            await reaction.remove(user)
             return
 
         # Update the response for this question for all users
@@ -121,41 +120,37 @@ async def on_reaction_add(reaction, user):
         question_dict = question_dict_mapping[prefix]
         question = question_dict[question_number]
         correct_answer = question["correctanswer"].lower()
-
-        if user_id not in user_scores:
-            user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
-
+        if answer:
+            if user_id not in user_scores:
+                user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
+        # Convert the correct answer to lowercase
         if answer == correct_answer:
             user_scores[user_id][prefix]["correct"] += 1  # Increment the user's score for this prefix
             await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
-        elif answer:
+        else:
             user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
             await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
-
-        # Update the user's score and ranking in the leaderboard data
-        if user_id in user_responses[message_id][question_id]:
-            user_score = sum([s.get("correct", 0) for s in user_scores.get(user_id, {}).values()])
-            leaderboard_data.append((user_id, user_score))
-            leaderboard_data.sort(key=lambda x: x[1], reverse=True)
-            for i, (user_id, score) in enumerate(leaderboard_data):
-                user_scores[user_id]["rank"] = i + 1
-
-        return
+            return
 
 async def update_leaderboard():
-    print("Starting update leaderboard code")
-    await client.wait_until_ready()
-    if guildid is None or leaderboardid is None:
-        return
     print("Updating leaderboard")
+    await client.wait_until_ready()
+    if guildid is None or leaderboardid:
+        return
     guild = client.get_guild(int(guildid))
     leaderboard_channel = guild.get_channel(int(leaderboardid))
+
+    # Compute the scores for each user and prefix
+    prefix_scores = {p: {} for p in question_dict_mapping}
+    for user_id, scores in user_scores.items():
+        for prefix, score in scores.items():
+            prefix_scores[prefix][user_id] = {"correct": score["correct"], "incorrect": score["incorrect"]}
 
     # Compute the overall scores for each user
     overall_scores = {}
     for user_id, scores in user_scores.items():
-        overall_correct = sum([s.get("correct", 0) for s in scores.values()])
-        overall_incorrect = sum([s.get("incorrect", 0) for s in scores.values()])
+        overall_correct = sum([s["correct"] for s in scores.values()])
+        overall_incorrect = sum([s["incorrect"] for s in scores.values()])
         overall_scores[user_id] = {"correct": overall_correct, "incorrect": overall_incorrect}
 
     # Sort the users by their overall score and number of incorrect answers
@@ -180,21 +175,6 @@ async def update_leaderboard():
         if rank > 5:
             break
     leaderboard_embed.add_field(name="Overall", value=overall_leaderboard_desc, inline=False)
-
-    # Update the leaderboard message in the leaderboard channel
-    leaderboard_message = None
-    async for message in leaderboard_channel.history():
-        if message.author == client.user:
-            leaderboard_message = message
-            break
-    if leaderboard_message is None:
-        leaderboard_message = await leaderboard_channel.send(embed=leaderboard_embed)
-    else:
-        await leaderboard_message.edit(embed=leaderboard_embed)
-
-    print("Leaderboard updated successfully")
-
-
 
     # # Add the leaderboard for each prefix to the embed
     # for prefix, scores in prefix_scores.items():
@@ -491,8 +471,10 @@ async def whois(ctx, domain: str):
         await ctx.send(f"Error: {e}. Invalid input format.")
 
 # Define the leaderboard update task
-@tasks.loop(hours=0, minutes=5)
+@tasks.loop(hours=1, minutes=0)
 async def update_leaderboard_task():
+    print("start sleep 60 seconds")
+    asyncio.sleep(60)
     await update_leaderboard()
 
 # Define the random quiz task to run at 12:00pm every day
