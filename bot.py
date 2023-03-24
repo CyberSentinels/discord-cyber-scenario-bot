@@ -87,6 +87,7 @@ question_dict_mapping = {
 }
 
 user_scores = {}
+leaderboard_data = []
 
 @client.event
 async def on_reaction_add(reaction, user):
@@ -130,19 +131,24 @@ async def on_reaction_add(reaction, user):
         else:
             user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
             await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
-            return
+
+        # Update the user's score and ranking in the leaderboard data
+        user_score = sum([s["correct"] for s in user_scores[user_id].values()])
+        leaderboard_data.append((user_id, user_score))
+        leaderboard_data.sort(key=lambda x: x[1], reverse=True)
+        for i, (user_id, score) in enumerate(leaderboard_data):
+            user_scores[user_id]["rank"] = i + 1
+
+        return
 
 async def update_leaderboard():
-    print("Updating leaderboard")
+    print("Starting update leaderboard code")
     await client.wait_until_ready()
+    if guildid is None or leaderboardid:
+        return
+    print("Updating leaderboard")
     guild = client.get_guild(int(guildid))
     leaderboard_channel = guild.get_channel(int(leaderboardid))
-
-    # Compute the scores for each user and prefix
-    prefix_scores = {p: {} for p in question_dict_mapping}
-    for user_id, scores in user_scores.items():
-        for prefix, score in scores.items():
-            prefix_scores[prefix][user_id] = {"correct": score["correct"], "incorrect": score["incorrect"]}
 
     # Compute the overall scores for each user
     overall_scores = {}
@@ -173,6 +179,39 @@ async def update_leaderboard():
         if rank > 5:
             break
     leaderboard_embed.add_field(name="Overall", value=overall_leaderboard_desc, inline=False)
+
+    # # Add the leaderboard for each prefix to the embed
+    # for prefix, leaderboard in prefix_leaderboards.items():
+    #     prefix_leaderboard_desc = ""
+    #     sorted_users = sorted(leaderboard, key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
+    #     rank = 1
+    #     for user_id, scores in sorted_users:
+    #         member = guild.get_member(user_id)
+    #         if member is not None:
+    #             username = member.display_name
+    #         else:
+    #             username = f"Unknown User ({user_id})"
+    #         correct = scores["correct"]
+    #         incorrect = scores["incorrect"]
+    #         prefix_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
+    #         rank += 1
+    #         if rank > 5:
+    #             break
+    #     leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
+
+    # Update the leaderboard message in the leaderboard channel
+    leaderboard_message = None
+    async for message in leaderboard_channel.history():
+        if message.author == client.user:
+            leaderboard_message = message
+            break
+    if leaderboard_message is None:
+        leaderboard_message = await leaderboard_channel.send(embed=leaderboard_embed)
+    else:
+        await leaderboard_message.edit(embed=leaderboard_embed)
+
+    print("Leaderboard updated successfully")
+
 
     # # Add the leaderboard for each prefix to the embed
     # for prefix, scores in prefix_scores.items():
@@ -472,7 +511,7 @@ async def whois(ctx, domain: str):
 @tasks.loop(hours=1, minutes=0)
 async def update_leaderboard_task():
     print("start sleep 60 seconds")
-    time.sleep(60)
+    asyncio.sleep(60)
     await update_leaderboard()
 
 # Define the random quiz task to run at 12:00pm every day
@@ -481,7 +520,7 @@ async def send_message_and_random():
     print("starting send random message")
     try:
         await client.wait_until_ready()
-        if guildid is None or channelid is None or secplusrole or aplusrole or netplusrole or quizrole is None:
+        if guildid is None or channelid is None or secplusrole is None or aplusrole is None or netplusrole is None or quizrole is None:
             return
         now = datetime.datetime.utcnow()
         scheduled_time = datetime.time(
