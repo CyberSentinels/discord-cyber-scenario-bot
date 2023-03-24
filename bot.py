@@ -133,6 +133,9 @@ async def on_reaction_add(reaction, user):
             await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
 
         # Update the user's score and ranking in the leaderboard data
+        user_scores[user_id]
+        if user_id not in user_scores:
+            user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
         user_score = sum([s["correct"] for s in user_scores[user_id].values()])
         leaderboard_data.append((user_id, user_score))
         leaderboard_data.sort(key=lambda x: x[1], reverse=True)
@@ -508,7 +511,7 @@ async def whois(ctx, domain: str):
         await ctx.send(f"Error: {e}. Invalid input format.")
 
 # Define the leaderboard update task
-@tasks.loop(hours=1, minutes=0)
+@tasks.loop(hours=0, minutes=5)
 async def update_leaderboard_task():
     await update_leaderboard()
 
