@@ -8,7 +8,6 @@ import traceback
 from discord import Activity, ActivityType, Status, app_commands, Embed
 from discord.ext import commands, tasks
 
-
 # import features
 from features.aplus.handle_aplus import *
 from features.bluescenarios.handle_bluescenarios import *
