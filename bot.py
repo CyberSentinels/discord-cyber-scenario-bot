@@ -26,10 +26,10 @@ from features.subnet.handle_subnet import *
 from features.whois.handle_whois import *
 
 # import tasks
-from tasks.aplus.task_aplus import task_aplus
-from tasks.netplus.task_netplus import task_netplus
-from tasks.quiz.task_quiz import task_quiz
-from tasks.secplus.task_secplus import task_secplus
+from tasks.aplus.task_aplus import *
+from tasks.netplus.task_netplus import *
+from tasks.quiz.task_quiz import *
+from tasks.secplus.task_secplus import *
 
 import tracemalloc
 
