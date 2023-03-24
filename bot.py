@@ -526,6 +526,7 @@ async def whois(ctx, domain: str):
 # Define the random quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=0)
 async def send_message_and_random():
+    print("starting send random message")
     try:
         await client.wait_until_ready()
         if guildid is None or channelid is None or secplusrole or aplusrole or netplusrole or quizrole is None:
@@ -706,15 +707,16 @@ async def send_message_and_random():
 #         return
 
 # Define the leaderboard update task
-@tasks.loop(hours=0, minutes=60)
+@tasks.loop(hours=1, minutes=0)
 async def update_leaderboard_task():
+    print("start sleep 60 seconds")
     time.sleep(60)
     await update_leaderboard()
 
 # Start Task Loops
 print(f"Starting Scheduled Task Loops")
-update_leaderboard_task.start()
 send_message_and_random.start()
+update_leaderboard_task.start()
 print(f"Finished Starting Tasks")
 # try:
 # except Exception as e:
