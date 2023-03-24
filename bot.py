@@ -6,7 +6,7 @@ import random
 from discord import Activity, ActivityType, Status, app_commands, Embed
 from discord.ext import commands, tasks
 import traceback
-import time
+# import time
 
 # import features
 from features.aplus.handle_aplus import *
@@ -703,17 +703,15 @@ async def send_message_and_random():
 #         return
 
 # Define the leaderboard update task
-# @tasks.loop(hours=0, minutes=60)
-# async def update_leaderboard_task():
-#     await update_leaderboard()
+@tasks.loop(hours=0, minutes=60)
+async def update_leaderboard_task():
+    await update_leaderboard()
 
 # Start Task Loops
 try:
     print(f"Starting Scheduled Task Loops")
     try:
-        # update_leaderboard_task.start()
-        time.sleep(120)
-        await update_leaderboard()
+        update_leaderboard_task.start()
     except Exception as e:
         traceback.print_exc()
         print(f"Error starting update_leaderboard_task: {e}")
