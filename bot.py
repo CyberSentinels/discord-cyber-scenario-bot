@@ -162,7 +162,7 @@ async def update_leaderboard():
     sorted_users = sorted(overall_scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
 
     # Create the leaderboard embed
-    leaderboard_embed = Embed(title="Quiz Commands Leaderboard", color=0x00ff00)
+    leaderboard_embed = Embed(title="Quiz Commands Leaderboard", color=0x006400)
     leaderboard_embed.set_footer(text="Note: The leaderboard is updated once per hour. \n To learn more about the quiz commands, run `/commands` in #bot-commands")
 
     # Add the overall leaderboard to the embed
