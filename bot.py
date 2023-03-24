@@ -311,6 +311,41 @@ async def on_ready():
             emoji=None,
         )
         await client.change_presence(activity=activity, status=Status.online)
+        
+    # Start Task Loops
+    print(f"Starting Scheduled Task Loops")
+    send_message_and_random.start()
+    update_leaderboard_task.start()
+    print(f"Finished Starting Tasks")
+    # try:
+    # except Exception as e:
+    #     traceback.print_exc()
+    #     print(f"Error starting scheduled tasks: {e}")
+
+    #     if guildid is not None and channelid is not None and secplusrole is not None:
+    #         try:
+    #             send_message_and_quiz_secplus.start()
+    #             print(f"Sec Plus Task Scheduled Successfully")
+    #         except Exception as e:
+    #             print(f"Error starting Sec Plus Task: {e}")
+    #     if guildid is not None and channelid is not None and netplusrole is not None:
+    #         try:
+    #             send_message_and_quiz_netplus.start()
+    #             print(f"Net Plus Task Scheduled Successfully")
+    #         except Exception as e:
+    #             print(f"Error starting Net Plus Task: {e}")
+    #     if guildid is not None and channelid is not None and aplusrole is not None:
+    #         try:
+    #             send_message_and_quiz_aplus.start()
+    #             print(f"A Plus Task Scheduled Successfully")
+    #         except Exception as e:
+    #             print(f"Error starting A Plus Task: {e}")
+    #     if guildid is not None and channelid is not None and quizrole is not None:
+    #         try:
+    #             send_message_and_quiz.start()
+    #             print(f"Quiz Task Scheduled Successfully")
+    #         except Exception as e:
+    #             print(f"Error starting Quiz Task: {e}")
 
 @client.hybrid_command(
     name="quiz", description="Replies with CompTIA's A+ related prompt."
@@ -524,6 +559,13 @@ async def whois(ctx, domain: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
+# Define the leaderboard update task
+@tasks.loop(hours=1, minutes=0)
+async def update_leaderboard_task():
+    print("start sleep 60 seconds")
+    time.sleep(60)
+    await update_leaderboard()
+
 # Define the random quiz task to run at 12:00pm every day
 @tasks.loop(hours=24, minutes=0)
 async def send_message_and_random():
@@ -706,47 +748,5 @@ async def send_message_and_random():
 #             f"An error occurred while running the 'before_send_message_and_quiz_secplus' command: {e}"
 #         )
 #         return
-
-# Define the leaderboard update task
-@tasks.loop(hours=1, minutes=0)
-async def update_leaderboard_task():
-    print("start sleep 60 seconds")
-    time.sleep(60)
-    await update_leaderboard()
-
-# Start Task Loops
-print(f"Starting Scheduled Task Loops")
-send_message_and_random.start()
-update_leaderboard_task.start()
-print(f"Finished Starting Tasks")
-# try:
-# except Exception as e:
-#     traceback.print_exc()
-#     print(f"Error starting scheduled tasks: {e}")
-
-#     if guildid is not None and channelid is not None and secplusrole is not None:
-#         try:
-#             send_message_and_quiz_secplus.start()
-#             print(f"Sec Plus Task Scheduled Successfully")
-#         except Exception as e:
-#             print(f"Error starting Sec Plus Task: {e}")
-#     if guildid is not None and channelid is not None and netplusrole is not None:
-#         try:
-#             send_message_and_quiz_netplus.start()
-#             print(f"Net Plus Task Scheduled Successfully")
-#         except Exception as e:
-#             print(f"Error starting Net Plus Task: {e}")
-#     if guildid is not None and channelid is not None and aplusrole is not None:
-#         try:
-#             send_message_and_quiz_aplus.start()
-#             print(f"A Plus Task Scheduled Successfully")
-#         except Exception as e:
-#             print(f"Error starting A Plus Task: {e}")
-#     if guildid is not None and channelid is not None and quizrole is not None:
-#         try:
-#             send_message_and_quiz.start()
-#             print(f"Quiz Task Scheduled Successfully")
-#         except Exception as e:
-#             print(f"Error starting Quiz Task: {e}")
 
 client.run(bottoken)
