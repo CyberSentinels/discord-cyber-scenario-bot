@@ -154,8 +154,8 @@ async def update_leaderboard():
     # Compute the overall scores for each user
     overall_scores = {}
     for user_id, scores in user_scores.items():
-        overall_correct = sum([s["correct"] for s in scores.values()])
-        overall_incorrect = sum([s["incorrect"] for s in scores.values()])
+        overall_correct = sum([s.get("correct", 0) for s in scores.values()])
+        overall_incorrect = sum([s.get("incorrect", 0) for s in scores.values()])
         overall_scores[user_id] = {"correct": overall_correct, "incorrect": overall_incorrect}
 
     # Sort the users by their overall score and number of incorrect answers
@@ -193,6 +193,7 @@ async def update_leaderboard():
         await leaderboard_message.edit(embed=leaderboard_embed)
 
     print("Leaderboard updated successfully")
+
 
 
     # # Add the leaderboard for each prefix to the embed
