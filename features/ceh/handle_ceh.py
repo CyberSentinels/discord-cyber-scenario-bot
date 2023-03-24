@@ -29,6 +29,10 @@ def handle_ceh(user_responses):
     # Select a random question ID from the weighted list
     question_id = random.choice(weighted_question_ids)
 
+    # If all questions have been answered correctly, reset all the weights to 1
+    if not weighted_question_ids:
+        weighted_question_ids = [f"{prefix}{i}" for i in range(len(cehdict))]
+
     # Retrieve the selected question
     question = cehdict[int(question_id.split('_')[1])]
     prompt = question["question"]

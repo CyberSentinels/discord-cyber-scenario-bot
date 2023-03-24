@@ -6,7 +6,6 @@ from .ccnadict import ccnadict
 import random
 
 def handle_ccna(user_responses):
-
     # Create a list of question IDs, weighted based on user responses
     weighted_question_ids = []
     for i, question in enumerate(ccnadict):
@@ -24,11 +23,16 @@ def handle_ccna(user_responses):
             else:
                 weight -= 1  # Decrease weight for correct answers
 
-    # Add the question ID to the list with the appropriate weight
-    weighted_question_ids.extend([question_id] * weight)
+        # Add the question ID to the list with the appropriate weight
+        weighted_question_ids.extend([question_id] * weight)
 
-    # Select a random question ID from the weighted list
-    question_id = random.choice(weighted_question_ids)
+    # If all questions have been answered correctly, reset all the weights to 1
+    if not weighted_question_ids:
+        weighted_question_ids = [f"ccna_{i}" for i in range(len(ccnadict))]
+
+    # If all questions have been answered correctly, reset all the weights to 1
+    if not weighted_question_ids:
+        weighted_question_ids = [f"{prefix}{i}" for i in range(len(ccnadict))]
 
     # Retrieve the selected question
     question = ccnadict[int(question_id.split('_')[1])]

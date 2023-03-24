@@ -101,6 +101,11 @@ async def on_reaction_add(reaction, user):
         answer = emoji_to_answer[reaction.emoji].lower()  # Convert the emoji to the corresponding answer option
         user_id = user.id  # Get the user's Discord ID
 
+        # Check if the user has already responded to this question
+        if message_id in user_responses and question_id in user_responses[message_id] and user_id in user_responses[message_id][question_id]:
+            # User has already responded to this question, do not update their response or score
+            return
+
         # Update the response for this question for all users
         if message_id not in user_responses:
             user_responses[message_id] = {}
