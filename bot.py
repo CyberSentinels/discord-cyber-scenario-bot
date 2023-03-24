@@ -101,6 +101,8 @@ async def on_reaction_add(reaction, user):
         question_number = int(question_number)
         answer = emoji_to_answer[reaction.emoji].lower()  # Convert the emoji to the corresponding answer option
         user_id = user.id  # Get the user's Discord ID
+        global user_responses
+        global user_scores
 
         # Check if the user has already responded to this question
         if message_id in user_responses and question_id in user_responses[message_id] and user_id in user_responses[message_id][question_id]:
@@ -136,6 +138,7 @@ async def on_reaction_add(reaction, user):
 async def update_leaderboard():
     print("Updating leaderboard")
     await client.wait_until_ready()
+    global user_scores
     if guildid is None or leaderboardid is None:
         print(f"missing required guild or leaderboard channel id")
         return
