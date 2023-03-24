@@ -104,6 +104,7 @@ async def on_reaction_add(reaction, user):
         # Check if the user has already responded to this question
         if message_id in user_responses and question_id in user_responses[message_id] and user_id in user_responses[message_id][question_id]:
             # User has already responded to this question, do not update their response or score
+            await reaction.remove(user)
             return
 
         # Update the response for this question for all users
