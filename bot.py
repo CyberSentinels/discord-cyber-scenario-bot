@@ -194,7 +194,7 @@ async def update_leaderboard():
     if leaderboard_message is None:
         leaderboard_message = await leaderboard_channel.send(embed=leaderboard_embed)
     else:
-        await leaderboard_message.edit(embed=leaderboard_embed
+        await leaderboard_message.edit(embed=leaderboard_embed)
 
 @client.event
 async def on_command_error(ctx, error):
@@ -702,40 +702,40 @@ async def send_message_and_random():
 #         )
 #         return
 
-    # Define the leaderboard update task
-    @tasks.loop(minutes=5)
-    async def update_leaderboard_task():
-        await update_leaderboard()
+# Define the leaderboard update task
+@tasks.loop(minutes=5)
+async def update_leaderboard_task():
+    await update_leaderboard()
 
+try:
     print(f"Starting Scheduled Task Loops")
     update_leaderboard_task.start()
     send_message_and_random.start()
-    # try:
-    #     if guildid is not None and channelid is not None and secplusrole is not None:
-    #         try:
-    #             send_message_and_quiz_secplus.start()
-    #             print(f"Sec Plus Task Scheduled Successfully")
-    #         except Exception as e:
-    #             print(f"Error starting Sec Plus Task: {e}")
-    #     if guildid is not None and channelid is not None and netplusrole is not None:
-    #         try:
-    #             send_message_and_quiz_netplus.start()
-    #             print(f"Net Plus Task Scheduled Successfully")
-    #         except Exception as e:
-    #             print(f"Error starting Net Plus Task: {e}")
-    #     if guildid is not None and channelid is not None and aplusrole is not None:
-    #         try:
-    #             send_message_and_quiz_aplus.start()
-    #             print(f"A Plus Task Scheduled Successfully")
-    #         except Exception as e:
-    #             print(f"Error starting A Plus Task: {e}")
-    #     if guildid is not None and channelid is not None and quizrole is not None:
-    #         try:
-    #             send_message_and_quiz.start()
-    #             print(f"Quiz Task Scheduled Successfully")
-    #         except Exception as e:
-    #             print(f"Error starting Quiz Task: {e}")
-    # except Exception as e:
-    #     print(f"Error starting scheduled tasks: {e}")
+#     if guildid is not None and channelid is not None and secplusrole is not None:
+#         try:
+#             send_message_and_quiz_secplus.start()
+#             print(f"Sec Plus Task Scheduled Successfully")
+#         except Exception as e:
+#             print(f"Error starting Sec Plus Task: {e}")
+#     if guildid is not None and channelid is not None and netplusrole is not None:
+#         try:
+#             send_message_and_quiz_netplus.start()
+#             print(f"Net Plus Task Scheduled Successfully")
+#         except Exception as e:
+#             print(f"Error starting Net Plus Task: {e}")
+#     if guildid is not None and channelid is not None and aplusrole is not None:
+#         try:
+#             send_message_and_quiz_aplus.start()
+#             print(f"A Plus Task Scheduled Successfully")
+#         except Exception as e:
+#             print(f"Error starting A Plus Task: {e}")
+#     if guildid is not None and channelid is not None and quizrole is not None:
+#         try:
+#             send_message_and_quiz.start()
+#             print(f"Quiz Task Scheduled Successfully")
+#         except Exception as e:
+#             print(f"Error starting Quiz Task: {e}")
+except Exception as e:
+    print(f"Error starting scheduled tasks: {e}")
 
 client.run(bottoken)
