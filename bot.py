@@ -127,6 +127,7 @@ async def on_reaction_add(reaction, user):
             return
 
 async def update_leaderboard():
+    print("Updating leaderboard")
     guild = client.get_guild(int(guildid))
     leaderboard_channel = guild.get_channel(int(leaderboardid))
 
@@ -195,6 +196,8 @@ async def update_leaderboard():
         leaderboard_message = await leaderboard_channel.send(embed=leaderboard_embed)
     else:
         await leaderboard_message.edit(embed=leaderboard_embed)
+
+    print("Leaderboard updated successfully")
 
 @client.event
 async def on_command_error(ctx, error):
