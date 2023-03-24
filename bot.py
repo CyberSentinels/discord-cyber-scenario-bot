@@ -509,8 +509,6 @@ async def whois(ctx, domain: str):
 # Define the leaderboard update task
 @tasks.loop(hours=1, minutes=0)
 async def update_leaderboard_task():
-    print("start sleep 60 seconds")
-    asyncio.sleep(60)
     await update_leaderboard()
 
 # Define the random quiz task to run at 12:00pm every day
