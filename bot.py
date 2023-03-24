@@ -712,24 +712,14 @@ async def update_leaderboard_task():
     await update_leaderboard()
 
 # Start Task Loops
-try:
-    print(f"Starting Scheduled Task Loops")
-    try:
-        update_leaderboard_task.start()
-    except Exception as e:
-        traceback.print_exc()
-        print(f"Error starting update_leaderboard_task: {e}")
-
-    try:
-        send_message_and_random.start()
-    except Exception as e:
-        traceback.print_exc()
-        print(f"Error starting send_message_and_random: {e}")
-
-    print(f"Finished Starting Tasks")
-except Exception as e:
-    traceback.print_exc()
-    print(f"Error starting scheduled tasks: {e}")
+print(f"Starting Scheduled Task Loops")
+update_leaderboard_task.start()
+send_message_and_random.start()
+print(f"Finished Starting Tasks")
+# try:
+# except Exception as e:
+#     traceback.print_exc()
+#     print(f"Error starting scheduled tasks: {e}")
 
 #     if guildid is not None and channelid is not None and secplusrole is not None:
 #         try:
