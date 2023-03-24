@@ -67,7 +67,7 @@ print(f"SECPLUSROLE: {secplusrole}")
 print(f"QUIZROLE: {quizrole}")
 
 user_responses = {}  # Format: {message_id: {question_id: {user_id: answer}}}
-valid_emojis = ["🇦", "🇧", "🇨", "🇩"]  # :regional_indicator_a:, :regional_indicator_b:, :regional_indicator_c:, :regional_indicator_d:
+valid_emojis = ["🇦", "🇧", "🇨", "🇩", "❓"]  # :regional_indicator_a:, :regional_indicator_b:, :regional_indicator_c:, :regional_indicator_d:, :question_mark:
 emoji_to_answer = {
     "🇦": "A",
     "🇧": "B",
@@ -107,6 +107,7 @@ async def on_reaction_add(reaction, user):
         # Check if the user has already responded to this question
         if message_id in user_responses and question_id in user_responses[message_id] and user_id in user_responses[message_id][question_id]:
             # User has already responded to this question, do not update their response or score
+            await reaction.remove(user)
             return
 
         # Update the response for this question for all users
@@ -123,6 +124,13 @@ async def on_reaction_add(reaction, user):
         question_dict = question_dict_mapping[prefix]
         question = question_dict[question_number]
         correct_answer = question["correctanswer"].lower()
+        if answer == "?":  # Check if the question mark emoji was selected
+            if "reasoning" in question:
+                await user.send(f"The correct answer is '{correct_answer}'\n\n**Reasoning**: {question['reasoning']}")
+            else:
+                await user.send(f"The correct answer is '{correct_answer}'")
+            return  # Stop processing the selected reaction if the question mark emoji was selected
+
         if answer:
             if user_id not in user_scores:
                 user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
@@ -134,6 +142,7 @@ async def on_reaction_add(reaction, user):
             user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
             await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
             return
+
 
 async def update_leaderboard():
     print("Updating leaderboard")

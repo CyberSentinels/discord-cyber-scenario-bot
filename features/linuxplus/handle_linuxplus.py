@@ -46,9 +46,6 @@ def handle_linuxplus(user_responses):
         if key != "correctanswer":
             options.append(f"**{key.upper()}**: {value}")
     options = "\n".join(options)
-    if reasoning is not None:
-        response = f"**Here's a Linux Plus question for you**:\n\n**Question**: {prompt}\n\n**Options**: \n{options}\n\n**Correct Answer**: ||{correct_answer}||\n\n**Reasoning**: ||{reasoning}||"
-    else:
-        response = f"**Here's a Linux Plus question for you**:\n\n**Question**: {prompt}\n\n**Options**: \n{options}\n\n**Correct Answer**: ||{correct_answer}||"
+    response = f"**Here's a Linux+ question for you**:\n\n**Question**: {prompt}\n\n**Options**: \n{options}"
 
     return response, question_id
