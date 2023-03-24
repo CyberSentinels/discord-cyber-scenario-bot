@@ -134,7 +134,7 @@ async def on_reaction_add(reaction, user):
 
         # Update the user's score and ranking in the leaderboard data
         if user_id in user_responses[message_id][question_id]:
-            user_score = sum([s.get("correct", 0) for s in user_scores.get(user_id, {}).values()])
+            user_score = sum([s["correct"] for s in user_scores[user_id].values()])
             leaderboard_data.append((user_id, user_score))
             leaderboard_data.sort(key=lambda x: x[1], reverse=True)
             for i, (user_id, score) in enumerate(leaderboard_data):
