@@ -121,33 +121,31 @@ async def on_reaction_add(reaction, user):
         question_dict = question_dict_mapping[prefix]
         question = question_dict[question_number]
         correct_answer = question["correctanswer"].lower()
-        if answer:
-            if user_id not in user_scores:
-                user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
-        # Convert the correct answer to lowercase
+
+        if user_id not in user_scores:
+            user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
+
         if answer == correct_answer:
             user_scores[user_id][prefix]["correct"] += 1  # Increment the user's score for this prefix
             await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
-        else:
+        elif answer:
             user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
             await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
 
         # Update the user's score and ranking in the leaderboard data
-        user_scores[user_id]
-        if user_id not in user_scores:
-            user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
-        user_score = sum([s["correct"] for s in user_scores[user_id].values()])
-        leaderboard_data.append((user_id, user_score))
-        leaderboard_data.sort(key=lambda x: x[1], reverse=True)
-        for i, (user_id, score) in enumerate(leaderboard_data):
-            user_scores[user_id]["rank"] = i + 1
+        if user_id in user_responses[message_id][question_id]:
+            user_score = sum([s["correct"] for s in user_scores[user_id].values()])
+            leaderboard_data.append((user_id, user_score))
+            leaderboard_data.sort(key=lambda x: x[1], reverse=True)
+            for i, (user_id, score) in enumerate(leaderboard_data):
+                user_scores[user_id]["rank"] = i + 1
 
         return
 
 async def update_leaderboard():
     print("Starting update leaderboard code")
     await client.wait_until_ready()
-    if guildid is None or leaderboardid:
+    if guildid is None or leaderboardid is None:
         return
     print("Updating leaderboard")
     guild = client.get_guild(int(guildid))
@@ -182,25 +180,6 @@ async def update_leaderboard():
         if rank > 5:
             break
     leaderboard_embed.add_field(name="Overall", value=overall_leaderboard_desc, inline=False)
-
-    # # Add the leaderboard for each prefix to the embed
-    # for prefix, leaderboard in prefix_leaderboards.items():
-    #     prefix_leaderboard_desc = ""
-    #     sorted_users = sorted(leaderboard, key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
-    #     rank = 1
-    #     for user_id, scores in sorted_users:
-    #         member = guild.get_member(user_id)
-    #         if member is not None:
-    #             username = member.display_name
-    #         else:
-    #             username = f"Unknown User ({user_id})"
-    #         correct = scores["correct"]
-    #         incorrect = scores["incorrect"]
-    #         prefix_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
-    #         rank += 1
-    #         if rank > 5:
-    #             break
-    #     leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
 
     # Update the leaderboard message in the leaderboard channel
     leaderboard_message = None
