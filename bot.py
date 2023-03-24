@@ -129,6 +129,7 @@ async def on_reaction_add(reaction, user):
 
 async def update_leaderboard():
     print("Updating leaderboard")
+    await client.wait_until_ready()
     guild = client.get_guild(int(guildid))
     leaderboard_channel = guild.get_channel(int(leaderboardid))
 
@@ -249,103 +250,6 @@ async def commands(ctx):
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
-
-# Define the on_ready event handler
-@client.event
-async def on_ready():
-    # Get the name of the bot user
-    bot_username = client.user.name
-
-    # Find the Discord guild object based on its ID
-    guild = client.get_guild(int(guildid))
-
-    # Find the channel object based on its ID
-    channel = guild.get_channel(int(channelid))
-
-    # Print a message indicating that the bot is logged in and ready
-    print(f"Logged in as {bot_username} ({client.user.id})")
-    print(f"Connected to Discord server '{guild.name}' ({guild.id})")
-    print(
-        f"Bot is ready and listening for commands in channel '{channel.name}' ({channel.id})"
-    )
-    print("\nLogged in as:")
-    print(" Username", client.user.name)
-    print(" User ID", client.user.id)
-    print(
-        "To invite the bot in your server use this link:\n https://discord.com/api/oauth2/authorize?client_id="
-        + str(client.user.id)
-        + "&permissions=8&scope=bot%20applications.commands"
-    )
-    print("Time now", str(datetime.datetime.now()))
-
-    try:
-        synced = await client.tree.sync()
-        print(f"Synced {len(synced)} command(s)")
-    except Exception as e:
-        print(e)
-
-    if bot_username == "Cyber Sentinel":
-        activity = Activity(
-            type=ActivityType.streaming,
-            name="cybersentinels.org",
-            url="https://cybersentinels.org/",
-            state="Creating Content",
-            details="Creating Content for the Cyber Sentinels",
-            assets={
-                "large_image": "cybersentinels_logo",
-                "large_text": "Cyber Sentinels Logo",
-                "small_image": "cybersentinels_logo",
-                "small_text": "Cyber Sentinels Logo",
-            },
-            buttons=["Try", "Harder"],
-            emoji=None,
-        )
-        await client.change_presence(activity=activity, status=Status.online)
-    else:
-        activity = Activity(
-            type=ActivityType.streaming,
-            name="cybersentinels.org",
-            url="https://cybersentinels.org/",
-            state="Creating Content",
-            details="Creating Content for the Cyber Sentinels",
-            emoji=None,
-        )
-        await client.change_presence(activity=activity, status=Status.online)
-        
-    # Start Task Loops
-    print(f"Starting Scheduled Task Loops")
-    send_message_and_random.start()
-    update_leaderboard_task.start()
-    print(f"Finished Starting Tasks")
-    # try:
-    # except Exception as e:
-    #     traceback.print_exc()
-    #     print(f"Error starting scheduled tasks: {e}")
-
-    #     if guildid is not None and channelid is not None and secplusrole is not None:
-    #         try:
-    #             send_message_and_quiz_secplus.start()
-    #             print(f"Sec Plus Task Scheduled Successfully")
-    #         except Exception as e:
-    #             print(f"Error starting Sec Plus Task: {e}")
-    #     if guildid is not None and channelid is not None and netplusrole is not None:
-    #         try:
-    #             send_message_and_quiz_netplus.start()
-    #             print(f"Net Plus Task Scheduled Successfully")
-    #         except Exception as e:
-    #             print(f"Error starting Net Plus Task: {e}")
-    #     if guildid is not None and channelid is not None and aplusrole is not None:
-    #         try:
-    #             send_message_and_quiz_aplus.start()
-    #             print(f"A Plus Task Scheduled Successfully")
-    #         except Exception as e:
-    #             print(f"Error starting A Plus Task: {e}")
-    #     if guildid is not None and channelid is not None and quizrole is not None:
-    #         try:
-    #             send_message_and_quiz.start()
-    #             print(f"Quiz Task Scheduled Successfully")
-    #         except Exception as e:
-    #             print(f"Error starting Quiz Task: {e}")
 
 @client.hybrid_command(
     name="quiz", description="Replies with CompTIA's A+ related prompt."
@@ -748,5 +652,102 @@ async def send_message_and_random():
 #             f"An error occurred while running the 'before_send_message_and_quiz_secplus' command: {e}"
 #         )
 #         return
+
+# Define the on_ready event handler
+@client.event
+async def on_ready():
+    print(f"Starting Scheduled Task Loops")
+    send_message_and_random.start()
+    update_leaderboard_task.start()
+    print(f"Finished Starting Tasks")
+    # Get the name of the bot user
+    bot_username = client.user.name
+
+    # Find the Discord guild object based on its ID
+    guild = client.get_guild(int(guildid))
+
+    # Find the channel object based on its ID
+    channel = guild.get_channel(int(channelid))
+
+    # Print a message indicating that the bot is logged in and ready
+    print(f"Logged in as {bot_username} ({client.user.id})")
+    print(f"Connected to Discord server '{guild.name}' ({guild.id})")
+    print(
+        f"Bot is ready and listening for commands in channel '{channel.name}' ({channel.id})"
+    )
+    print("\nLogged in as:")
+    print(" Username", client.user.name)
+    print(" User ID", client.user.id)
+    print(
+        "To invite the bot in your server use this link:\n https://discord.com/api/oauth2/authorize?client_id="
+        + str(client.user.id)
+        + "&permissions=8&scope=bot%20applications.commands"
+    )
+    print("Time now", str(datetime.datetime.now()))
+
+    try:
+        synced = await client.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
+    except Exception as e:
+        print(e)
+
+    if bot_username == "Cyber Sentinel":
+        activity = Activity(
+            type=ActivityType.streaming,
+            name="cybersentinels.org",
+            url="https://cybersentinels.org/",
+            state="Creating Content",
+            details="Creating Content for the Cyber Sentinels",
+            assets={
+                "large_image": "cybersentinels_logo",
+                "large_text": "Cyber Sentinels Logo",
+                "small_image": "cybersentinels_logo",
+                "small_text": "Cyber Sentinels Logo",
+            },
+            buttons=["Try", "Harder"],
+            emoji=None,
+        )
+        await client.change_presence(activity=activity, status=Status.online)
+    else:
+        activity = Activity(
+            type=ActivityType.streaming,
+            name="cybersentinels.org",
+            url="https://cybersentinels.org/",
+            state="Creating Content",
+            details="Creating Content for the Cyber Sentinels",
+            emoji=None,
+        )
+        await client.change_presence(activity=activity, status=Status.online)
+        
+    # Start Task Loops
+    # try:
+    # except Exception as e:
+    #     traceback.print_exc()
+    #     print(f"Error starting scheduled tasks: {e}")
+
+    #     if guildid is not None and channelid is not None and secplusrole is not None:
+    #         try:
+    #             send_message_and_quiz_secplus.start()
+    #             print(f"Sec Plus Task Scheduled Successfully")
+    #         except Exception as e:
+    #             print(f"Error starting Sec Plus Task: {e}")
+    #     if guildid is not None and channelid is not None and netplusrole is not None:
+    #         try:
+    #             send_message_and_quiz_netplus.start()
+    #             print(f"Net Plus Task Scheduled Successfully")
+    #         except Exception as e:
+    #             print(f"Error starting Net Plus Task: {e}")
+    #     if guildid is not None and channelid is not None and aplusrole is not None:
+    #         try:
+    #             send_message_and_quiz_aplus.start()
+    #             print(f"A Plus Task Scheduled Successfully")
+    #         except Exception as e:
+    #             print(f"Error starting A Plus Task: {e}")
+    #     if guildid is not None and channelid is not None and quizrole is not None:
+    #         try:
+    #             send_message_and_quiz.start()
+    #             print(f"Quiz Task Scheduled Successfully")
+    #         except Exception as e:
+    #             print(f"Error starting Quiz Task: {e}")
 
 client.run(bottoken)
