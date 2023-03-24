@@ -59,6 +59,7 @@ quizrole = os.environ.get("QUIZROLE")
 # print variables to confirmed they were passed in correctly
 print(f"BOT_TOKEN: {bottoken}")
 print(f"GUILD_ID: {guildid}")
+print(f"LEADERBOARD_CHANNEL_ID: {leaderboardid}")
 print(f"CHANNEL_ID: {channelid}")
 print(f"APLUSROLE: {aplusrole}")
 print(f"NETPLUSROLE: {netplusrole}")
@@ -471,10 +472,8 @@ async def whois(ctx, domain: str):
         await ctx.send(f"Error: {e}. Invalid input format.")
 
 # Define the leaderboard update task
-@tasks.loop(hours=1, minutes=0)
+@tasks.loop(hours=0, minutes=5)
 async def update_leaderboard_task():
-    print("start sleep 60 seconds")
-    asyncio.sleep(60)
     await update_leaderboard()
 
 # Define the random quiz task to run at 12:00pm every day
