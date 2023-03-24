@@ -5,6 +5,7 @@ import os
 import random
 from discord import Activity, ActivityType, Status, app_commands, Embed
 from discord.ext import commands, tasks
+import traceback
 
 # import features
 from features.aplus.handle_aplus import *
@@ -90,80 +91,119 @@ async def on_reaction_add(reaction, user):
     if user == client.user or reaction.message.author != client.user:
         return
 
-    if reaction.emoji in valid_emojis:
-        message_id = reaction.message.id  # Get the message ID
-        question_id = reaction.message.embeds[0].footer.text  # Get question ID from message footer
-        prefix, question_number = question_id.split("_")  # Extract prefix and question number
-        question_number = int(question_number)
-        answer = emoji_to_answer[reaction.emoji].lower()  # Convert the emoji to the corresponding answer option
-        user_id = user.id  # Get the user's Discord ID
+    try:
+        if reaction.emoji in valid_emojis:
+            message_id = reaction.message.id  # Get the message ID
+            question_id = reaction.message.embeds[0].footer.text  # Get question ID from message footer
+            prefix, question_number = question_id.split("_")  # Extract prefix and question number
+            question_number = int(question_number)
+            answer = emoji_to_answer[reaction.emoji].lower()  # Convert the emoji to the corresponding answer option
+            user_id = user.id  # Get the user's Discord ID
 
-        # Update the response for this question for all users
-        if message_id not in user_responses:
-            user_responses[message_id] = {}
-        if question_id not in user_responses[message_id]:
-            user_responses[message_id][question_id] = {}
-        user_responses[message_id][question_id][user_id] = answer
+            # Update the response for this question for all users
+            if message_id not in user_responses:
+                user_responses[message_id] = {}
+            if question_id not in user_responses[message_id]:
+                user_responses[message_id][question_id] = {}
+            user_responses[message_id][question_id][user_id] = answer
 
-        # Remove the user's reaction to prevent duplicate responses
-        await reaction.remove(user)
+            # Remove the user's reaction to prevent duplicate responses
+            await reaction.remove(user)
 
-        # Check if the answer is correct and update the user's score for the appropriate prefix
-        question_dict = question_dict_mapping[prefix]
-        question = question_dict[question_number]
-        correct_answer = question["correctanswer"].lower()  # Convert the correct answer to lowercase
-        if answer == correct_answer:
-            if user_id not in user_scores:
-                user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
-            user_scores[user_id][prefix]["correct"] += 1  # Increment the user's score for this prefix
-            await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
-        else:
-            if user_id not in user_scores:
-                user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
-            user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
-            await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
-            return
+            # Check if the answer is correct and update the user's score for the appropriate prefix
+            question_dict = question_dict_mapping[prefix]
+            question = question_dict[question_number]
+            correct_answer = question["correctanswer"].lower()  # Convert the correct answer to lowercase
+            if answer == correct_answer:
+                if user_id not in user_scores:
+                    user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
+                user_scores[user_id][prefix]["correct"] += 1  # Increment the user's score for this prefix
+                await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
+            else:
+                if user_id not in user_scores:
+                    user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
+                user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
+                await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
+
+    except Exception as e:
+        print(f"An error occurred in on_reaction_add(): {e}")
+        await user.send("Sorry, an error occurred while processing your response. Please try again later.")
+
 
 async def update_leaderboard():
-    guild = client.get_guild(int(guildid))
-    leaderboard_channel = guild.get_channel(int(leaderboardid))
-    
-    # Compute the scores for each user and prefix
-    prefix_scores = {p: {} for p in question_dict_mapping}
-    for user_id, scores in user_scores.items():
-        for prefix, score in scores.items():
-            prefix_scores[prefix][user_id] = {"correct": score["correct"], "incorrect": score["incorrect"]}
+    try:
+        guild = client.get_guild(int(guildid))
+        leaderboard_channel = guild.get_channel(int(leaderboardid))
 
-    # Compute the overall scores for each user
-    overall_scores = {}
-    for user_id, scores in user_scores.items():
-        overall_correct = sum([s["correct"] for s in scores.values()])
-        overall_incorrect = sum([s["incorrect"] for s in scores.values()])
-        overall_scores[user_id] = {"correct": overall_correct, "incorrect": overall_incorrect}
+        # Compute the scores for each user and prefix
+        prefix_scores = {p: {} for p in question_dict_mapping}
+        for user_id, scores in user_scores.items():
+            for prefix, score in scores.items():
+                prefix_scores[prefix][user_id] = {"correct": score["correct"], "incorrect": score["incorrect"]}
 
-    # Sort the users by their overall score and number of incorrect answers
-    sorted_users = sorted(overall_scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]))
-    sorted_users.reverse()  # Reverse the list to sort in descending order
+        # Compute the overall scores for each user
+        overall_scores = {}
+        for user_id, scores in user_scores.items():
+            overall_correct = sum([s["correct"] for s in scores.values()])
+            overall_incorrect = sum([s["incorrect"] for s in scores.values()])
+            overall_scores[user_id] = {"correct": overall_correct, "incorrect": overall_incorrect}
 
-    # Create the leaderboard embed
-    leaderboard_embed = Embed(title="Leaderboard", color=0x00ff00)
+        # Sort the users by their overall score and number of incorrect answers
+        sorted_users = sorted(overall_scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]))
+        sorted_users.reverse()  # Reverse the list to sort in descending order
 
-    # Add the overall leaderboard to the embed
-    overall_leaderboard_desc = ""
-    rank = 1
-    for user_id, scores in sorted_users:
-        member = guild.get_member(user_id)
-        if member is not None:
-            username = member.display_name
+        # Create the leaderboard embed
+        leaderboard_embed = Embed(title="Leaderboard", color=0x00ff00)
+
+        # Add the overall leaderboard to the embed
+        overall_leaderboard_desc = ""
+        rank = 1
+        for user_id, scores in sorted_users:
+            member = guild.get_member(user_id)
+            if member is not None:
+                username = member.display_name
+            else:
+                username = f"Unknown User ({user_id})"
+            correct = scores["correct"]
+            incorrect = scores["incorrect"]
+            overall_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
+            rank += 1
+            if rank > 5:
+                break
+        leaderboard_embed.add_field(name="Overall", value=overall_leaderboard_desc, inline=False)
+
+        # Add the prefix leaderboards to the embed
+        for prefix, question_dict in question_dict_mapping.items():
+            prefix_leaderboard_desc = ""
+            prefix_scores_list = [(k, v) for k, v in prefix_scores[prefix].items()]
+            prefix_scores_list.sort(key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
+            rank = 1
+            for user_id, scores in prefix_scores_list:
+                member = guild.get_member(user_id)
+                if member is not None:
+                    username = member.display_name
+                else:
+                    username = f"Unknown User ({user_id})"
+                correct = scores["correct"]
+                incorrect = scores["incorrect"]
+                prefix_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
+                rank += 1
+                if rank > 5:
+                    break
+            leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
+
+        # Update the leaderboard message
+        leaderboard_message = None
+        async for message in leaderboard_channel.history():
+            if message.author == client.user:
+                leaderboard_message = message
+                break
+        if leaderboard_message is not None:
+            await leaderboard_message.edit(embed=leaderboard_embed)
         else:
-            username = f"Unknown User ({user_id})"
-        correct = scores["correct"]
-        incorrect = scores["incorrect"]
-        overall_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
-        rank += 1
-        if rank > 5:
-            break
-    leaderboard_embed.add_field(name="Overall", value=overall_leaderboard_desc, inline=False)
+            await leaderboard_channel.send(embed=leaderboard_embed)
+    except Exception as e:
+        print(f"Error updating leaderboard: {e}")
 
     # Add the leaderboard for each prefix to the embed
     for prefix, scores in prefix_scores.items():
@@ -703,14 +743,30 @@ async def send_message_and_random():
 #         return
 
 # Define the leaderboard update task
-@tasks.loop(minutes=5)
+@tasks.loop(hours=0, minutes=5)
 async def update_leaderboard_task():
     await update_leaderboard()
 
+# Start Task Loops
 try:
     print(f"Starting Scheduled Task Loops")
-    update_leaderboard_task.start()
-    send_message_and_random.start()
+    try:
+        update_leaderboard_task.start()
+    except Exception as e:
+        traceback.print_exc()
+        print(f"Error starting update_leaderboard_task: {e}")
+
+    try:
+        send_message_and_random.start()
+    except Exception as e:
+        traceback.print_exc()
+        print(f"Error starting send_message_and_random: {e}")
+
+    print(f"Finished Starting Tasks")
+except Exception as e:
+    traceback.print_exc()
+    print(f"Error starting scheduled tasks: {e}")
+
 #     if guildid is not None and channelid is not None and secplusrole is not None:
 #         try:
 #             send_message_and_quiz_secplus.start()
@@ -735,8 +791,5 @@ try:
 #             print(f"Quiz Task Scheduled Successfully")
 #         except Exception as e:
 #             print(f"Error starting Quiz Task: {e}")
-    print(f"Finished Starting Tasks")
-except Exception as e:
-    print(f"Error starting scheduled tasks: {e}")
 
 client.run(bottoken)
