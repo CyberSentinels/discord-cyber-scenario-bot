@@ -102,6 +102,7 @@ async def on_reaction_add(reaction, user):
         question_number = int(question_number)
         answer = emoji_to_answer[reaction.emoji]  # Convert the emoji to the corresponding answer option
         user_id = user.id  # Get the user's Discord ID
+        guild = client.get_guild(guildid)
         global user_responses
         global user_scores
 
@@ -111,12 +112,13 @@ async def on_reaction_add(reaction, user):
             await reaction.remove(user)
             return
 
-        # Update the response for this question for all users
-        if message_id not in user_responses:
-            user_responses[message_id] = {}
-        if question_id not in user_responses[message_id]:
-            user_responses[message_id][question_id] = {}
-        user_responses[message_id][question_id][user_id] = answer
+        # Update the response for this question for all guild users
+        if user in guild.members:
+            if message_id not in user_responses:
+                user_responses[message_id] = {}
+            if question_id not in user_responses[message_id]:
+                user_responses[message_id][question_id] = {}
+            user_responses[message_id][question_id][user_id] = answer
 
         # Remove the user's reaction to prevent duplicate responses
         await reaction.remove(user)
@@ -134,15 +136,26 @@ async def on_reaction_add(reaction, user):
             return  # Stop processing the selected reaction if the question mark emoji was selected
 
         if answer:
-            if user_id not in user_scores:
-                user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
+            if user in guild.members:
+                if user_id not in user_scores:
+                    user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
         # Convert the correct answer to lowercase
         if answer.lower() == correct_answer.lower():
-            user_scores[user_id][prefix]["correct"] += 1  # Increment the user's score for this prefix
-            await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
+            if user in guild.members:
+                user_scores[user_id][prefix]["correct"] += 1  # Increment the user's score for this prefix
+            if "reasoning" in question:
+                await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!\n\n**Reasoning**: {question['reasoning']}")
+                return
+            else:
+                await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
         else:
-            user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
-            await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.\n\n**Reasoning**: {question['reasoning']}")
+            if user in guild.members:
+                user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
+            if "reasoning" in question:
+                await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.\n\n**Reasoning**: {question['reasoning']}")
+                return
+            else:
+                await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
             return
 
 
