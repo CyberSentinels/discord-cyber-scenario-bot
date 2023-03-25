@@ -142,7 +142,7 @@ async def on_reaction_add(reaction, user):
             await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
         else:
             user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
-            await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
+            await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.\n\n**Reasoning**: {question['reasoning']}")
             return
 
 
@@ -488,7 +488,7 @@ async def whois(ctx, domain: str):
         await ctx.send(f"Error: {e}. Invalid input format.")
 
 # Define the leaderboard update task
-@tasks.loop(hours=0, minutes=5)
+@tasks.loop(hours=1, minutes=0)
 async def update_leaderboard_task():
     await update_leaderboard()
 
