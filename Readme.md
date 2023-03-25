@@ -41,7 +41,7 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 Assuming you are using a Unix-based system, open a terminal and navigate to the directory where the bot.py script is located. Then, run the following command:
 ```bash
 export BOT_TOKEN="INSERT YOUR BOT TOKEN HERE"
-export GUILD_ID="INSERT YOUR GUILD ID HERE (only needed for timed quizes)"
+export GUILD_ID="INSERT YOUR GUILD ID HERE (only needed for timed quizes and leaderboard)"
 export LEADERBOARD_CHANNEL_ID="INSERT YOUR LEADERBOARD CHANNEL ID HERE (Only needed for leaderboard for prompts)" 
 export CHANNEL_ID="INSERT YOUR CHANNEL ID HERE (only needed for timed quizes)"
 export APLUSROLE="INSERT YOUR A+ ROLE ID HERE (only needed for timed quizes)"
