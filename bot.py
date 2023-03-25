@@ -73,6 +73,7 @@ emoji_to_answer = {
     "🇧": "B",
     "🇨": "C",
     "🇩": "D",
+    "❓": "show_answer"
 }
 
 question_dict_mapping = {
@@ -99,7 +100,7 @@ async def on_reaction_add(reaction, user):
         question_id = reaction.message.embeds[0].footer.text  # Get question ID from message footer
         prefix, question_number = question_id.split("_")  # Extract prefix and question number
         question_number = int(question_number)
-        answer = emoji_to_answer[reaction.emoji].lower()  # Convert the emoji to the corresponding answer option
+        answer = emoji_to_answer[reaction.emoji]  # Convert the emoji to the corresponding answer option
         user_id = user.id  # Get the user's Discord ID
         global user_responses
         global user_scores
@@ -124,9 +125,10 @@ async def on_reaction_add(reaction, user):
         question_dict = question_dict_mapping[prefix]
         question = question_dict[question_number]
         correct_answer = question["correctanswer"].lower()
-        if answer == "?":  # Check if the question mark emoji was selected
+        if answer == "show_answer":  # Check if the question mark emoji was selected
             if "reasoning" in question:
                 await user.send(f"The correct answer is '{correct_answer}'\n\n**Reasoning**: {question['reasoning']}")
+                return
             else:
                 await user.send(f"The correct answer is '{correct_answer}'")
             return  # Stop processing the selected reaction if the question mark emoji was selected
@@ -135,7 +137,7 @@ async def on_reaction_add(reaction, user):
             if user_id not in user_scores:
                 user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
         # Convert the correct answer to lowercase
-        if answer == correct_answer:
+        if answer.lower() == correct_answer.lower():
             user_scores[user_id][prefix]["correct"] += 1  # Increment the user's score for this prefix
             await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
         else:
