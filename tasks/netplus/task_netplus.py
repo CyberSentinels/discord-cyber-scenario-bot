@@ -12,7 +12,7 @@ async def task_netplus(client, guildid, channelid, netplusrole, user_responses):
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily Network+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-        response = handle_netplus(user_responses
+        response = handle_netplus(user_responses)
         await channel.send(response)
 
     except discord.errors.Forbidden:
