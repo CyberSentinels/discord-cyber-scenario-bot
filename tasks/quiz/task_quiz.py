@@ -1,4 +1,5 @@
 import discord
+from discord import Embed
 from features.quiz.handle_quiz import handle_quiz
 
 async def task_quiz(client, guildid, channelid, quizrole, user_responses):
@@ -15,7 +16,9 @@ async def task_quiz(client, guildid, channelid, quizrole, user_responses):
         message = f"It's time for the daily quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
         response = handle_quiz(user_responses)
-        await channel.send(response)
+        embed = Embed(description=response)
+        message = await channel.send(embed=embed)
+
 
     except discord.errors.Forbidden:
         # This exception is raised if the bot doesn't have permission to perform an action

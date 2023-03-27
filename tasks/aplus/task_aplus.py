@@ -1,4 +1,5 @@
 import discord
+from discord import Embed
 from features.aplus.handle_aplus import handle_aplus
 
 async def task_aplus(client, guildid, channelid, aplusrole, user_responses):    
@@ -15,7 +16,9 @@ async def task_aplus(client, guildid, channelid, aplusrole, user_responses):
         message = f"It's time for the daily A+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
         response = handle_aplus(user_responses)
-        await channel.send(response)
+        embed = Embed(description=response)
+        message = await channel.send(embed=embed)
+
 
     except discord.errors.Forbidden:
         # This exception is raised if the bot doesn't have permission to perform an action

@@ -1,4 +1,5 @@
 import discord
+from discord import Embed
 from features.netplus.handle_netplus import handle_netplus
 
 async def task_netplus(client, guildid, channelid, netplusrole, user_responses):
@@ -13,7 +14,8 @@ async def task_netplus(client, guildid, channelid, netplusrole, user_responses):
         message = f"It's time for the daily Network+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
         response = handle_netplus(user_responses)
-        await channel.send(response)
+        embed = Embed(description=response)
+        message = await channel.send(embed=embed)
 
     except discord.errors.Forbidden:
         # This exception is raised if the bot doesn't have permission to perform an action

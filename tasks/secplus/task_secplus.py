@@ -1,4 +1,5 @@
 import discord
+from discord import Embed
 from features.secplus.handle_secplus import handle_secplus
 
 async def task_secplus(client, guildid, channelid, secplusrole, user_responses):
@@ -15,7 +16,8 @@ async def task_secplus(client, guildid, channelid, secplusrole, user_responses):
         message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
         response = handle_secplus(user_responses)
-        await channel.send(response)
+        embed = Embed(description=response)
+        message = await channel.send(embed=embed)
 
     except discord.errors.Forbidden:
         # This exception is raised if the bot doesn't have permission to perform an action
@@ -26,3 +28,7 @@ async def task_secplus(client, guildid, channelid, secplusrole, user_responses):
     except Exception as e:
         # This exception is raised if any unexpected error occurs
         await channel.send(f"Error: {e}. An unexpected error occurred.")
+
+                
+        embed.set_footer(text=question_id)
+        
