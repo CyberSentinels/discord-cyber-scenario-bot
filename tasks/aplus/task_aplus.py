@@ -1,7 +1,7 @@
 import discord
 from features.aplus.handle_aplus import handle_aplus
 
-async def task_aplus(client, guildid, channelid, aplusrole):    
+async def task_aplus(client, guildid, channelid, aplusrole, user_responses):    
     if guildid is None or channelid is None or aplusrole is None:
         return
     try:
@@ -14,7 +14,7 @@ async def task_aplus(client, guildid, channelid, aplusrole):
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily A+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-        response = handle_aplus(user_responses=None)
+        response = handle_aplus(user_responses)
         await channel.send(response)
 
     except discord.errors.Forbidden:

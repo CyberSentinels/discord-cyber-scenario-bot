@@ -1,7 +1,7 @@
 import discord
 from features.quiz.handle_quiz import handle_quiz
 
-async def task_quiz(client, guildid, channelid, quizrole):
+async def task_quiz(client, guildid, channelid, quizrole, user_responses):
     if guildid is None or channelid is None or quizrole is None:
         return
     try:
@@ -14,7 +14,7 @@ async def task_quiz(client, guildid, channelid, quizrole):
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-        response = handle_quiz(user_responses=None)
+        response = handle_quiz(user_responses)
         await channel.send(response)
 
     except discord.errors.Forbidden:

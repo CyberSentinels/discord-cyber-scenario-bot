@@ -1,7 +1,7 @@
 import discord
 from features.secplus.handle_secplus import handle_secplus
 
-async def task_secplus(client, guildid, channelid, secplusrole):
+async def task_secplus(client, guildid, channelid, secplusrole, user_responses):
     if guildid is None or channelid is None or secplusrole is None:
         return
     try:
@@ -14,7 +14,7 @@ async def task_secplus(client, guildid, channelid, secplusrole):
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-        response = handle_secplus(user_responses=None)
+        response = handle_secplus(user_responses)
         await channel.send(response)
 
     except discord.errors.Forbidden:
