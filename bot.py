@@ -168,6 +168,9 @@ async def update_leaderboard():
     guild = client.get_guild(int(guildid))
     leaderboard_channel = guild.get_channel(int(leaderboardid))
 
+    if question_dict_mapping is None:
+        return
+    
     # Compute the scores for each user and prefix
     prefix_scores = {p: {} for p in question_dict_mapping}
     for user_id, scores in user_scores.items():
@@ -292,9 +295,15 @@ async def commands(ctx):
 )
 async def quiz(ctx):
     try:
-        response = handle_quiz()
-        await ctx.send(response)
+        response, question_id = handle_quiz(user_responses)
+        embed = Embed(description=response)
+        embed.set_footer(text=question_id)
+        message = await ctx.send(embed=embed)
+        # Add reactions for each answer choice
+        for emoji in valid_emojis:
+            await message.add_reaction(emoji)
     except Exception as e:
+        print({e})
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 
@@ -341,9 +350,15 @@ async def redscenario(ctx):
 )
 async def aplus(ctx):
     try:
-        response = handle_aplus()
-        await ctx.send(response)
+        response, question_id = handle_aplus(user_responses)
+        embed = Embed(description=response)
+        embed.set_footer(text=question_id)
+        message = await ctx.send(embed=embed)
+        # Add reactions for each answer choice
+        for emoji in valid_emojis:
+            await message.add_reaction(emoji)
     except Exception as e:
+        print({e})
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 
@@ -352,9 +367,15 @@ async def aplus(ctx):
 )
 async def netplus(ctx):
     try:
-        response = handle_netplus()
-        await ctx.send(response)
+        response, question_id = handle_netplus(user_responses)
+        embed = Embed(description=response)
+        embed.set_footer(text=question_id)
+        message = await ctx.send(embed=embed)
+        # Add reactions for each answer choice
+        for emoji in valid_emojis:
+            await message.add_reaction(emoji)
     except Exception as e:
+        print({e})
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 
@@ -363,9 +384,15 @@ async def netplus(ctx):
 )
 async def secplus(ctx):
     try:
-        response = handle_secplus()
-        await ctx.send(response)
+        response, question_id = handle_secplus(user_responses)
+        embed = Embed(description=response)
+        embed.set_footer(text=question_id)
+        message = await ctx.send(embed=embed)
+        # Add reactions for each answer choice
+        for emoji in valid_emojis:
+            await message.add_reaction(emoji)
     except Exception as e:
+        print({e})
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
 
