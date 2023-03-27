@@ -159,19 +159,15 @@ async def on_reaction_add(reaction, user):
 
 
 async def update_leaderboard():
+    print("Updating leaderboard")
+    await client.wait_until_ready()
+    global user_scores
     if guildid is None or leaderboardid is None:
         print(f"missing required guild or leaderboard channel id")
         return
-    
-    if question_dict_mapping is None:
-        print(f"no question dictionary mapping found")
-        return
-    
-    print("Updating leaderboard")
-    await client.wait_until_ready()
     guild = client.get_guild(int(guildid))
     leaderboard_channel = guild.get_channel(int(leaderboardid))
-    global user_scores
+
 
     # Compute the scores for each user and prefix
     prefix_scores = {p: {} for p in question_dict_mapping}
