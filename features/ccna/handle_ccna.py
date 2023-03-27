@@ -1,8 +1,4 @@
-import random
-
 from .ccnadict import ccnadict
-
-
 import random
 
 def handle_ccna(user_responses):
@@ -10,7 +6,7 @@ def handle_ccna(user_responses):
     weighted_question_ids = []
     for i, question in enumerate(ccnadict):
         # Get the question ID and correct answer
-        prefix = "ccna_"  # Unique prefix for CCNA questions
+        prefix = "ccna_"  # Unique prefix for CISSP questions
         question_id = prefix + str(i)
         correct_answer = question["correctanswer"].lower()
 
@@ -26,9 +22,8 @@ def handle_ccna(user_responses):
         # Add the question ID to the list with the appropriate weight
         weighted_question_ids.extend([question_id] * weight)
 
-    # If all questions have been answered correctly, reset all the weights to 1
-    if not weighted_question_ids:
-        weighted_question_ids = [f"ccna_{i}" for i in range(len(ccnadict))]
+    # Select a random question ID from the weighted list
+    question_id = random.choice(weighted_question_ids)
 
     # If all questions have been answered correctly, reset all the weights to 1
     if not weighted_question_ids:
@@ -39,6 +34,7 @@ def handle_ccna(user_responses):
     prompt = question["question"]
     answers = question["answers"]
     correct_answer = question["correctanswer"]
+    reasoning = question["reasoning"] or None
 
     # Format the response
     options = []
