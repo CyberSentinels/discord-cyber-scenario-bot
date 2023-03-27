@@ -14,7 +14,7 @@ async def task_secplus(client, guildid, channelid, secplusrole):
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-        response = handle_secplus()
+        response = handle_secplus(user_responses=None)
         await channel.send(response)
 
     except discord.errors.Forbidden:
