@@ -102,6 +102,9 @@ async def on_reaction_add(reaction, user):
         answer = emoji_to_answer[reaction.emoji]  # Convert the emoji to the corresponding answer option
         user_id = user.id  # Get the user's Discord ID
         guild = client.get_guild(guildid)
+        if guild is None:
+            print(f"Warning: Unable to find a guild with the ID {guildid}")
+            return
         global user_responses
         global user_scores
 
