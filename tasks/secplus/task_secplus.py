@@ -2,7 +2,7 @@ import discord
 from discord import Embed
 from features.secplus.handle_secplus import handle_secplus
 
-async def task_secplus(client, guildid, channelid, secplusrole, user_responses):
+async def task_secplus(client, guildid, channelid, secplusrole, user_responses, valid_emojis):
     if guildid is None or channelid is None or secplusrole is None:
         return
     try:
@@ -15,9 +15,13 @@ async def task_secplus(client, guildid, channelid, secplusrole, user_responses):
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily Security+ quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-        response = handle_secplus(user_responses)
+        response, question_id = handle_secplus(user_responses)
         embed = Embed(description=response)
+        embed.set_footer(text=question_id)
         message = await channel.send(embed=embed)
+        # Add reactions for each answer choice
+        for emoji in valid_emojis:
+            await message.add_reaction(emoji)
 
     except discord.errors.Forbidden:
         # This exception is raised if the bot doesn't have permission to perform an action

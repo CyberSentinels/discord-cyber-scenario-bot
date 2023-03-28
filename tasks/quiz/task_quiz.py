@@ -2,7 +2,7 @@ import discord
 from discord import Embed
 from features.quiz.handle_quiz import handle_quiz
 
-async def task_quiz(client, guildid, channelid, quizrole, user_responses):
+async def task_quiz(client, guildid, channelid, quizrole, user_responses, valid_emojis):
     if guildid is None or channelid is None or quizrole is None:
         return
     try:
@@ -15,9 +15,13 @@ async def task_quiz(client, guildid, channelid, quizrole, user_responses):
         channel = guild.get_channel(int(channelid))
         message = f"It's time for the daily quiz! {role.mention}, make sure to participate!"
         await channel.send(message)
-        response = handle_quiz(user_responses)
+        response, question_id = handle_quiz(user_responses)
         embed = Embed(description=response)
+        embed.set_footer(text=question_id)
         message = await channel.send(embed=embed)
+        # Add reactions for each answer choice
+        for emoji in valid_emojis:
+            await message.add_reaction(emoji)
 
 
     except discord.errors.Forbidden:

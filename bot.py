@@ -562,7 +562,7 @@ async def send_message_and_random():
         try:
             tasks = [task_quiz, task_aplus, task_netplus, task_secplus]
             selected_task = random.choice(tasks)
-            await selected_task(client, guildid, channelid, quizrole, user_responses)
+            await selected_task(client, guildid, channelid, quizrole, user_responses, valid_emojis)
         except Exception as e:
             print(f"An error occurred while running the 'send_message_and_random' task: {e}")
             return
