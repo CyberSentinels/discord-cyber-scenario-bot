@@ -33,8 +33,8 @@ async def handle_phonelookup(phone_number: str):
     return embed
 
 # handle cooldown errors
-@phonelookup_command.error
-async def phonelookup_error(ctx, error):
+@handle_phonelookup.error
+async def handle_phonelookup_error(error):
     if isinstance(error, commands.CommandOnCooldown):
         # inform the user that they need to wait before requesting another phone lookup
         return (f"Please wait {error.retry_after:.0f} seconds before requesting another phone lookup.")

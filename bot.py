@@ -498,6 +498,13 @@ async def phonelookup(ctx, phone_number: str):
         await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
+# handle cooldown errors
+@phonelookup.error
+async def phonelookup_error(error):
+    if isinstance(error, commands.CommandOnCooldown):
+        # inform the user that they need to wait before requesting another phone lookup
+        return (f"Please wait {error.retry_after:.0f} seconds before requesting another phone lookup.")
+
 
 @client.hybrid_command(
     name="ping", description="Sends a ping packet to a specified IP address to check if it is reachable."
@@ -531,12 +538,18 @@ async def subnet(ctx, ip: str, mask: str):
 
 @commands.cooldown(1, 600, commands.BucketType.user) # 1 request per 10 minutes per user
 @client.hybrid_command(name='tempmail', description="Generates a temporary email address.")
-async def shodanip(ctx):
+async def tempmail_cmd(ctx):
     try:
         response = await handle_tempmail()
         await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
+# handle cooldown errors
+@tempmail_cmd.error
+async def tempmail_emd_error(error):
+    if isinstance(error, commands.CommandOnCooldown):
+        # inform the user that they need to wait before requesting another temporary email address
+        return (f"Please wait {error.retry_after:.0f} seconds before requesting another temporary email address.")
 
 
 @client.hybrid_command(

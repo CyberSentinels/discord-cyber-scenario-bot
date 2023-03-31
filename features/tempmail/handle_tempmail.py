@@ -19,3 +19,10 @@ async def handle_tempmail():
 
     # send the embed to the user who requested it
     return embed
+
+# handle cooldown errors
+@handle_tempmail.error
+async def handle_tempmail_error(error):
+    if isinstance(error, commands.CommandOnCooldown):
+        # inform the user that they need to wait before requesting another temporary email
+        return (f"Please wait {error.retry_after:.0f} seconds before requesting another temporary email.")
