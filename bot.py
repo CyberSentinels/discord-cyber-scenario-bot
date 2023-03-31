@@ -488,7 +488,6 @@ async def hash(ctx, algorithm: str, message: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format or unsupported hashing algorithm.")
 
-@commands.cooldown(1, 600, commands.BucketType.user) # 1 request per 10 minutes per user
 @client.hybrid_command(name='phonelookup', description="Looks up a phone number and returns information about it.")
 async def phonelookup(ctx, phone_number: str):
     try:
@@ -496,13 +495,6 @@ async def phonelookup(ctx, phone_number: str):
         await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
-# handle cooldown errors
-@phonelookup.error
-async def phonelookup_error(error):
-    if isinstance(error, commands.CommandOnCooldown):
-        # inform the user that they need to wait before requesting another phone lookup
-        return (f"Please wait {error.retry_after:.0f} seconds before requesting another phone lookup.")
-
 
 @client.hybrid_command(
     name="ping", description="Sends a ping packet to a specified IP address to check if it is reachable."
