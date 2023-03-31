@@ -1,12 +1,13 @@
 import discord
 from discord.ext import commands
 import phonenumbers
+from phonenumbers import carrier
 
 # define a command to lookup a phone number
 async def handle_phonelookup(phone_number: str):
     try:
         # parse the phone number
-        parsed_number = phonenumbers.parse(phone_number, None)
+        parsed_number = phonenumbers.parse(phone_number, "US")
 
         # check if the number is valid
         is_valid_number = phonenumbers.is_valid_number(parsed_number)
