@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from tempmail2 import TempMail
+from tempMail2 import TempMail
 
 tempmail = TempMail()
 
