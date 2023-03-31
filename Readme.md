@@ -30,6 +30,7 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 - **Ping**: Takes in an `IP address` and returns with a success message and average latency or a failure message.
 - **Shodanip**: Takes in an `IP address` and outputs useful information from https://internetdb.shodan.io/.
 - **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts.
+- **Tempmail**: Replies with a temporary email address.
 - **Whois**: Takes in a `domain name` and outputs domain whois information.
 
 ### Informational Commands
