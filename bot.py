@@ -26,7 +26,6 @@ from features.scenarios.handle_scenarios import *
 from features.secplus.handle_secplus import *
 from features.shodan.handle_shodanip import *
 from features.subnet.handle_subnet import *
-from features.tempmail.handle_tempmail import *
 from features.whois.handle_whois import *
 
 # import tasks
