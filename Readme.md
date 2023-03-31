@@ -31,7 +31,6 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 - **Phonelookup**: Takes in a `phone number` and outputs the carrier and location.
 - **Shodanip**: Takes in an `IP address` and outputs useful information from https://internetdb.shodan.io/.
 - **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts.
-- **Tempmail**: Replies with a temporary email address.
 - **Whois**: Takes in a `domain name` and outputs domain whois information.
 
 ### Informational Commands

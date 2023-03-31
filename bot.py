@@ -285,7 +285,6 @@ async def commands(ctx):
 - **Phonelookup**: Takes in a `phone number` and outputs the carrier and location.
 - **Shodanip**: Takes in an `IP address` and outputs useful information from https://internetdb.shodan.io/.
 - **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts.
-- **Tempmail**: Replies with a temporary email address.
 - **Whois**: Takes in a `domain name` and outputs domain whois information.
 
 ### Informational Commands
@@ -535,22 +534,6 @@ async def subnet(ctx, ip: str, mask: str):
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
-
-@commands.cooldown(1, 600, commands.BucketType.user) # 1 request per 10 minutes per user
-@client.hybrid_command(name='tempmail', description="Generates a temporary email address.")
-async def tempmail_cmd(ctx):
-    try:
-        response = await handle_tempmail()
-        await ctx.send(embed=response)
-    except Exception as e:
-        await ctx.send(f"Error: {e}. Invalid input format.")
-# handle cooldown errors
-@tempmail_cmd.error
-async def tempmail_emd_error(error):
-    if isinstance(error, commands.CommandOnCooldown):
-        # inform the user that they need to wait before requesting another temporary email address
-        return (f"Please wait {error.retry_after:.0f} seconds before requesting another temporary email address.")
-
 
 @client.hybrid_command(
     name="whois", description="Gives you useful information about a given subnet."
