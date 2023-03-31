@@ -21,6 +21,7 @@ from features.netplus.handle_netplus import *
 from features.ping.handle_ping import *
 from features.quiz.handle_quiz import *
 from features.redscenarios.handle_redscenarios import *
+from features.phonelookup.handle_phonelookup import *
 from features.scenarios.handle_scenarios import *
 from features.secplus.handle_secplus import *
 from features.shodan.handle_shodanip import *
@@ -281,6 +282,7 @@ async def commands(ctx):
 - **Dns**: Takes in a `domain name` and returns A, AAAA, NS, TXT, etc. records.
 - **Hash**: Takes in `1 of 4 supported algos` and a `string` and outputs a corresponding hash.
 - **Ping**: Takes in an `IP address` and returns with a success message and average latency or a failure message.
+- **Phonelookup**: Takes in a `phone number` and outputs the carrier and location.
 - **Shodanip**: Takes in an `IP address` and outputs useful information from https://internetdb.shodan.io/.
 - **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts.
 - **Tempmail**: Replies with a temporary email address.
@@ -488,6 +490,14 @@ async def hash(ctx, algorithm: str, message: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format or unsupported hashing algorithm.")
 
+@commands.cooldown(1, 600, commands.BucketType.user) # 1 request per 10 minutes per user
+@client.hybrid_command(name='phonelookup', description="Looks up a phone number and returns information about it.")
+async def phonelookup(ctx, phone_number: str):
+    try:
+        response = await handle_phonelookup(phone_number)
+        await ctx.send(embed=response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}. Invalid input format.")
 
 @client.hybrid_command(
     name="ping", description="Sends a ping packet to a specified IP address to check if it is reachable."
@@ -523,7 +533,7 @@ async def subnet(ctx, ip: str, mask: str):
 @client.hybrid_command(name='tempmail', description="Generates a temporary email address.")
 async def shodanip(ctx):
     try:
-        response = await handle_tempmail(ctx)
+        response = await handle_tempmail()
         await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")

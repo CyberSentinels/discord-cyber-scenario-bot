@@ -4,7 +4,7 @@ from tempmail2 import TempMail
 
 tempmail = TempMail()
 
-async def handle_tempmail(ctx):
+async def handle_tempmail():
     # get a new temporary email address
     email_address = tempmail.get_email_address()
 

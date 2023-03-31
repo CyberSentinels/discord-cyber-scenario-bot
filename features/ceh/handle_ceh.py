@@ -3,8 +3,6 @@ import random
 from .cehdict import cehdict
 
 
-import random
-
 def handle_ceh(user_responses):
     # Create a list of question IDs, weighted based on user responses
     weighted_question_ids = []
