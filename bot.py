@@ -563,8 +563,10 @@ async def whois(ctx, domain: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
-@client.hybrid_command(name="updatelb", description="Updates the quiz leaderboard.")
-async def update_lb(ctx):
+@client.hybrid_command(
+    name="updatelb", description="Updates the quiz leaderboard."
+)
+async def updatelb(ctx):
     if leaderboardid is None:
         await ctx.send("The leaderboard channel has not been set.")
         return
@@ -573,7 +575,6 @@ async def update_lb(ctx):
         await ctx.send("Leaderboard updated successfully.")
     else:
         await ctx.send("You don't have permission to run this command.")
-
 
 # Define the leaderboard update task
 @tasks.loop(hours=1, minutes=0)
