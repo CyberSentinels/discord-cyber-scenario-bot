@@ -196,10 +196,12 @@ async def update_leaderboard():
                         except Exception as e:
                             print(f"Error decoding base64 user_scores: {e}")
                             user_scores = {}
-
+    print("Printing User Scores...")
+    print(user_scores)
     # Compute the scores for each user and prefix
     prefix_scores = {p: {} for p in question_dict_mapping}
     for user_id, scores in user_scores.items():
+        print("Current scores:", scores)  # Add this line
         for prefix, score in scores.items():
             prefix_scores[prefix][user_id] = {"correct": score["correct"], "incorrect": score["incorrect"]}
 
