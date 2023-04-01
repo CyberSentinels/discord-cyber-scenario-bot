@@ -274,11 +274,6 @@ async def update_leaderboard():
 
     print("Leaderboard updated successfully")
 
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        print(f"Unsupported command: {ctx.message.content}")
-
 @client.hybrid_command(
     name="socials",
     description="Replies with the various bot social media accounts and websites.",
