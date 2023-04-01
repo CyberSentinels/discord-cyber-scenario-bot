@@ -1,6 +1,8 @@
 import asyncio
+import base64
 import datetime
 import discord
+import json
 import os
 import random
 import time
@@ -172,6 +174,28 @@ async def update_leaderboard():
     guild = client.get_guild(int(guildid))
     leaderboard_channel = guild.get_channel(int(leaderboardid))
 
+        # Check if user_scores is empty
+    if not user_scores:
+        # Find the existing leaderboard message
+        leaderboard_message = None
+        async for message in leaderboard_channel.history():
+            if message.author == client.user:
+                leaderboard_message = message
+                break
+
+        # If the leaderboard message exists, try to retrieve the base64 encoded user_scores
+        if leaderboard_message is not None:
+            for embed in leaderboard_message.embeds:
+                for field in embed.fields:
+                    if field.name == "User Scores (Base64)":
+                        try:
+                            user_scores_base64 = field.value.strip('```')
+                            user_scores_json = base64.b64decode(user_scores_base64.encode()).decode()
+                            user_scores = json.loads(user_scores_json)
+                            break
+                        except Exception as e:
+                            print(f"Error decoding base64 user_scores: {e}")
+                            user_scores = {}
 
     # Compute the scores for each user and prefix
     prefix_scores = {p: {} for p in question_dict_mapping}
@@ -228,6 +252,11 @@ async def update_leaderboard():
             if rank > 5:
                 break
         leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
+
+    # Add base64 encoded user_scores to the embed
+    user_scores_json = json.dumps(user_scores)
+    user_scores_base64 = base64.b64encode(user_scores_json.encode()).decode()
+    leaderboard_embed.add_field(name="Parity", value=f"```{user_scores_base64}```", inline=False)
 
     # Update the leaderboard message in the leaderboard channel
     leaderboard_message = None
@@ -537,7 +566,7 @@ async def whois(ctx, domain: str):
         await ctx.send(f"Error: {e}. Invalid input format.")
 
 # Define the leaderboard update task
-@tasks.loop(hours=1, minutes=0)
+@tasks.loop(hours=0, minutes=1)
 async def update_leaderboard_task():
     await update_leaderboard()
 
