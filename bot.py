@@ -568,9 +568,11 @@ async def whois(ctx, domain: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
-@client.command(name="updatelb", description="Updates the leaderboard.")
+@client.command(name="updatelb", description="Updates the quiz leaderboard.")
 @commands.has_permissions(administrator=True)
 async def update_lb(ctx):
+    if leaderboardid is None:
+        return
     await update_leaderboard()
     await ctx.send("Leaderboard updated successfully.")
 
