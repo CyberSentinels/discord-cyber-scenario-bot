@@ -187,7 +187,7 @@ async def update_leaderboard():
         if leaderboard_message is not None:
             for embed in leaderboard_message.embeds:
                 for field in embed.fields:
-                    if field.name == "User Scores (Base64)":
+                    if field.name == "Parity":
                         try:
                             user_scores_base64 = field.value.strip('```')
                             user_scores_json = base64.b64decode(user_scores_base64.encode()).decode()
@@ -196,6 +196,7 @@ async def update_leaderboard():
                         except Exception as e:
                             print(f"Error decoding base64 user_scores: {e}")
                             user_scores = {}
+
     print("Printing User Scores...")
     print(user_scores)
     # Compute the scores for each user and prefix
@@ -567,8 +568,22 @@ async def whois(ctx, domain: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
+@bot.command(name="updatelb", description="Updates the leaderboard.")
+@commands.has_permissions(administrator=True)
+async def update_lb(ctx):
+    await update_leaderboard()
+    await ctx.send("Leaderboard updated successfully.")
+
+@update_lb.error
+async def update_lb_error(ctx, error):
+    if isinstance(error, commands.CheckFailure):
+        await ctx.send("You don't have permission to run this command.")
+    else:
+        await ctx.send("An error occurred while trying to update the leaderboard.")
+
+
 # Define the leaderboard update task
-@tasks.loop(hours=0, minutes=1)
+@tasks.loop(hours=1, minutes=0)
 async def update_leaderboard_task():
     await update_leaderboard()
 
