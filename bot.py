@@ -3,12 +3,10 @@ import datetime
 import discord
 import os
 import random
-import re
 import time
 import traceback
 from discord import Activity, ActivityType, Status, app_commands, Embed
 from discord.ext import commands, tasks
-from collections import defaultdict
 
 # import features
 from features.aplus.handle_aplus import *
@@ -90,42 +88,7 @@ question_dict_mapping = {
     # Add more prefixes and corresponding question dictionaries as needed
 }
 
-leaderboard_prefix_mapping = {
-    "CISSP": "cissp",
-    "CEH": "ceh",
-    "CCNA": "ccna",
-    "APLUS": "aplus",
-    "NETPLUS": "netplus",
-    "LINUXPLUS": "linuxplus",
-    "SECPLUS": "secplus",
-    "QUIZ": "quiz",
-}
-
 user_scores = {}
-my_default_dict = defaultdict(int)
-
-def parse_leaderboard_entry(entry):
-    match = re.match(r'(\d+)\. (.+): (\d+) correct, (\d+) incorrect', entry.strip())
-    if match:
-        rank, display_name, correct, incorrect = match.groups()
-        return display_name, int(correct), int(incorrect)
-    return None
-
-def parse_leaderboard(leaderboard_message):
-    user_scores = defaultdict(lambda: defaultdict(lambda: {"correct": 0, "incorrect": 0}))
-    lines = leaderboard_message.split("\n")
-    current_prefix = None
-
-    for line in lines:
-        if line in leaderboard_prefix_mapping:
-            current_prefix = leaderboard_prefix_mapping[line]
-        else:
-            user_id, correct, incorrect = parse_leaderboard_entry(line)
-            if user_id and current_prefix:
-                user_scores[user_id][current_prefix]["correct"] = correct
-                user_scores[user_id][current_prefix]["incorrect"] = incorrect
-
-    return user_scores
 
 @client.event
 async def on_reaction_add(reaction, user):
@@ -209,26 +172,12 @@ async def update_leaderboard():
     guild = client.get_guild(int(guildid))
     leaderboard_channel = guild.get_channel(int(leaderboardid))
 
+
     # Compute the scores for each user and prefix
     prefix_scores = {p: {} for p in question_dict_mapping}
     for user_id, scores in user_scores.items():
         for prefix, score in scores.items():
             prefix_scores[prefix][user_id] = {"correct": score["correct"], "incorrect": score["incorrect"]}
-
-    # Check if prefix_scores is empty
-    prefix_scores_empty = all([not scores for scores in prefix_scores.values()])
-
-    if prefix_scores_empty:
-        # Get the leaderboard message from the channel
-        leaderboard_message = None
-        async for message in leaderboard_channel.history():
-            if message.author == client.user:
-                leaderboard_message = message.content
-                break
-
-        # If leaderboard message exists, parse it and update the user_scores
-        if leaderboard_message:
-            user_scores = parse_leaderboard(leaderboard_message)
 
     # Compute the overall scores for each user
     overall_scores = {}
