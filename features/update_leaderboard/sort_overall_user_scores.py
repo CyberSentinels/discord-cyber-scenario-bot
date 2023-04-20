@@ -1,4 +1,4 @@
-def sort_user_scores(user_scores): # overall
+def sort_overall_user_scores(user_scores):  # overall
     overall_scores = {}
     for user_id, scores in user_scores.items():
         overall_correct = sum([s["correct"] for s in scores.values()])

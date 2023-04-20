@@ -1,27 +1,27 @@
 import base64
 import json
 from discord import Embed
-from features.update_leaderboard.create_leaderboard_item_list_data import create_leaderboard_item_list_data
 
 from features.update_leaderboard.create_overall_leaderboard_str import create_overall_leaderboard_str
+from features.update_leaderboard.create_user_scores_by_quiz_data import create_user_scores_by_quiz_data
 from features.update_leaderboard.create_quiz_leaderboard_str import create_quiz_leaderboard_str
-from features.update_leaderboard.sort_user_scores import sort_user_scores
+from features.update_leaderboard.sort_overall_user_scores import sort_overall_user_scores
 
 
 def create_leaderboard_embed(user_scores, question_dict_mapping, member_dict):
     leaderboard_embed = Embed(
         title="Quiz Commands Leaderboard", color=0x006400)
 
-    # leaderboard embed: overall
-    sorted_overall_user_scores = sort_user_scores(user_scores)
+    # leaderboard embed: overall leaderboard
+    sorted_overall_user_scores = sort_overall_user_scores(user_scores)
     overall_leaderboard_str = create_overall_leaderboard_str(
         sorted_overall_user_scores, member_dict)
     leaderboard_embed.add_field(
         name="Overall", value=overall_leaderboard_str, inline=False)
 
     # leaderboard embed: each quiz leaderboard
-    user_scores_by_quiz = create_leaderboard_item_list_data(
-        question_dict_mapping, user_scores)
+    user_scores_by_quiz = create_user_scores_by_quiz_data(
+        user_scores, question_dict_mapping)
     for prefix, scores in user_scores_by_quiz.items():
         sorted_users_by_quiz = sorted(scores.items(), key=lambda x: (
             x[1]["correct"], x[1]["incorrect"]), reverse=True)
