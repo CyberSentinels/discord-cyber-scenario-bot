@@ -207,7 +207,7 @@ async def update_leaderboard(ctx):
 
     leaderboard_embed = create_leaderboard_embed(
         user_scores, question_dict_mapping, member_dict)
-    upsert_leaderboard_message(leaderboard_channel, leaderboard_embed, client)
+    await upsert_leaderboard_message(leaderboard_channel, leaderboard_embed, client)
     print("Leaderboard updated successfully")
 
 
