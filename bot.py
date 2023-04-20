@@ -174,8 +174,6 @@ async def on_reaction_add(reaction, user):
 
 
 counter = 0
-
-
 async def update_leaderboard(ctx):
     print("Updating leaderboard")
     await client.wait_until_ready()
@@ -184,6 +182,8 @@ async def update_leaderboard(ctx):
         print(f"missing required guild or leaderboard channel id")
         return
     guild = client.get_guild(int(guildid))
+    # Store the member objects in a dictionary for fast lookups
+    member_dict = {member.id: member for member in guild.members}
     leaderboard_channel = guild.get_channel(int(leaderboardid))
 
     # Check if user_scores is empty
@@ -244,12 +244,12 @@ async def update_leaderboard(ctx):
         title="Quiz Commands Leaderboard", color=0x006400)
     leaderboard_embed.set_footer(
         text="Note: The leaderboard is updated once per hour. \n To learn more about the quiz commands, run `/commands` in #bot-commands")
-
+    
     # Add the overall leaderboard to the embed
     overall_leaderboard_desc = ""
     rank = 1
     for user_id, scores in sorted_users:
-        member = guild.get_member(user_id)
+        member = member_dict.get(user_id)
         if member is not None:
             username = member.display_name
         else:
@@ -260,19 +260,15 @@ async def update_leaderboard(ctx):
         rank += 1
         if rank > 5:
             break
-    leaderboard_embed.add_field(
-        name="Overall", value=overall_leaderboard_desc, inline=False)
+    leaderboard_embed.add_field(name="Overall", value=overall_leaderboard_desc, inline=False)
 
     # Add the leaderboard for each prefix to the embed
     for prefix, scores in prefix_scores.items():
         prefix_leaderboard_desc = ""
-        sorted_users = sorted(scores.items(), key=lambda x: (
-            x[1]["correct"], x[1]["incorrect"]), reverse=True)
+        sorted_users = sorted(scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
         rank = 1
         for user_id, user_scores_for_quiz in sorted_users:
-            await ctx.send(user_id)
-            member = guild.get_member(user_id)
-            await ctx.send(member)
+            member = member_dict.get(int(user_id))
             if member is not None:
                 username = member.display_name
             else:
@@ -283,8 +279,7 @@ async def update_leaderboard(ctx):
             rank += 1
             if rank > 5:
                 break
-        leaderboard_embed.add_field(
-            name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
+        leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
 
     # Add base64 encoded user_scores to the embed
     user_scores_json = json.dumps(user_scores)
