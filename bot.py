@@ -28,6 +28,11 @@ from features.scenarios.handle_scenarios import *
 from features.secplus.handle_secplus import *
 from features.shodan.handle_shodanip import *
 from features.subnet.handle_subnet import *
+from features.update_leaderboard.create_leaderboard_embed import create_leaderboard_embed
+from features.update_leaderboard.create_leaderboard_item_list_data import create_leaderboard_item_list_data
+from features.update_leaderboard.sort_user_scores import sort_user_scores
+from features.update_leaderboard.load_user_scores_from_existing_leaderboard import load_user_scores_from_existing_leaderboard
+from features.update_leaderboard.upsert_leaderboard_message import upsert_leaderboard_message
 from features.whois.handle_whois import *
 
 # import tasks
@@ -173,8 +178,13 @@ async def on_reaction_add(reaction, user):
             return
 
 
-counter = 0
+loaded_scores_from_leaderboard = False
+
+
 async def update_leaderboard(ctx):
+    ####
+    # begin smelly globally coupled init logic
+    ####
     print("Updating leaderboard")
     await client.wait_until_ready()
     global user_scores
@@ -185,119 +195,19 @@ async def update_leaderboard(ctx):
     # Store the member objects in a dictionary for fast lookups
     member_dict = {member.id: member for member in guild.members}
     leaderboard_channel = guild.get_channel(int(leaderboardid))
+    ####
+    # end smelly globally coupled init logic
+    ####
 
-    # Check if user_scores is empty
-    if not user_scores:
-        # Find the existing leaderboard message
-        leaderboard_message = None
-        async for message in leaderboard_channel.history():
-            if message.author == client.user:
-                leaderboard_message = message
-                break
+    global loaded_scores_from_leaderboard
+    if not user_scores and not loaded_scores_from_leaderboard:
+        user_scores = await load_user_scores_from_existing_leaderboard(
+            leaderboard_channel, client)
+        loaded_scores_from_leaderboard = True
 
-        global counter
-        if counter == 0:
-            # If the leaderboard message exists, try to retrieve the base64 encoded user_scores
-            if leaderboard_message is not None:
-                for embed in leaderboard_message.embeds:
-                    for field in embed.fields:
-                        if field.name == "Parity":
-                            try:
-                                user_scores_base64 = field.value.strip('```')
-                                await ctx.send(user_scores_base64)
-                                user_scores_json = base64.b64decode(
-                                    user_scores_base64.encode()).decode()
-                                await ctx.send(user_scores_json)
-                                user_scores = json.loads(user_scores_json)
-                                await ctx.send(user_scores)
-                                break
-                            except Exception as e:
-                                print(
-                                    f"Error decoding base64 user_scores: {e}")
-                                user_scores = {}
-            counter == 1
-
-    print("Printing User Scores...")
-    print(user_scores)
-    # Compute the scores for each user and prefix
-    prefix_scores = {p: {} for p in question_dict_mapping}
-    for user_id, scores in user_scores.items():
-        print("Current scores:", scores)  # Add this line
-        for prefix, score in scores.items():
-            prefix_scores[prefix][user_id] = {
-                "correct": score["correct"], "incorrect": score["incorrect"]}
-
-    # Compute the overall scores for each user
-    overall_scores = {}
-    for user_id, scores in user_scores.items():
-        overall_correct = sum([s["correct"] for s in scores.values()])
-        overall_incorrect = sum([s["incorrect"] for s in scores.values()])
-        overall_scores[user_id] = {
-            "correct": overall_correct, "incorrect": overall_incorrect}
-
-    # Sort the users by their overall score and number of incorrect answers
-    sorted_users = sorted(overall_scores.items(), key=lambda x: (
-        x[1]["correct"], x[1]["incorrect"]), reverse=True)
-
-    # Create the leaderboard embed
-    leaderboard_embed = Embed(
-        title="Quiz Commands Leaderboard", color=0x006400)
-    leaderboard_embed.set_footer(
-        text="Note: The leaderboard is updated once per hour. \n To learn more about the quiz commands, run `/commands` in #bot-commands")
-    
-    # Add the overall leaderboard to the embed
-    overall_leaderboard_desc = ""
-    rank = 1
-    for user_id, scores in sorted_users:
-        member = member_dict.get(user_id)
-        if member is not None:
-            username = member.display_name
-        else:
-            username = f"Unknown User ({user_id})"
-        correct = scores["correct"]
-        incorrect = scores["incorrect"]
-        overall_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
-        rank += 1
-        if rank > 5:
-            break
-    leaderboard_embed.add_field(name="Overall", value=overall_leaderboard_desc, inline=False)
-
-    # Add the leaderboard for each prefix to the embed
-    for prefix, scores in prefix_scores.items():
-        prefix_leaderboard_desc = ""
-        sorted_users = sorted(scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
-        rank = 1
-        for user_id, user_scores_for_quiz in sorted_users:
-            member = member_dict.get(int(user_id))
-            if member is not None:
-                username = member.display_name
-            else:
-                username = f"Unknown User ({user_id})"
-            correct = user_scores_for_quiz["correct"]
-            incorrect = user_scores_for_quiz["incorrect"]
-            prefix_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
-            rank += 1
-            if rank > 5:
-                break
-        leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
-
-    # Add base64 encoded user_scores to the embed
-    user_scores_json = json.dumps(user_scores)
-    user_scores_base64 = base64.b64encode(user_scores_json.encode()).decode()
-    leaderboard_embed.add_field(
-        name="Parity", value=f"```{user_scores_base64}```", inline=False)
-
-    # Update the leaderboard message in the leaderboard channel
-    leaderboard_message = None
-    async for message in leaderboard_channel.history():
-        if message.author == client.user:
-            leaderboard_message = message
-            break
-    if leaderboard_message is None:
-        leaderboard_message = await leaderboard_channel.send(embed=leaderboard_embed)
-    else:
-        await leaderboard_message.edit(embed=leaderboard_embed)
-
+    leaderboard_embed = create_leaderboard_embed(
+        user_scores, question_dict_mapping, member_dict)
+    upsert_leaderboard_message(leaderboard_channel, leaderboard_embed, client)
     print("Leaderboard updated successfully")
 
 
@@ -816,7 +726,7 @@ async def send_message_and_random():
 async def on_ready():
     print(f"Starting Scheduled Task Loops")
     send_message_and_random.start()
-    #update_leaderboard_task.start()
+    # update_leaderboard_task.start()
     print(f"Finished Starting Tasks")
     # Get the name of the bot user
     bot_username = client.user.name
