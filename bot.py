@@ -28,6 +28,9 @@ from features.scenarios.handle_scenarios import *
 from features.secplus.handle_secplus import *
 from features.shodan.handle_shodanip import *
 from features.subnet.handle_subnet import *
+from features.update_leaderboard.create_leaderboard_embed import create_leaderboard_embed
+from features.update_leaderboard.load_user_scores_from_existing_leaderboard import load_user_scores_from_existing_leaderboard
+from features.update_leaderboard.upsert_leaderboard_message import upsert_leaderboard_message
 from features.whois.handle_whois import *
 
 # import tasks
@@ -69,7 +72,8 @@ print(f"SECPLUSROLE: {secplusrole}")
 print(f"QUIZROLE: {quizrole}")
 
 user_responses = {}  # Format: {message_id: {question_id: {user_id: answer}}}
-valid_emojis = ["🇦", "🇧", "🇨", "🇩", "❓"]  # :regional_indicator_a:, :regional_indicator_b:, :regional_indicator_c:, :regional_indicator_d:, :question_mark:
+# :regional_indicator_a:, :regional_indicator_b:, :regional_indicator_c:, :regional_indicator_d:, :question_mark:
+valid_emojis = ["🇦", "🇧", "🇨", "🇩", "❓"]
 emoji_to_answer = {
     "🇦": "A",
     "🇧": "B",
@@ -92,6 +96,7 @@ question_dict_mapping = {
 
 user_scores = {}
 
+
 @client.event
 async def on_reaction_add(reaction, user):
     if user == client.user or reaction.message.author != client.user:
@@ -99,11 +104,14 @@ async def on_reaction_add(reaction, user):
 
     if reaction.emoji in valid_emojis:
         message_id = reaction.message.id  # Get the message ID
-        question_id = reaction.message.embeds[0].footer.text  # Get question ID from message footer
-        prefix, question_number = question_id.split("_")  # Extract prefix and question number
+        # Get question ID from message footer
+        question_id = reaction.message.embeds[0].footer.text
+        prefix, question_number = question_id.split(
+            "_")  # Extract prefix and question number
         question_number = int(question_number)
-        answer = emoji_to_answer[reaction.emoji]  # Convert the emoji to the corresponding answer option
-        user_id = user.id  # Get the user's Discord ID
+        # Convert the emoji to the corresponding answer option
+        answer = emoji_to_answer[reaction.emoji]
+        user_id = str(user.id)  # Get the user's Discord ID
         guild = client.get_guild(guildid) or reaction.message.guild
         if guild is None:
             print(f"Warning: Unable to find a guild with the ID {guildid}")
@@ -143,11 +151,14 @@ async def on_reaction_add(reaction, user):
         if answer:
             if user in guild.members:
                 if user_id not in user_scores:
-                    user_scores[user_id] = {p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}  # Initialize the user's score if it doesn't exist
+                    # Initialize the user's score if it doesn't exist
+                    user_scores[user_id] = {
+                        p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}
         # Convert the correct answer to lowercase
         if answer.lower() == correct_answer.lower():
             if user in guild.members:
-                user_scores[user_id][prefix]["correct"] += 1  # Increment the user's score for this prefix
+                # Increment the user's score for this prefix
+                user_scores[user_id][prefix]["correct"] += 1
             if "reasoning" in question:
                 await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!\n\n**Reasoning**: {question['reasoning']}")
                 return
@@ -155,7 +166,8 @@ async def on_reaction_add(reaction, user):
                 await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
         else:
             if user in guild.members:
-                user_scores[user_id][prefix]["incorrect"] += 1  # Increment the user's score for this prefix
+                # Increment the user's score for this prefix
+                user_scores[user_id][prefix]["incorrect"] += 1
             if "reasoning" in question:
                 await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.\n\n**Reasoning**: {question['reasoning']}")
                 return
@@ -164,7 +176,13 @@ async def on_reaction_add(reaction, user):
             return
 
 
+loaded_scores_from_leaderboard = False
+
+
 async def update_leaderboard():
+    ####
+    # begin smelly globally coupled init logic
+    ####
     print("Updating leaderboard")
     await client.wait_until_ready()
     global user_scores
@@ -172,107 +190,23 @@ async def update_leaderboard():
         print(f"missing required guild or leaderboard channel id")
         return
     guild = client.get_guild(int(guildid))
+    # Store the member objects in a dictionary for fast lookups
+    member_dict = {str(member.id): member for member in guild.members}
     leaderboard_channel = guild.get_channel(int(leaderboardid))
+    ####
+    # end smelly globally coupled init logic
+    ####
 
-        # Check if user_scores is empty
-    if not user_scores:
-        # Find the existing leaderboard message
-        leaderboard_message = None
-        async for message in leaderboard_channel.history():
-            if message.author == client.user:
-                leaderboard_message = message
-                break
+    global loaded_scores_from_leaderboard
+    if not user_scores and not loaded_scores_from_leaderboard:
+        user_scores = await load_user_scores_from_existing_leaderboard(
+            leaderboard_channel, client)
+        loaded_scores_from_leaderboard = True
 
-        # If the leaderboard message exists, try to retrieve the base64 encoded user_scores
-        if leaderboard_message is not None:
-            for embed in leaderboard_message.embeds:
-                for field in embed.fields:
-                    if field.name == "Parity":
-                        try:
-                            user_scores_base64 = field.value.strip('```')
-                            user_scores_json = base64.b64decode(user_scores_base64.encode()).decode()
-                            user_scores = json.loads(user_scores_json)
-                            break
-                        except Exception as e:
-                            print(f"Error decoding base64 user_scores: {e}")
-                            user_scores = {}
-
-    print("Printing User Scores...")
-    print(user_scores)
-    # Compute the scores for each user and prefix
-    prefix_scores = {p: {} for p in question_dict_mapping}
-    for user_id, scores in user_scores.items():
-        print("Current scores:", scores)  # Add this line
-        for prefix, score in scores.items():
-            prefix_scores[prefix][user_id] = {"correct": score["correct"], "incorrect": score["incorrect"]}
-
-    # Compute the overall scores for each user
-    overall_scores = {}
-    for user_id, scores in user_scores.items():
-        overall_correct = sum([s["correct"] for s in scores.values()])
-        overall_incorrect = sum([s["incorrect"] for s in scores.values()])
-        overall_scores[user_id] = {"correct": overall_correct, "incorrect": overall_incorrect}
-
-    # Sort the users by their overall score and number of incorrect answers
-    sorted_users = sorted(overall_scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
-
-    # Create the leaderboard embed
-    leaderboard_embed = Embed(title="Quiz Commands Leaderboard", color=0x006400)
-    leaderboard_embed.set_footer(text="Note: The leaderboard is updated once per hour. \n To learn more about the quiz commands, run `/commands` in #bot-commands")
-
-    # Add the overall leaderboard to the embed
-    overall_leaderboard_desc = ""
-    rank = 1
-    for user_id, scores in sorted_users:
-        member = guild.get_member(user_id)
-        if member is not None:
-            username = member.display_name
-        else:
-            username = f"Unknown User ({user_id})"
-        correct = scores["correct"]
-        incorrect = scores["incorrect"]
-        overall_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
-        rank += 1
-        if rank > 5:
-            break
-    leaderboard_embed.add_field(name="Overall", value=overall_leaderboard_desc, inline=False)
-
-    # Add the leaderboard for each prefix to the embed
-    for prefix, scores in prefix_scores.items():
-        prefix_leaderboard_desc = ""
-        sorted_users = sorted(scores.items(), key=lambda x: (x[1]["correct"], x[1]["incorrect"]), reverse=True)
-        rank = 1
-        for user_id, user_scores in sorted_users:
-            member = guild.get_member(user_id)
-            if member is not None:
-                username = member.display_name
-            else:
-                username = f"Unknown User ({user_id})"
-            correct = user_scores["correct"]
-            incorrect = user_scores["incorrect"]
-            prefix_leaderboard_desc += f"{rank}. **{username}**: {correct} correct, {incorrect} incorrect\n"
-            rank += 1
-            if rank > 5:
-                break
-        leaderboard_embed.add_field(name=prefix.upper(), value=prefix_leaderboard_desc, inline=False)
-
-    # Add base64 encoded user_scores to the embed
-    user_scores_json = json.dumps(user_scores)
-    user_scores_base64 = base64.b64encode(user_scores_json.encode()).decode()
-    leaderboard_embed.add_field(name="Parity", value=f"```{user_scores_base64}```", inline=False)
-
-    # Update the leaderboard message in the leaderboard channel
-    leaderboard_message = None
-    async for message in leaderboard_channel.history():
-        if message.author == client.user:
-            leaderboard_message = message
-            break
-    if leaderboard_message is None:
-        leaderboard_message = await leaderboard_channel.send(embed=leaderboard_embed)
-    else:
-        await leaderboard_message.edit(embed=leaderboard_embed)
-
+    leaderboard_embed = await create_leaderboard_embed(user_scores, question_dict_mapping, member_dict)
+    await upsert_leaderboard_message(leaderboard_channel, leaderboard_embed, client)
     print("Leaderboard updated successfully")
+
 
 @client.hybrid_command(
     name="socials",
@@ -284,6 +218,7 @@ async def socials(ctx):
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
 
 @client.hybrid_command(name="commands", description="Describes the available commands.")
 async def commands(ctx):
@@ -319,6 +254,7 @@ async def commands(ctx):
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
 
 @client.hybrid_command(
     name="quiz", description="Replies with CompTIA's A+ related prompt."
@@ -443,6 +379,7 @@ async def ccna(ctx):
         print({e})
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
+
 @client.hybrid_command(
     name="cissp",
     description="Replies with Replies with an ISC2's CISSP multiple choice prompt.",
@@ -459,6 +396,7 @@ async def cissp(ctx):
     except Exception as e:
         print({e})
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
+
 
 @client.hybrid_command(
     name="linuxplus",
@@ -477,6 +415,7 @@ async def linuxplus(ctx):
         print({e})
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
+
 @client.hybrid_command(
     name="ceh",
     description="Replies with Replies with an EC-Council's CEH multiple choice prompt.",
@@ -494,6 +433,7 @@ async def ceh(ctx):
         print({e})
         await ctx.send(f"Error: {e}. An unexpected error occurred.")
 
+
 @client.hybrid_command(
     name="dns", description="Gives you useful information about a dns name."
 )
@@ -503,6 +443,7 @@ async def dns(ctx, domain: str):
         await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
+
 
 @client.hybrid_command(
     name="hash",
@@ -515,6 +456,7 @@ async def hash(ctx, algorithm: str, message: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format or unsupported hashing algorithm.")
 
+
 @client.hybrid_command(name='phonelookup', description="Looks up a phone number and returns information about it.")
 async def phonelookup(ctx, phone_number: str):
     try:
@@ -522,6 +464,7 @@ async def phonelookup(ctx, phone_number: str):
         await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
+
 
 @client.hybrid_command(
     name="ping", description="Sends a ping packet to a specified IP address to check if it is reachable."
@@ -533,6 +476,7 @@ async def ping(ctx, ip: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format or IP address not reachable.")
 
+
 @client.hybrid_command(
     name="shodanip", description="Gives you useful information about a given ip address."
 )
@@ -542,6 +486,7 @@ async def shodanip(ctx, ip: str):
         await ctx.send(embed=response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
+
 
 @client.hybrid_command(
     name="subnet", description="Gives you useful information about a given subnet."
@@ -553,6 +498,7 @@ async def subnet(ctx, ip: str, mask: str):
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
 
+
 @client.hybrid_command(
     name="whois", description="Gives you useful information about a given subnet."
 )
@@ -562,6 +508,7 @@ async def whois(ctx, domain: str):
         await ctx.send(response)
     except Exception as e:
         await ctx.send(f"Error: {e}. Invalid input format.")
+
 
 @client.hybrid_command(
     name="updatelb", description="Updates the quiz leaderboard."
@@ -577,11 +524,15 @@ async def updatelb(ctx):
         await ctx.send("You don't have permission to run this command.")
 
 # Define the leaderboard update task
+
+
 @tasks.loop(hours=1, minutes=0)
 async def update_leaderboard_task():
     await update_leaderboard()
 
 # Define the random quiz task to run at 12:00pm every day
+
+
 @tasks.loop(hours=24, minutes=0)
 async def send_message_and_random():
     print("starting send random message")
@@ -613,7 +564,8 @@ async def send_message_and_random():
             selected_task = random.choice(tasks)
             await selected_task(client, guildid, channelid, quizrole, user_responses, valid_emojis)
         except Exception as e:
-            print(f"An error occurred while running the 'send_message_and_random' task: {e}")
+            print(
+                f"An error occurred while running the 'send_message_and_random' task: {e}")
             return
     except Exception as e:
         print(
@@ -765,11 +717,13 @@ async def send_message_and_random():
 #         return
 
 # Define the on_ready event handler
+
+
 @client.event
 async def on_ready():
     print(f"Starting Scheduled Task Loops")
     send_message_and_random.start()
-    update_leaderboard_task.start()
+    # update_leaderboard_task.start()
     print(f"Finished Starting Tasks")
     # Get the name of the bot user
     bot_username = client.user.name
@@ -829,7 +783,7 @@ async def on_ready():
             emoji=None,
         )
         await client.change_presence(activity=activity, status=Status.online)
-        
+
     # Start Task Loops
     # try:
     # except Exception as e:
