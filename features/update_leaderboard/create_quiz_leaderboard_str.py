@@ -13,3 +13,4 @@ def create_quiz_leaderboard_str(sorted_users_by_quiz, member_dict):
         rank += 1
         if rank > 5:
             break
+    return prefix_leaderboard_desc
