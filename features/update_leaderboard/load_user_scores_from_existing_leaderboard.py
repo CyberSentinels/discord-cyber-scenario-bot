@@ -1,7 +1,6 @@
 import base64
 import json
 
-from .get_encoded_user_scores_from_embeds import get_encoded_user_scores_from_embeds
 
 async def load_user_scores_from_existing_leaderboard(leaderboard_channel, client):
     user_scores = {}  # default
@@ -20,3 +19,11 @@ async def load_user_scores_from_existing_leaderboard(leaderboard_channel, client
         print(
             f"Error decoding base64 user_scores: {e}")
     return user_scores
+
+
+def get_encoded_user_scores_from_embeds(leaderboard_message):
+    if leaderboard_message is not None:
+        for embed in leaderboard_message.embeds:
+            for field in embed.fields:
+                if field.name == "Parity":
+                    return field.value.strip('```')

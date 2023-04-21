@@ -111,7 +111,7 @@ async def on_reaction_add(reaction, user):
         question_number = int(question_number)
         # Convert the emoji to the corresponding answer option
         answer = emoji_to_answer[reaction.emoji]
-        user_id = user.id  # Get the user's Discord ID
+        user_id = str(user.id)  # Get the user's Discord ID
         guild = client.get_guild(guildid) or reaction.message.guild
         if guild is None:
             print(f"Warning: Unable to find a guild with the ID {guildid}")
@@ -179,7 +179,7 @@ async def on_reaction_add(reaction, user):
 loaded_scores_from_leaderboard = False
 
 
-async def update_leaderboard(ctx):
+async def update_leaderboard():
     ####
     # begin smelly globally coupled init logic
     ####
@@ -191,7 +191,7 @@ async def update_leaderboard(ctx):
         return
     guild = client.get_guild(int(guildid))
     # Store the member objects in a dictionary for fast lookups
-    member_dict = {member.id: member for member in guild.members}
+    member_dict = {str(member.id): member for member in guild.members}
     leaderboard_channel = guild.get_channel(int(leaderboardid))
     ####
     # end smelly globally coupled init logic
@@ -203,8 +203,7 @@ async def update_leaderboard(ctx):
             leaderboard_channel, client)
         loaded_scores_from_leaderboard = True
 
-    leaderboard_embed = create_leaderboard_embed(
-        user_scores, question_dict_mapping, member_dict)
+    leaderboard_embed = await create_leaderboard_embed(user_scores, question_dict_mapping, member_dict)
     await upsert_leaderboard_message(leaderboard_channel, leaderboard_embed, client)
     print("Leaderboard updated successfully")
 
@@ -519,7 +518,7 @@ async def updatelb(ctx):
         await ctx.send("The leaderboard channel has not been set.")
         return
     if ctx.author.guild_permissions.administrator:
-        await update_leaderboard(ctx)
+        await update_leaderboard()
         await ctx.send("Leaderboard updated successfully.")
     else:
         await ctx.send("You don't have permission to run this command.")
@@ -527,9 +526,9 @@ async def updatelb(ctx):
 # Define the leaderboard update task
 
 
-# @tasks.loop(hours=1, minutes=0)
-# async def update_leaderboard_task():
-#     await update_leaderboard()
+@tasks.loop(hours=1, minutes=0)
+async def update_leaderboard_task():
+    await update_leaderboard()
 
 # Define the random quiz task to run at 12:00pm every day
 

@@ -1,7 +1,7 @@
-def create_quiz_leaderboard_str(sorted_users, member_dict):
+def create_quiz_leaderboard_str(sorted_users_by_quiz, member_dict):
     prefix_leaderboard_desc = ""
     rank = 1
-    for user_id, user_scores_for_quiz in sorted_users:
+    for user_id, user_scores_for_quiz in sorted_users_by_quiz:
         member = member_dict.get(int(user_id))
         if member is not None:
             username = member.display_name

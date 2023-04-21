@@ -8,11 +8,11 @@ from features.update_leaderboard.create_quiz_leaderboard_str import create_quiz_
 from features.update_leaderboard.sort_overall_user_scores import sort_overall_user_scores
 
 
-def create_leaderboard_embed(user_scores, question_dict_mapping, member_dict):
+async def create_leaderboard_embed(user_scores, question_dict_mapping, member_dict):
     leaderboard_embed = Embed(
         title="Quiz Commands Leaderboard", color=0x006400)
 
-    # leaderboard embed: overall leaderboard
+    # leaderboard embed: overall
     sorted_overall_user_scores = sort_overall_user_scores(user_scores)
     overall_leaderboard_str = create_overall_leaderboard_str(
         sorted_overall_user_scores, member_dict)
