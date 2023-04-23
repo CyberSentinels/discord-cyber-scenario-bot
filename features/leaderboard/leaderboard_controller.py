@@ -7,6 +7,8 @@ from features.linuxplus.handle_linuxplus import linuxplusdict
 from features.secplus.handle_secplus import secplusdict
 from features.quiz.handle_quiz import quizdict
 
+VALID_QUIZ_EMOJIS = ["🇦", "🇧", "🇨", "🇩", "❓"]
+
 EMOJI_TO_ANSWER = {
     "🇦": "A",
     "🇧": "B",
@@ -17,6 +19,18 @@ EMOJI_TO_ANSWER = {
 
 user_responses = {}  # Format: {message_id: {question_id: {user_id: answer}}}
 user_scores = {}     # Format: {user_id: {quiz_id: {correct: int, incorrect: int }}}
+
+QUESTION_DICT_MAPPING = {
+    "cissp": cisspdict,
+    "ceh": cehdict,
+    "ccna": ccnadict,
+    "aplus": aplusdict,
+    "netplus": netplusdict,
+    "linuxplus": linuxplusdict,
+    "secplus": secplusdict,
+    "quiz": quizdict
+    # Add more prefixes and corresponding question dictionaries as needed
+}
 
 
 async def handle_quiz_reaction(react, user, client):
@@ -49,7 +63,6 @@ async def send_user_dm(react, user, question_id):
 
 
 def is_valid_quiz_emoji(emoji):
-    VALID_QUIZ_EMOJIS = ["🇦", "🇧", "🇨", "🇩", "❓"]
     return emoji in VALID_QUIZ_EMOJIS
 
 
@@ -66,17 +79,6 @@ def add_user_response(msg_id, question_id, user_id, user_answer):
 
 
 def create_response_str(user_id, quiz_id, question_number, user_answer):
-    QUESTION_DICT_MAPPING = {
-        "cissp": cisspdict,
-        "ceh": cehdict,
-        "ccna": ccnadict,
-        "aplus": aplusdict,
-        "netplus": netplusdict,
-        "linuxplus": linuxplusdict,
-        "secplus": secplusdict,
-        "quiz": quizdict
-        # Add more prefixes and corresponding question dictionaries as needed
-    }
     question_dict = QUESTION_DICT_MAPPING[quiz_id]
     question = question_dict[question_number]
     correct_answer = question["correctanswer"].lower()
