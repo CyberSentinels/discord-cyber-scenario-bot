@@ -18,6 +18,7 @@ from features.ceh.handle_ceh import *
 from features.cissp.handle_cissp import *
 from features.dns.handle_dns import *
 from features.hash.handle_hash import *
+from features.leaderboard.handle_quiz_reaction import handle_quiz_reaction
 from features.linuxplus.handle_linuxplus import *
 from features.netplus.handle_netplus import *
 from features.ping.handle_ping import *
@@ -99,82 +100,7 @@ user_scores = {}
 
 @client.event
 async def on_reaction_add(reaction, user):
-    if user == client.user or reaction.message.author != client.user:
-        return
-
-    if reaction.emoji in valid_emojis:
-        message_id = reaction.message.id  # Get the message ID
-        # Get question ID from message footer
-        question_id = reaction.message.embeds[0].footer.text
-        prefix, question_number = question_id.split(
-            "_")  # Extract prefix and question number
-        question_number = int(question_number)
-        # Convert the emoji to the corresponding answer option
-        answer = emoji_to_answer[reaction.emoji]
-        user_id = str(user.id)  # Get the user's Discord ID
-        guild = client.get_guild(guildid) or reaction.message.guild
-        if guild is None:
-            print(f"Warning: Unable to find a guild with the ID {guildid}")
-            return
-        global user_responses
-        global user_scores
-
-        # Check if the user has already responded to this question
-        if message_id in user_responses and question_id in user_responses[message_id] and user_id in user_responses[message_id][question_id]:
-            # User has already responded to this question, do not update their response or score
-            await reaction.remove(user)
-            return
-
-        # Update the response for this question for all guild users
-        if user in guild.members:
-            if message_id not in user_responses:
-                user_responses[message_id] = {}
-            if question_id not in user_responses[message_id]:
-                user_responses[message_id][question_id] = {}
-            user_responses[message_id][question_id][user_id] = answer
-
-        # Remove the user's reaction to prevent duplicate responses
-        await reaction.remove(user)
-
-        # Check if the answer is correct and update the user's score for the appropriate prefix
-        question_dict = question_dict_mapping[prefix]
-        question = question_dict[question_number]
-        correct_answer = question["correctanswer"].lower()
-        if answer == "show_answer":  # Check if the question mark emoji was selected
-            if "reasoning" in question:
-                await user.send(f"The correct answer is '{correct_answer}'\n\n**Reasoning**: {question['reasoning']}")
-                return
-            else:
-                await user.send(f"The correct answer is '{correct_answer}'")
-            return  # Stop processing the selected reaction if the question mark emoji was selected
-
-        if answer:
-            if user in guild.members:
-                if user_id not in user_scores:
-                    # Initialize the user's score if it doesn't exist
-                    user_scores[user_id] = {
-                        p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping}
-        # Convert the correct answer to lowercase
-        if answer.lower() == correct_answer.lower():
-            if user in guild.members:
-                # Increment the user's score for this prefix
-                user_scores[user_id][prefix]["correct"] += 1
-            if "reasoning" in question:
-                await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!\n\n**Reasoning**: {question['reasoning']}")
-                return
-            else:
-                await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
-        else:
-            if user in guild.members:
-                # Increment the user's score for this prefix
-                user_scores[user_id][prefix]["incorrect"] += 1
-            if "reasoning" in question:
-                await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.\n\n**Reasoning**: {question['reasoning']}")
-                return
-            else:
-                await user.send(f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.")
-            return
-
+    await handle_quiz_reaction(reaction, user, client)
 
 loaded_scores_from_leaderboard = False
 
