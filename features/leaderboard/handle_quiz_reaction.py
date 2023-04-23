@@ -71,6 +71,8 @@ def user_already_reacted(user_id, msg_id, question_id):
 
 
 def add_user_response(msg_id, question_id, user_id, user_answer):
+    global user_responses
+
     if msg_id not in user_responses:
         user_responses[msg_id] = {}
     if question_id not in user_responses[msg_id]:
@@ -79,6 +81,8 @@ def add_user_response(msg_id, question_id, user_id, user_answer):
 
 
 def create_response_str(user_id, quiz_id, question_number, user_answer):
+    global user_scores
+
     question_dict = QUESTION_DICT_MAPPING[quiz_id]
     question = question_dict[question_number]
     correct_answer = question["correctanswer"].lower()
