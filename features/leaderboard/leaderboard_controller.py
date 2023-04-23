@@ -1,5 +1,3 @@
-import os
-
 from features.cissp.handle_cissp import cisspdict
 from features.ccna.handle_ccna import ccnadict
 from features.ceh.handle_ceh import cehdict
@@ -9,7 +7,6 @@ from features.linuxplus.handle_linuxplus import linuxplusdict
 from features.secplus.handle_secplus import secplusdict
 from features.quiz.handle_quiz import quizdict
 
-VALID_QUIZ_EMOJIS = ["🇦", "🇧", "🇨", "🇩", "❓"]
 EMOJI_TO_ANSWER = {
     "🇦": "A",
     "🇧": "B",
@@ -17,7 +14,6 @@ EMOJI_TO_ANSWER = {
     "🇩": "D",
     "❓": "show_answer"
 }
-guildid = os.environ.get("GUILD_ID")
 
 user_responses = {}  # Format: {message_id: {question_id: {user_id: answer}}}
 user_scores = {}     # Format: {user_id: {quiz_id: {correct: int, incorrect: int }}}
@@ -37,13 +33,19 @@ async def handle_quiz_reaction(react, user, client):
             return
 
         add_user_response(react, user, client)
-
         await react.remove(user)
+        await send_user_dm(react, user, question_id)
 
-        response_str = create_response_str(
-            quiz_id, question_number, user_answer)
 
-        await user.send(response_str)
+async def send_user_dm(react, user, question_id):
+    quiz_id, question_number = question_id.split("_")
+    question_number = int(question_number)
+    user_answer = EMOJI_TO_ANSWER[react.emoji]
+
+    response_str = create_response_str(
+        quiz_id, question_number, user_answer)
+
+    await user.send(response_str)
 
 
 def is_valid_quiz_emoji(emoji):
@@ -117,6 +119,7 @@ def create_incorrect_answer_str(user_answer, correct_answer, question, with_reas
 
 
 # def get_members(client, reaction, guildid):
+#     guildid = os.environ.get("GUILD_ID")
 #     guild = client.get_guild(guildid) or reaction.message.guild
 #     if guild is None:
 #         raise Exception(
