@@ -25,9 +25,6 @@ from features.scenarios.handle_scenarios import *
 from features.secplus.handle_secplus import *
 from features.shodan.handle_shodanip import *
 from features.subnet.handle_subnet import *
-from features.update_leaderboard.create_leaderboard_embed import create_leaderboard_embed
-from features.update_leaderboard.load_user_scores_from_existing_leaderboard import load_user_scores_from_existing_leaderboard
-from features.update_leaderboard.upsert_leaderboard_message import upsert_leaderboard_message
 from features.whois.handle_whois import *
 
 # import tasks

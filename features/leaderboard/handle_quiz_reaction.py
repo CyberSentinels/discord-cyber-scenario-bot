@@ -1,7 +1,7 @@
 import base64
 import json
 
-from discord import Embed
+from discord import BotIntegration, Embed
 from features.cissp.handle_cissp import cisspdict
 from features.ccna.handle_ccna import ccnadict
 from features.ceh.handle_ceh import cehdict
