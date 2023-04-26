@@ -1,7 +1,8 @@
 import base64
 import json
 
-from discord import BotIntegration, Embed
+from discord import Client, Embed
+from bot import commands
 from features.cissp.handle_cissp import cisspdict
 from features.ccna.handle_ccna import ccnadict
 from features.ceh.handle_ceh import cehdict
@@ -135,7 +136,7 @@ def create_incorrect_answer_str(user_answer, correct_answer, question, with_reas
 loaded_scores_from_leaderboard = False
 
 
-async def handle_update_leaderboard(client, guildid, leaderboardid):
+async def handle_update_leaderboard(client: Client, guildid: str, leaderboardid: str):
     global user_scores
     global loaded_scores_from_leaderboard
 
