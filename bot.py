@@ -1,13 +1,9 @@
 import asyncio
-import base64
 import datetime
 import discord
-import json
 import os
 import random
-import time
-import traceback
-from discord import Activity, ActivityType, Status, app_commands, Embed
+from discord import Activity, ActivityType, Status, Embed
 from discord.ext import commands, tasks
 
 # import features
@@ -18,7 +14,7 @@ from features.ceh.handle_ceh import *
 from features.cissp.handle_cissp import *
 from features.dns.handle_dns import *
 from features.hash.handle_hash import *
-from features.leaderboard.handle_quiz_reaction import handle_quiz_reaction
+from features.leaderboard.handle_quiz_reaction import handle_quiz_reaction, handle_update_leaderboard
 from features.linuxplus.handle_linuxplus import *
 from features.netplus.handle_netplus import *
 from features.ping.handle_ping import *
@@ -100,38 +96,17 @@ user_scores = {}
 
 @client.event
 async def on_reaction_add(reaction, user):
-    await handle_quiz_reaction(reaction, user, client)
+    guildid = os.environ.get("GUILD_ID")
+    guild = client.get_guild(guildid) or reaction.message.guild
+    if guild is None:
+        raise Exception(
+            f"Warning: Unable to find a guild with the ID {guildid}")
 
-loaded_scores_from_leaderboard = False
+    await handle_quiz_reaction(reaction, user, client)
 
 
 async def update_leaderboard():
-    ####
-    # begin smelly globally coupled init logic
-    ####
-    print("Updating leaderboard")
-    await client.wait_until_ready()
-    global user_scores
-    if guildid is None or leaderboardid is None:
-        print(f"missing required guild or leaderboard channel id")
-        return
-    guild = client.get_guild(int(guildid))
-    # Store the member objects in a dictionary for fast lookups
-    member_dict = {str(member.id): member for member in guild.members}
-    leaderboard_channel = guild.get_channel(int(leaderboardid))
-    ####
-    # end smelly globally coupled init logic
-    ####
-
-    global loaded_scores_from_leaderboard
-    if not user_scores and not loaded_scores_from_leaderboard:
-        user_scores = await load_user_scores_from_existing_leaderboard(
-            leaderboard_channel, client)
-        loaded_scores_from_leaderboard = True
-
-    leaderboard_embed = await create_leaderboard_embed(user_scores, question_dict_mapping, member_dict)
-    await upsert_leaderboard_message(leaderboard_channel, leaderboard_embed, client)
-    print("Leaderboard updated successfully")
+    handle_update_leaderboard(client, guildid, leaderboardid)
 
 
 @client.hybrid_command(
