@@ -9,7 +9,7 @@ from features.update_leaderboard.sort_overall_user_scores import sort_overall_us
 
 
 async def create_leaderboard_embed(user_scores, question_dict_mapping, member_dict):
-    leaderboard= Embed(
+    leaderboard = Embed(
         title="Quiz Commands Leaderboard", color=0x006400)
 
     # leaderboard embed: overall
@@ -42,6 +42,21 @@ async def create_leaderboard_persistance_embed(user_scores):
         title="Leaderboard Persistance", color=0x006400)
     user_scores_json = json.dumps(user_scores)
     user_scores_base64 = base64.b64encode(user_scores_json.encode()).decode()
-    leaderboard_persistence.add_field(
-        name="Parity", value=f"```{user_scores_base64}```", inline=False)
+
+    encoded_score_chunks = split_by_1000_chars(user_scores_base64)
+
+    for i, chunk in enumerate(encoded_score_chunks):
+        leaderboard_persistence.add_field(
+            name="chunk:" + str(i), value=f"```{chunk}```", inline=False)
+        
     return leaderboard_persistence
+
+
+def split_by_1000_chars(base64_user_scores):
+    chunks = []
+    chunks_len = 0
+    while chunks_len != len(base64_user_scores):
+        new_chunk = base64_user_scores[0:1000]
+        chunks.append(new_chunk)
+        chunks_len += len(new_chunk)
+    return chunks

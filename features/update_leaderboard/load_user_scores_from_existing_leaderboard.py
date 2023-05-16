@@ -22,8 +22,10 @@ async def load_user_scores_from_existing_leaderboard(leaderboard_channel, client
 
 
 def get_encoded_user_scores_from_embeds(leaderboard_message):
+    chunks = []
     if leaderboard_message is not None:
         for embed in leaderboard_message.embeds:
             for field in embed.fields:
-                if field.name == "Parity":
-                    return field.value.strip('```')
+                if field.name[0:5] == "chunk:":
+                    chunks.append(field.value.strip('```'))
+    return "".join(chunks)
