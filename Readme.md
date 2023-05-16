@@ -56,6 +56,7 @@ Note that if you are using a Windows-based system, you'll need to use a slightly
 set BOT_TOKEN="INSERT YOUR BOT TOKEN HERE"
 set GUILD_ID="INSERT YOUR GUILD ID HERE (only needed for timed quizes)"
 set LEADERBOARD_CHANNEL_ID="INSERT YOUR LEADERBOARD CHANNEL ID HERE (Only needed for leaderboard for prompts)" 
+set LEADERBOARD_PERSIST_CHANNEL_ID="INSERT YOUR LEADERBOARD PERSIST CHANNEL ID HERE (Only needed for leaderboard for prompts)" 
 set CHANNEL_ID="INSERT YOUR CHANNEL ID HERE (only needed for timed quizes)"
 set APLUSROLE="INSERT YOUR A+ ROLE ID HERE (only needed for timed quizes)"
 set NETPLUSROLE="INSERT YOUR Network+ ROLE ID HERE (only needed for timed quizes)"
@@ -80,7 +81,8 @@ To run the bot in the background with all scheduled prompts and roles:
 docker run -td --name scenario-bot \
 -e BOT_TOKEN="INSERT YOUR BOT TOKEN HERE" \
 -e GUILD_ID="INSERT YOUR GUILD ID HERE" \
--e LEADERBOARD_CHANNEL_ID="INSERT YOUR LEADERBOARD CHANNEL ID HERE"
+-e LEADERBOARD_CHANNEL_ID="INSERT YOUR LEADERBOARD CHANNEL ID HERE" \
+-e LEADERBOARD_PERSIST_CHANNEL_ID="INSERT YOUR LEADERBOARD PERSIST CHANNEL ID HERE" \
 -e CHANNEL_ID="INSERT YOUR CHANNEL ID HERE" \
 -e APLUSROLE="INSERT YOUR A+ ROLE ID HERE" \
 -e NETPLUSROLE="INSERT YOUR NET+ ROLE ID HERE" \
