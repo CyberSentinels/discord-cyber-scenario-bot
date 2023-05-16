@@ -55,7 +55,7 @@ bottoken = os.environ.get("BOT_TOKEN")
 # only needed if you want the timed quizes
 guildid = os.environ.get("GUILD_ID")
 leaderboardid = os.environ.get("LEADERBOARD_CHANNEL_ID")
-leaderboard_embed_channel_id = os.environ.get("LEADERBOARD_EMBED_CHANNEL_ID")
+leaderboard_persist_channel_id = os.environ.get("LEADERBOARD_PERSIST_CHANNEL_ID")
 channelid = os.environ.get("CHANNEL_ID")
 aplusrole = os.environ.get("APLUSROLE")
 netplusrole = os.environ.get("NETPLUSROLE")
@@ -66,7 +66,7 @@ quizrole = os.environ.get("QUIZROLE")
 print(f"BOT_TOKEN: {bottoken}")
 print(f"GUILD_ID: {guildid}")
 print(f"LEADERBOARD_CHANNEL_ID: {leaderboardid}")
-print(f"LEADERBOARD_EMBED_CHANNEL_ID: {leaderboard_embed_channel_id}")
+print(f"LEADERBOARD_PERSIST_CHANNEL_ID: {leaderboard_persist_channel_id}")
 print(f"CHANNEL_ID: {channelid}")
 print(f"APLUSROLE: {aplusrole}")
 print(f"NETPLUSROLE: {netplusrole}")
@@ -188,14 +188,14 @@ async def update_leaderboard():
     print("Updating leaderboard")
     await client.wait_until_ready()
     global user_scores
-    if guildid is None or leaderboardid is None or leaderboard_embed_channel_id is None:
+    if guildid is None or leaderboardid is None or leaderboard_persist_channel_id is None:
         print(f"missing required guild or leaderboard or embed channel id")
         return
     guild = client.get_guild(int(guildid))
     # Store the member objects in a dictionary for fast lookups
     member_dict = {str(member.id): member for member in guild.members}
     leaderboard_channel = guild.get_channel(int(leaderboardid))
-    leaderboard_persistance_channel = guild.get_channel(int(leaderboard_embed_channel_id))
+    leaderboard_persistance_channel = guild.get_channel(int(leaderboard_persist_channel_id))
     ####
     # end smelly globally coupled init logic
     ####
