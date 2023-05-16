@@ -28,9 +28,9 @@ from features.scenarios.handle_scenarios import *
 from features.secplus.handle_secplus import *
 from features.shodan.handle_shodanip import *
 from features.subnet.handle_subnet import *
-from features.update_leaderboard.create_leaderboard_embed import create_leaderboard_embed
+from features.update_leaderboard.create_leaderboard_embed import create_leaderboard_embed, create_leaderboard_persistance_embed
 from features.update_leaderboard.load_user_scores_from_existing_leaderboard import load_user_scores_from_existing_leaderboard
-from features.update_leaderboard.upsert_leaderboard_message import upsert_leaderboard_message
+from features.update_leaderboard.upsert_message_for_channel import upsert_message_for_channel
 from features.whois.handle_whois import *
 
 # import tasks
@@ -55,6 +55,7 @@ bottoken = os.environ.get("BOT_TOKEN")
 # only needed if you want the timed quizes
 guildid = os.environ.get("GUILD_ID")
 leaderboardid = os.environ.get("LEADERBOARD_CHANNEL_ID")
+leaderboard_persist_channel_id = os.environ.get("LEADERBOARD_PERSIST_CHANNEL_ID")
 channelid = os.environ.get("CHANNEL_ID")
 aplusrole = os.environ.get("APLUSROLE")
 netplusrole = os.environ.get("NETPLUSROLE")
@@ -65,6 +66,7 @@ quizrole = os.environ.get("QUIZROLE")
 print(f"BOT_TOKEN: {bottoken}")
 print(f"GUILD_ID: {guildid}")
 print(f"LEADERBOARD_CHANNEL_ID: {leaderboardid}")
+print(f"LEADERBOARD_PERSIST_CHANNEL_ID: {leaderboard_persist_channel_id}")
 print(f"CHANNEL_ID: {channelid}")
 print(f"APLUSROLE: {aplusrole}")
 print(f"NETPLUSROLE: {netplusrole}")
@@ -186,13 +188,14 @@ async def update_leaderboard():
     print("Updating leaderboard")
     await client.wait_until_ready()
     global user_scores
-    if guildid is None or leaderboardid is None:
-        print(f"missing required guild or leaderboard channel id")
+    if guildid is None or leaderboardid is None or leaderboard_persist_channel_id is None:
+        print(f"missing required guild or leaderboard or embed channel id")
         return
     guild = client.get_guild(int(guildid))
     # Store the member objects in a dictionary for fast lookups
     member_dict = {str(member.id): member for member in guild.members}
     leaderboard_channel = guild.get_channel(int(leaderboardid))
+    leaderboard_persistance_channel = guild.get_channel(int(leaderboard_persist_channel_id))
     ####
     # end smelly globally coupled init logic
     ####
@@ -200,11 +203,15 @@ async def update_leaderboard():
     global loaded_scores_from_leaderboard
     if not user_scores and not loaded_scores_from_leaderboard:
         user_scores = await load_user_scores_from_existing_leaderboard(
-            leaderboard_channel, client)
+            leaderboard_persistance_channel, client)
         loaded_scores_from_leaderboard = True
 
     leaderboard_embed = await create_leaderboard_embed(user_scores, question_dict_mapping, member_dict)
-    await upsert_leaderboard_message(leaderboard_channel, leaderboard_embed, client)
+    leaderboard_persistance_embed = await create_leaderboard_persistance_embed(user_scores)
+
+    await upsert_message_for_channel(leaderboard_channel, leaderboard_embed, client)
+    await upsert_message_for_channel(leaderboard_persistance_channel, leaderboard_persistance_embed, client)
+
     print("Leaderboard updated successfully")
 
 
