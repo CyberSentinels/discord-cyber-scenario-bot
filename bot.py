@@ -180,7 +180,6 @@ async def on_reaction_add(reaction, user):
 
 loaded_scores_from_leaderboard = False
 
-
 async def update_leaderboard():
     ####
     # begin smelly globally coupled init logic
@@ -201,9 +200,9 @@ async def update_leaderboard():
     ####
 
     global loaded_scores_from_leaderboard
+
     if not user_scores and not loaded_scores_from_leaderboard:
-        user_scores = await load_user_scores_from_existing_leaderboard(
-            leaderboard_persistance_channel, client)
+        user_scores = await load_user_scores_from_existing_leaderboard(leaderboard_persistance_channel, client)
         loaded_scores_from_leaderboard = True
 
     leaderboard_embed = await create_leaderboard_embed(user_scores, question_dict_mapping, member_dict)
@@ -213,7 +212,6 @@ async def update_leaderboard():
     await upsert_message_for_channel(leaderboard_persistance_channel, leaderboard_persistance_embed, client)
 
     print("Leaderboard updated successfully")
-
 
 @client.hybrid_command(
     name="socials",

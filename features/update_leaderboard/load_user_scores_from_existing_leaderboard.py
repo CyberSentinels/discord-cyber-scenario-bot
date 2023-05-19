@@ -28,4 +28,5 @@ def get_encoded_user_scores_from_embeds(leaderboard_message):
             for field in embed.fields:
                 if field.name[0:5] == "chunk:":
                     chunks.append(field.value.strip('```'))
-    return "".join(chunks)
+    chunks_str = "".join(chunks)
+    return chunks_str
