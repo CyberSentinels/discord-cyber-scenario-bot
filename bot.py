@@ -29,7 +29,7 @@ from features.secplus.handle_secplus import *
 from features.shodan.handle_shodanip import *
 from features.subnet.handle_subnet import *
 from features.update_leaderboard.create_leaderboard_embed import create_leaderboard_embed, create_leaderboard_persistance_embed
-from features.update_leaderboard.load_user_scores_from_existing_leaderboard import load_user_scores_from_existing_leaderboard
+from services.load_user_scores_from_existing_leaderboard import load_user_scores_from_existing_leaderboard
 from features.update_leaderboard.upsert_message_for_channel import upsert_message_for_channel
 from features.whois.handle_whois import *
 
