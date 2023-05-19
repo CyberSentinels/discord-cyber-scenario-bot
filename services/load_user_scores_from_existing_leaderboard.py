@@ -32,21 +32,38 @@ def get_encoded_user_scores_from_embeds(leaderboard_message):
 
 
 def test_get_encoded_user_scores_from_embeds():
+    MOCK_ENCODED_STR_CHUNKS = [
+        "eyIxMDE1MjQ5NzE1MTExMTQ5NTc4IjogeyJjaXNzcCI6IHsiY29ycmVjdCI6IDAsICJpbmNvcnJlY3QiOiAwfSwgImNlaCI6IHsiY29ycmVjdCI6IDAsICJpbmNvcnJlY3QiOiAwfSwgImNjbmEiOiB7ImNvcnJlY3QiOiAwLCAiaW5jb3JyZWN0IjogMH0sICJhcGx1cyI6IHsiY29ycmVjdCI6IDAsICJpbmNvcnJlY3QiOiAx",
+        "fSwgIm5ldHBsdXMiOiB7ImNvcnJlY3QiOiAwLCAiaW5jb3JyZWN0IjogMH0sICJsaW51eHBsdXMiOiB7ImNvcnJlY3QiOiAwLCAiaW5jb3JyZWN0IjogMH0sICJzZWNwbHVzIjogeyJjb3JyZWN0IjogMCwgImluY29ycmVjdCI6IDB9LCAicXVpeiI6IHsiY29ycmVjdCI6IDAsICJpbmNvcnJlY3QiOiAwfX0sICIxMDM2NzY2NTQ1NDAzMTk5NTM4Ijogey",
+        "JjaXNzcCI6IHsiY29ycmVjdCI6IDAsICJpbmNvcnJlY3QiOiAwfSwgImNlaCI6IHsiY29ycmVjdCI6IDAsICJpbmNvcnJlY3QiOiAwfSwgImNjbmEiOiB7ImNvcnJlY3QiOiAwLCAiaW5jb3JyZWN0IjogMH0sICJhcGx1cyI6IHsiY29ycmVjdCI6IDEsICJpbmNvcnJlY3QiOiAwfSwgIm5ldHBsdXMiOiB7ImNvcnJlY3QiOiAwLCAiaW5jb3JyZWN0IjogMH0sICJsaW51eHBsdXMiOiB7ImNvcnJlY3QiOiAwLCAiaW5jb3JyZWN0IjogMH0sICJzZWNwbHVzIjogeyJjb3JyZWN0IjogMCwgImluY29ycmVjdCI6IDB9LCAicXVpeiI6IHsiY29ycmVjdCI6IDAsICJpbmNvcnJlY3QiOiAwfX19",
+    ]
+
+    EXPECTED_MOCK_STR = "".join(MOCK_ENCODED_STR_CHUNKS)
+
     leaderboard_msg = AttributeDict(
         {
             "embeds": [
                 AttributeDict(
                     {
                         "fields": [
-                            AttributeDict({"name": "chunk:0", "value": "```1234```"}),
-                            AttributeDict({"name": "chunk:1", "value": "```5678```"}),
-                        ]
-                    }
-                ),
-                AttributeDict(
-                    {
-                        "fields": [
-                            AttributeDict({"name": "chunk:2", "value": "```1357```"})
+                            AttributeDict(
+                                {
+                                    "name": "chunk:0",
+                                    "value": "```" + MOCK_ENCODED_STR_CHUNKS[0] + "```",
+                                }
+                            ),
+                            AttributeDict(
+                                {
+                                    "name": "chunk:1",
+                                    "value": "```" + MOCK_ENCODED_STR_CHUNKS[1] + "```",
+                                }
+                            ),
+                            AttributeDict(
+                                {
+                                    "name": "chunk:2",
+                                    "value": "```" + MOCK_ENCODED_STR_CHUNKS[2] + "```",
+                                }
+                            ),
                         ]
                     }
                 ),
@@ -56,4 +73,4 @@ def test_get_encoded_user_scores_from_embeds():
 
     result = get_encoded_user_scores_from_embeds(leaderboard_msg)
 
-    assert result == "123456781357"
+    assert result == EXPECTED_MOCK_STR
