@@ -2,22 +2,17 @@ import base64
 import json
 
 from services.attribute_dict import AttributeDict
+from services.try_decode_base64_json import try_decode_base64_json
 
 
 async def load_user_scores_from_existing_leaderboard(leaderboard_channel, client):
-    user_scores = {}  # default
     leaderboard_message = None
     async for message in leaderboard_channel.history():
         if message.author == client.user:
             leaderboard_message = message
             break
     user_scores_base64 = get_encoded_user_scores_from_embeds(leaderboard_message)
-    try:
-        user_scores_json = base64.b64decode(user_scores_base64.encode()).decode()
-        user_scores = json.loads(user_scores_json)
-    except Exception as e:
-        print(f"Error decoding base64 user_scores: {e}")
-    return user_scores
+    return try_decode_base64_json(user_scores_base64)
 
 
 def get_encoded_user_scores_from_embeds(leaderboard_message):
