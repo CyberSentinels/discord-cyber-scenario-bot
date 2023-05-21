@@ -1,10 +1,13 @@
-def get_encoded_user_scores_from_msg_embeds(leaderboard_message):
+def get_encoded_user_scores_from_msg_embeds(leaderboard_messages):
     chunks = []
-    if leaderboard_message is not None:
-        for embed in leaderboard_message.embeds:
-            for field in embed.fields:
-                if field.name[0:6] == "chunk:":
-                    chunks.append(field.value.strip("```"))
+    try:
+        for message in leaderboard_messages:
+            for embed in message.embeds:
+                for field in embed.fields:
+                    if field.name.startswith("chunk:"):
+                        chunks.append(field.value.strip("```"))
+    except Exception as e:
+        raise ValueError(f"Error occurred while processing leaderboard messages: {str(e)}")
     chunks_str = "".join(chunks)
     return chunks_str
 
