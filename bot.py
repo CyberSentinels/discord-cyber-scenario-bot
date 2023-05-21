@@ -3,7 +3,7 @@ import datetime
 import discord
 import os
 import random
-from discord import Activity, ActivityType, Status, app_commands, Embed
+from discord import Activity, ActivityType, Status, Embed
 from discord.ext import commands, tasks
 
 # import features
