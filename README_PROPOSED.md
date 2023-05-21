@@ -123,4 +123,4 @@ TODO Show how to get necessary ENV Variables here and how to set up with own dis
 
 ## License
 
-Specify the project's license and provide a link to the full license text if applicable.
+[MIT](https://github.com/simeononsecurity/glotta/blob/main/LICENSE)

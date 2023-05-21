@@ -16,16 +16,5 @@ pip install --user requests dnspython pycryptodome cryptography python-whois pho
 pip show requests && \
 pip list
 
-# Set the environment variable for the bot token
-ENV BOT_TOKEN=${BOT_TOKEN}
-ENV GUILD_ID=${GUILD_ID}
-ENV LEADERBOARD_CHANNEL_ID=${LEADERBOARD_CHANNEL_ID}
-ENV LEADERBOARD_PERSIST_CHANNEL_ID=${LEADERBOARD_PERSIST_CHANNEL_ID}
-ENV CHANNEL_ID=${CHANNEL_ID}
-ENV APLUSROLE=${APLUSROLE}
-ENV NETPLUSROLE=${NETPLUSROLE}
-ENV SECPLUSROLE=${SECPLUSROLE}
-ENV QUIZROLE=${QUIZROLE}
-
 # Run app.py when the container launches
 CMD ["python", "bot.py"]
