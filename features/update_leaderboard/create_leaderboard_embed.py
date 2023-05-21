@@ -55,9 +55,9 @@ async def create_leaderboard_embed(user_scores, question_dict_mapping, member_di
 async def create_leaderboard_persistance_embed(user_scores):
     # leaderboard embed: base64 encoded user_scores
     leaderboard_persistence = Embed(title="Leaderboard Persistance", color=0x006400)
-    field_list = create_leaderboard_persistance_embed_field_list(user_scores)
+    field_list = await create_leaderboard_persistance_embed_field_list(user_scores)
     for field in field_list:
         leaderboard_persistence.add_field(
-            name=field.name, value=field.value, inline=False
+            name=field["name"], value=field["value"], inline=False
         )
     return leaderboard_persistence
