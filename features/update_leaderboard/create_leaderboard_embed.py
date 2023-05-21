@@ -57,13 +57,15 @@ async def create_leaderboard_persistance_embed(user_scores):
         leaderboard_messages = []
         field_list = await create_leaderboard_persistance_embed_field_list(user_scores)
         channel = field_list[0].channel  # Retrieve the channel from the first message in field_list
-        for field in field_list:
-            message = await channel.send(embed=Embed(title="Leaderboard Persistence", color=0x006400, description=field["value"]))
+        for index, field in enumerate(field_list):
+            title = f"Leaderboard Persistence {index}"
+            message = await channel.send(embed=Embed(title=title, color=0x006400, description=field["value"]))
             await message.edit(content=f"**{field['name']}**")
             leaderboard_messages.append(message)
         return leaderboard_messages
     except Exception as e:
         # Handle any errors that occur during the process
         raise ValueError(f"Error creating leaderboard persistence embed: {str(e)}")
+
 
 
