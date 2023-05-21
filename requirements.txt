@@ -1,8 +1,6 @@
-discord.py
-discord-py-interactions
-discord-py-slash-command
-os
-random
-pycryptodome
-whois
-dns.resolver
+attrs==23.1.0
+idna==3.4
+iniconfig==2.0.0
+packaging==23.1
+pluggy==1.0.0
+sniffio==1.3.0

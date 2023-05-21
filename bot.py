@@ -1,12 +1,8 @@
 import asyncio
-import base64
 import datetime
 import discord
-import json
 import os
 import random
-import time
-import traceback
 from discord import Activity, ActivityType, Status, app_commands, Embed
 from discord.ext import commands, tasks
 
