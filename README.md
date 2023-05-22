@@ -144,7 +144,17 @@ These features have planned date of implementation, but we're tracking them and 
 
 ## Usage
 
-Explain how to use the project. Provide examples of common use cases or workflows to guide users. Include any important command line options or configuration details.
+The CyberScenarioBot offers various commands and features to enhance your cybersecurity training and awareness program. Here are some common use cases:
+
+1. **Quizzes and Scenarios**: Use the `!quiz` command to get a random cybersecurity awareness question. Use commands like `!aplus`, `!netplus`, `!secplus` to access specific prompts related to CompTIA certifications. Use commands like `!bluescenario` and `!redscenario` to get blue team and red team scenarios, respectively.
+
+2. **Leaderboard**: Keep track of user progress and compare scores with others in your server using the leaderboard commands. Use commands like `!leaderboard`, `!leaderboard category`, and `!leaderboard overall` to see scores for specific quiz categories and overall scores.
+
+3. **Tool Commands**: Utilize various tool commands to perform tasks related to DNS, hashing, ping, phone number lookup, Shodan IP search, subnet calculations, and domain WHOIS lookup. Use commands like `!dns`, `!hash`, `!ping`, `!phonelookup`, `!shodanip`, `!subnet`, and `!whois` followed by the appropriate arguments.
+
+4. **Informational Commands**: Use the `!commands` command to get a list of available commands. Use the `!socials` command to get information about the bot's social media accounts and websites.
+
+Feel free to explore and experiment with the available commands to enhance your cybersecurity training and engage your server members.
 
 ## Issues
 
