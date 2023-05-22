@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DOCKER_PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+      DOCKER_PLATFORMS: linux/amd64,linux/arm64
 
     steps:
       - name: Checkout
@@ -38,8 +38,8 @@ jobs:
       - name: Build and push Docker images
         run: |
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes && \
-          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 -t simeononsecurity/discord-cyber-scenario-bot:latest --progress=plain --push . && \
-          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 -t ghcr.io/simeononsecurity/discord-cyber-scenario-bot:latest --progress=plain --push .
+          docker buildx build --platform linux/amd64,linux/arm64 -t simeononsecurity/discord-cyber-scenario-bot:latest --progress=plain --push . && \
+          docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/simeononsecurity/discord-cyber-scenario-bot:latest --progress=plain --push .
 
       - name: Build and push
         uses: docker/build-push-action@v4
@@ -49,8 +49,6 @@ jobs:
           platforms: |
             linux/amd64
             linux/arm64
-            linux/arm/v7
-            linux/arm/v6
           tags: |
             simeononsecurity/discord-cyber-scenario-bot:latest
             ghcr.io/simeononsecurity/discord-cyber-scenario-bot:latest
