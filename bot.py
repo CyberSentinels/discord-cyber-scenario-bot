@@ -235,7 +235,6 @@ async def update_leaderboard():
                 leaderboard_persistance_channel, client
             )
             leaderboard_persistance_embed = await create_leaderboard_persistance_embed(
-                leaderboard_persistance_channel,
                 user_scores
             )
             await upsert_message_for_channel(
