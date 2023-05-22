@@ -57,7 +57,7 @@ export QUIZROLE="INSERT YOUR QUIZ ROLE ID HERE (only needed for timed quizes)"
 python bot.py
 ```
 Note that if you are using a Windows-based system, you'll need to use a slightly different command to set the environment variable. Here's an example command that should work on Windows:
-```powershell
+```shell
 set BOT_TOKEN="INSERT YOUR BOT TOKEN HERE"
 set GUILD_ID="INSERT YOUR GUILD ID HERE (only needed for timed quizes)"
 set LEADERBOARD_CHANNEL_ID="INSERT YOUR LEADERBOARD CHANNEL ID HERE (Only needed for leaderboard for prompts)" 
