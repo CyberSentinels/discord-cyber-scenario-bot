@@ -2,52 +2,56 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [master]
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
     env:
-      DOCKER_PLATFORMS: linux/amd64,linux/arm64
+      DOCKER_PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/386
 
     steps:
-    -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v3
-    -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-    -
-        name: setup docker buildx
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2.1.0
+
+      - name: setup docker buildx
         uses: docker/setup-buildx-action@v2
         id: buildx
         with:
           install: true
-    -
-        name: Login to DockerHub
+
+      - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-    - 
-      name: Build the Docker image
-      run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes && docker buildx build --platform linux/amd64,linux/arm64 -t simeononsecurity/discord-cyber-scenario-bot:latest --progress=plain --push .
-    -
-        name: Build and push
-        uses: docker/build-push-action@v2
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.PAT_TOKEN }}
+
+      - name: Build and push Docker images
+        run: |
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes && \
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/386 -t simeononsecurity/discord-cyber-scenario-bot:latest --progress=plain --push . && \
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/386 -t ghcr.io/simeononsecurity/discord-cyber-scenario-bot:latest --progress=plain --push .
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: simeononsecurity/discord-cyber-scenario-bot:latest
-          
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v2
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.PAT_TOKEN }}
-
-    - name: Build the simeononsecurity/discord-cyber-scenario-bot:latest Docker image for Github Registry
-      run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes && docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/simeononsecurity/discord-cyber-scenario-bot:latest --progress=plain --push .
-
+          platforms: |
+            linux/amd64
+            linux/arm64
+            linux/arm/v7
+            linux/arm/v6
+            linux/386
+          tags: |
+            simeononsecurity/discord-cyber-scenario-bot:latest
+            ghcr.io/simeononsecurity/discord-cyber-scenario-bot:latest
