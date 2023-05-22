@@ -1,6 +1,38 @@
-# Discord Cyber Scenario, Quiz, And Cyber Awareness Training Bot
+
+# CyberScenarioBot
+
+Discord Cyber Scenario, Quiz, And Cyber Awareness Training Bot.
+
+You can skip to [🚀 Quick Start](#quick-start) to add `CyberScenarioBot` to your server now.
 
 [![Docker Image CI](https://github.com/simeononsecurity/discord-cyber-scenario-bot/actions/workflows/docker-image.yml/badge.svg)](https://github.com/simeononsecurity/discord-cyber-scenario-bot/actions/workflows/docker-image.yml)
+
+## Table of Contents
+
+- [CyberScenarioBot](#cyberscenariobot)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [🚀 Quick Start](#-quick-start)
+    - [How to run:](#how-to-run)
+      - [Python:](#python)
+      - [Docker:](#docker)
+  - [Features](#features)
+    - [**Commands Available**](#commands-available)
+    - [📝 **Quiz and Scenario Commands**](#-quiz-and-scenario-commands)
+    - [💯🎯 **Leaderboard Commands**](#-leaderboard-commands)
+    - [🛠️ **Tool Commands**](#️-tool-commands)
+    - [ℹ️ **Informational Commands**](#ℹ️-informational-commands)
+    - [⚙️ **Easy Setup**](#️-easy-setup)
+  - [Upcoming Features](#upcoming-features)
+  - [Usage](#usage)
+  - [Issues](#issues)
+  - [Contributing](#contributing)
+    - [Automated Python Testing](#automated-python-testing)
+    - [Discord API and Developer Documentation](#discord-api-and-developer-documentation)
+    - [Working with the Developers](#working-with-the-developers)
+  - [License](#license)
+
+## Introduction
 
 This bot may be useful in a cybersecurity training or awareness program, where users can be exposed to various cybersecurity scenarios and learn how to prevent or respond to them. By using a Discord bot, the scenarios can be easily shared with users in a server environment, and the bot can be customized to include additional commands or functionality as needed. Additionally, the bot can be run in a Docker container, making it easy to deploy and manage in various environments.
 
@@ -8,37 +40,10 @@ This bot may be useful in a cybersecurity training or awareness program, where u
 
 ![](https://discord.io/cybersentinels/badge)
 
-## Commands Available:
-*Command prefix: '!', '/'*
+## 🚀 Quick Start
 
-### Quiz and Scenario Commands
-*Multiple-choice questions are dynamically weighted similar to the real exams based on if they are answered correctly or incorrectly*
-- **Aplus**: Replies with CompTIA's A+ related prompt.
-- **Bluescenario**: Replies with a blue team scenario.
-- **CCNA**: Replies with Cisco's CCNA multiple choice prompt.
-- **CEH**: Replies with EC-Council's CEH multiple choice prompt.
-- **CISSP**: Replies with ISC2's CISSP multiple choice prompt.
-- **Linuxplus**: Replies with CompTIA's Linux+ multiple choice prompt.
-- **Netplus**: Replies with CompTIA's Network+ related prompt.
-- **Quiz**: Replies with a random Cyber Security Awareness Question.
-- **Redscenario**: Replies with a redteam scenario.
-- **Secplus**: Replies with CompTIA's Security+ related prompt.
-
-### Tool Commands:
-- **Dns**: Takes in a `domain name` and returns A, AAAA, NS, TXT, etc. records.
-- **Hash**: Takes in `1 of 4 supported algos` and a `string` and outputs a corresponding hash.
-- **Ping**: Takes in an `IP address` and returns with a success message and average latency or a failure message.
-- **Phonelookup**: Takes in a `phone number` and outputs the carrier and location.
-- **Shodanip**: Takes in an `IP address` and outputs useful information from https://internetdb.shodan.io/.
-- **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts.
-- **Whois**: Takes in a `domain name` and outputs domain whois information.
-
-### Informational Commands
-- **Commands**: Replies with this message.
-- **Socials**: Replies with the various bot social media accounts and websites.
-
-## How to run:
-### Python:
+### How to run:
+#### Python:
 Assuming you are using a Unix-based system, open a terminal and navigate to the directory where the bot.py script is located. Then, run the following command:
 ```bash
 export BOT_TOKEN="INSERT YOUR BOT TOKEN HERE"
@@ -64,7 +69,7 @@ set SECPLUSROLE="INSERT YOUR Security+ ROLE ID HERE (only needed for timed quize
 set QUIZROLE="INSERT YOUR QUIZ ROLE ID HERE (only needed for timed quizes)"
 python bot.py
 ```
-### Docker:
+#### Docker:
 When running the Docker container, you can pass in the BOT_TOKEN environment variable using the -e flag as follows:
 
 ```bash
@@ -90,3 +95,90 @@ docker run -td --name scenario-bot \
 -e QUIZROLE="INSERT YOUR QUIZ ROLE ID HERE" \
 simeononsecurity/discord-cyber-scenario-bot:latest
 ```
+
+## Features
+### **Commands Available**
+*Command prefix: '!', '/'*****
+
+### 📝 **Quiz and Scenario Commands**
+- **Aplus**: Replies with CompTIA's A+ related prompt.
+- **Bluescenario**: Replies with a blue team scenario.
+- **CCNA**: Replies with Cisco's CCNA multiple choice prompt.
+- **CEH**: Replies with EC-Council's CEH multiple choice prompt.
+- **CISSP**: Replies with ISC2's CISSP multiple choice prompt.
+- **Linuxplus**: Replies with CompTIA's Linux+ multiple choice prompt.
+- **Netplus**: Replies with CompTIA's Network+ related prompt.
+- **Quiz**: Replies with a random Cyber Security Awareness Question.
+- **Redscenario**: Replies with a redteam scenario.
+- **Secplus**: Replies with CompTIA's Security+ related prompt.
+
+### 💯🎯 **Leaderboard Commands**
+*Multiple-choice questions are dynamically weighted similar to the real exams based on if they are answered correctly or incorrectly*
+
+- *Track your progress over time and see how you compare against others in your server*
+- *See scores for each quiz category as well as overall*
+
+### 🛠️ **Tool Commands**
+- **Dns**: Takes in a `domain name` and returns A, AAAA, NS, TXT, etc. records.
+- **Hash**: Takes in `1 of 4 supported algos` and a `string` and outputs a corresponding hash.
+- **Ping**: Takes in an `IP address` and returns with a success message and average latency or a failure message.
+- **Phonelookup**: Takes in a `phone number` and outputs the carrier and location.
+- **Shodanip**: Takes in an `IP address` and outputs useful information from https://internetdb.shodan.io/.
+- **Subnet**: Takes in an `IP address` and a `Subnet Mask` and outputs the Range, Usable IPs, Gateway Address, Broadcast Address, and Number of Supported Hosts.
+- **Whois**: Takes in a `domain name` and outputs domain whois information.
+
+### ℹ️ **Informational Commands**
+- **Commands**: Replies with this message.
+- **Socials**: Replies with the various bot social media accounts and websites.
+
+### ⚙️ **Easy Setup**
+- *See [🚀 Quick Start](#🚀-quick-start)*
+
+## Upcoming Features
+
+These features have planned date of implementation, but we're tracking them and we'd love [contributions](#contributing) for them. 
+
+- Advanced leaderboard features, including weekly and monthly rankings.
+- Customizable prompts and quizzes to cater to specific cybersecurity training needs.
+- Advanced reporting and analytics for tracking user progress and performance.
+
+## Usage
+
+Explain how to use the project. Provide examples of common use cases or workflows to guide users. Include any important command line options or configuration details.
+
+## Issues
+
+If users encounter any issues or have suggestions for improvements, they can open a GitHub issue to report them. Encourage users to provide detailed information about the problem and steps to reproduce it.
+
+To open an issue, follow these steps:
+
+1. Go to the Issues tab on the project's GitHub repository: [Issues](https://github.com/CyberSentinels/discord-cyber-scenario-bot/issues)
+2. Click on the "New Issue" button.
+3. Provide a descriptive title and a clear description of the issue.
+4. Include any relevant logs, screenshots, or code snippets to help with troubleshooting.
+5. Submit the issue and await further communication from the project maintainers.
+
+## Contributing
+
+We welcome all contributions. 
+This project was meant to be a development and learning effort by [the CyberSentinels club](https://cybersentinels.org) and we'd love to help you contribute and answer any questions you may have.
+
+### Automated Python Testing
+
+This repo includes automated testing, you can see examples on how to implement that [here](https://github.com/CyberSentinels/penguin-pie)
+
+### Discord API and Developer Documentation
+
+For testing changes and implementing features, you'll need a few things.
+
+- [Discord Developer Application](https://discord.com/developers/applications)
+- [Discord Developers Documentation](https://discord.com/developers/docs/intro)
+- [Discord.py Documentation](https://discordpy.readthedocs.io/en/stable/)
+
+### Working with the Developers
+
+You can discuss development efforts in the community discord server [here](https://discord.io/cybersentinels).
+  
+## License
+
+[MIT](https://github.com/simeononsecurity/glotta/blob/main/LICENSE)
