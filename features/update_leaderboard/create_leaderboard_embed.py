@@ -1,5 +1,4 @@
 from discord import Embed
-import os
 
 from features.update_leaderboard.create_overall_leaderboard_str import (
     create_overall_leaderboard_str,
@@ -57,8 +56,7 @@ async def create_leaderboard_persistance_embed(user_scores):
     try:
         leaderboard_messages = []
         field_list = await create_leaderboard_persistance_embed_field_list(user_scores)
-        leaderboard_persist_channel_id = os.environ.get("LEADERBOARD_PERSIST_CHANNEL_ID")
-        channel = leaderboard_persist_channel_id  # Retrieve the channel from the first message in field_list
+        channel = field_list[0].channel  # Retrieve the channel from the first message in field_list
         for index, field in enumerate(field_list):
             title = f"Leaderboard Persistence {index}"
             message = await channel.send(embed=Embed(title=title, color=0x006400, description=field["value"]))
