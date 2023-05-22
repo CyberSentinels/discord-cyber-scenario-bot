@@ -20,7 +20,7 @@ async def test_load_user_scores_from_existing_leaderboard():
     from services.__fixtures__.mocks import (
         MOCK_DISCORD_CHANNEL,
         MOCK_DISCORD_CLIENT,
-        MOCK_USER_SCORES
+        MOCK_USER_SCORES,
     )
 
     user_scores = await load_user_scores_from_existing_leaderboard(
