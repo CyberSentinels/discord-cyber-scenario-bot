@@ -245,7 +245,7 @@ async def update_leaderboard():
         await upsert_message_for_channel(
             leaderboard_persistance_channel, leaderboard_persistance_embed, client
         )
-        print("Updating leaderboard persistance embeds.")
+        print("Updated leaderboard persistance embeds.")
 
     # Store the member objects in a dictionary for fast lookups
     member_dict = {str(member.id): member for member in guild.members}
