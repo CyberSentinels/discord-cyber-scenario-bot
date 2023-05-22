@@ -65,6 +65,13 @@ netplusrole = os.environ.get("NETPLUSROLE")
 secplusrole = os.environ.get("SECPLUSROLE")
 quizrole = os.environ.get("QUIZROLE")
 
+feature_flags = {
+    "leaderboard": guildid is not None and leaderboardid is not None,
+    "leaderboard_persist": guildid is not None
+    and leaderboardid is not None
+    and leaderboard_persist_channel_id is not None,
+}
+
 # print variables to confirmed they were passed in correctly
 print(f"BOT_TOKEN: {bottoken}")
 print(f"GUILD_ID: {guildid}")
@@ -101,94 +108,98 @@ async def on_reaction_add(reaction, user):
     if user == client.user or reaction.message.author != client.user:
         return
 
-    if reaction.emoji in valid_emojis:
-        message_id = reaction.message.id  # Get the message ID
-        # Get question ID from message footer
-        question_id = reaction.message.embeds[0].footer.text
-        prefix, question_number = question_id.split(
-            "_"
-        )  # Extract prefix and question number
-        question_number = int(question_number)
-        # Convert the emoji to the corresponding answer option
-        answer = emoji_to_answer[reaction.emoji]
-        user_id = str(user.id)  # Get the user's Discord ID
-        guild = client.get_guild(guildid) or reaction.message.guild
-        if guild is None:
-            print(f"Warning: Unable to find a guild with the ID {guildid}")
-            return
-        global user_responses
-        global user_scores
+    is_quiz_reaction = reaction.emoji in valid_emojis
 
-        # Check if the user has already responded to this question
-        if (
-            message_id in user_responses
-            and question_id in user_responses[message_id]
-            and user_id in user_responses[message_id][question_id]
-        ):
-            # User has already responded to this question, do not update their response or score
-            await reaction.remove(user)
-            return
+    if is_quiz_reaction:
+        await handle_quiz_reaction(reaction, user)
 
-        # Update the response for this question for all guild users
-        if user in guild.members:
-            if message_id not in user_responses:
-                user_responses[message_id] = {}
-            if question_id not in user_responses[message_id]:
-                user_responses[message_id][question_id] = {}
-            user_responses[message_id][question_id][user_id] = answer
 
-        # Remove the user's reaction to prevent duplicate responses
+async def handle_quiz_reaction(reaction, user):
+    message_id = reaction.message.id  # Get the message ID
+    # Get question ID from message footer
+    question_id = reaction.message.embeds[0].footer.text
+    prefix, question_number = question_id.split(
+        "_"
+    )  # Extract prefix and question number
+    question_number = int(question_number)
+    # Convert the emoji to the corresponding answer option
+    answer = emoji_to_answer[reaction.emoji]
+    user_id = str(user.id)  # Get the user's Discord ID
+    guild = client.get_guild(guildid) or reaction.message.guild
+    if guild is None:
+        print(f"Warning: Unable to find a guild with the ID {guildid}")
+        return
+    global user_responses
+    global user_scores
+
+    # Check if the user has already responded to this question
+    if (
+        message_id in user_responses
+        and question_id in user_responses[message_id]
+        and user_id in user_responses[message_id][question_id]
+    ):
+        # User has already responded to this question, do not update their response or score
         await reaction.remove(user)
+        return
 
-        # Check if the answer is correct and update the user's score for the appropriate prefix
-        question_dict = question_dict_mapping[prefix]
-        question = question_dict[question_number]
-        correct_answer = question["correctanswer"].lower()
-        if answer == "show_answer":  # Check if the question mark emoji was selected
-            if "reasoning" in question:
-                await user.send(
-                    f"The correct answer is '{correct_answer}'\n\n**Reasoning**: {question['reasoning']}"
-                )
-                return
-            else:
-                await user.send(f"The correct answer is '{correct_answer}'")
-            return  # Stop processing the selected reaction if the question mark emoji was selected
+    # Update the response for this question for all guild users
+    if user in guild.members:
+        if message_id not in user_responses:
+            user_responses[message_id] = {}
+        if question_id not in user_responses[message_id]:
+            user_responses[message_id][question_id] = {}
+        user_responses[message_id][question_id][user_id] = answer
 
-        if answer:
-            if user in guild.members:
-                if user_id not in user_scores:
-                    # Initialize the user's score if it doesn't exist
-                    user_scores[user_id] = {
-                        p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping
-                    }
-        # Convert the correct answer to lowercase
-        if answer.lower() == correct_answer.lower():
-            if user in guild.members:
-                # Increment the user's score for this prefix
-                user_scores[user_id][prefix]["correct"] += 1
-            if "reasoning" in question:
-                await user.send(
-                    f"🎉 Congratulations, your answer '{answer}' is correct!\n\n**Reasoning**: {question['reasoning']}"
-                )
-                return
-            else:
-                await user.send(
-                    f"🎉 Congratulations, your answer '{answer}' is correct!"
-                )
-        else:
-            if user in guild.members:
-                # Increment the user's score for this prefix
-                user_scores[user_id][prefix]["incorrect"] += 1
-            if "reasoning" in question:
-                await user.send(
-                    f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.\n\n**Reasoning**: {question['reasoning']}"
-                )
-                return
-            else:
-                await user.send(
-                    f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'."
-                )
+    # Remove the user's reaction to prevent duplicate responses
+    await reaction.remove(user)
+
+    # Check if the answer is correct and update the user's score for the appropriate prefix
+    question_dict = question_dict_mapping[prefix]
+    question = question_dict[question_number]
+    correct_answer = question["correctanswer"].lower()
+    if answer == "show_answer":  # Check if the question mark emoji was selected
+        if "reasoning" in question:
+            await user.send(
+                f"The correct answer is '{correct_answer}'\n\n**Reasoning**: {question['reasoning']}"
+            )
             return
+        else:
+            await user.send(f"The correct answer is '{correct_answer}'")
+        return  # Stop processing the selected reaction if the question mark emoji was selected
+
+    if answer:
+        if user in guild.members:
+            if user_id not in user_scores:
+                # Initialize the user's score if it doesn't exist
+                user_scores[user_id] = {
+                    p: {"correct": 0, "incorrect": 0} for p in question_dict_mapping
+                }
+    # Convert the correct answer to lowercase
+    if answer.lower() == correct_answer.lower():
+        if user in guild.members:
+            # Increment the user's score for this prefix
+            user_scores[user_id][prefix]["correct"] += 1
+        if "reasoning" in question:
+            await user.send(
+                f"🎉 Congratulations, your answer '{answer}' is correct!\n\n**Reasoning**: {question['reasoning']}"
+            )
+            return
+        else:
+            await user.send(f"🎉 Congratulations, your answer '{answer}' is correct!")
+    else:
+        if user in guild.members:
+            # Increment the user's score for this prefix
+            user_scores[user_id][prefix]["incorrect"] += 1
+        if "reasoning" in question:
+            await user.send(
+                f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'.\n\n**Reasoning**: {question['reasoning']}"
+            )
+            return
+        else:
+            await user.send(
+                f"🤔 Your answer '{answer}' is incorrect. The correct answer is '{correct_answer}'."
+            )
+        return
 
 
 loaded_scores_from_leaderboard = False
@@ -196,49 +207,51 @@ loaded_scores_from_leaderboard = False
 
 async def update_leaderboard():
     ####
-    # begin smelly globally coupled init logic
+    # TODO: convert the rest of chatgpt's garbage to something easier to test and maintain
     ####
     print("Updating leaderboard")
     await client.wait_until_ready()
     global user_scores
-    if (
-        guildid is None
-        or leaderboardid is None
-        or leaderboard_persist_channel_id is None
-    ):
-        print(f"missing required guild or leaderboard or embed channel id")
+    if not feature_flags["leaderboard"]:
+        print(f"missing required guild or leaderboard")
         return
-    guild = client.get_guild(int(guildid))
-    # Store the member objects in a dictionary for fast lookups
-    member_dict = {str(member.id): member for member in guild.members}
-    leaderboard_channel = guild.get_channel(int(leaderboardid))
-    leaderboard_persistance_channel = guild.get_channel(
-        int(leaderboard_persist_channel_id)
-    )
-    ####
-    # end smelly globally coupled init logic
-    ####
 
+    guild = client.get_guild(int(guildid))
     global loaded_scores_from_leaderboard
 
     if not user_scores and not loaded_scores_from_leaderboard:
-        user_scores = await load_user_scores_from_existing_leaderboard(
-            leaderboard_persistance_channel, client
-        )
+        # initialize user_scores
+        user_scores = {}
+        if not feature_flags["leaderboard_persist"]:
+            print(
+                f"missing required guild or leaderboard or leaderboard persist channel id"
+            )
+        else:
+            # update leaderboard persistance if feature is enabled
+            leaderboard_persistance_channel = guild.get_channel(
+                int(leaderboard_persist_channel_id)
+            )
+            user_scores = await load_user_scores_from_existing_leaderboard(
+                leaderboard_persistance_channel, client
+            )
+            leaderboard_persistance_embed = await create_leaderboard_persistance_embed(
+                leaderboard_persistance_channel,
+                user_scores
+            )
+            await upsert_message_for_channel(
+                leaderboard_persistance_channel, leaderboard_persistance_embed, client
+            )
         loaded_scores_from_leaderboard = True
 
+    # Store the member objects in a dictionary for fast lookups
+    member_dict = {str(member.id): member for member in guild.members}
+    leaderboard_channel = guild.get_channel(int(leaderboardid))
+
+    # update leaderboard if feature is enabled
     leaderboard_embed = await create_leaderboard_embed(
         user_scores, question_dict_mapping, member_dict
     )
-    leaderboard_persistance_embed = await create_leaderboard_persistance_embed(
-        user_scores
-    )
-
     await upsert_message_for_channel(leaderboard_channel, leaderboard_embed, client)
-    await upsert_message_for_channel(
-        leaderboard_persistance_channel, leaderboard_persistance_embed, client
-    )
-
     print("Leaderboard updated successfully")
 
 
