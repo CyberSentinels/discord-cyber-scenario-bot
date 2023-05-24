@@ -1,7 +1,7 @@
 async def upsert_message_for_channel(channel, embed, client):
     the_msg = None
     async for message in channel.history():
-        if message.author == client.user:
+        if message.author == client.user and message.embeds and message.embeds[0].title == embed.title:
             the_msg = message
             break
     if the_msg is None:
