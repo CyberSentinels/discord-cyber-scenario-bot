@@ -19,9 +19,11 @@ async def load_user_scores_from_existing_leaderboard(leaderboard_channel, client
     decoded_user_scores = []
     async for message in leaderboard_channel.history(limit=None):
         if message.author == client.user:
-            encoded_user_scores = get_encoded_user_scores_from_msg_embeds(message.embeds)
-            decoded_data = try_decode_base64_json(encoded_user_scores)
-            decoded_user_scores.append(decoded_data)
+            encoded_user_scores = get_encoded_user_scores_from_msg_embeds(message)
+            if encoded_user_scores != None:
+                decoded_data = try_decode_base64_json(encoded_user_scores)
+                if decoded_data != None:
+                    decoded_user_scores.append(decoded_data)
     if decoded_user_scores is None:
         raise ValueError("ERROR: no leaderboard message found in leaderboard channel")
     return decoded_user_scores
