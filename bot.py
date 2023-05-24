@@ -239,12 +239,13 @@ async def update_leaderboard():
 
     if feature_flags["leaderboard_persist"]:
         print("Updating leaderboard persistance embeds...")
-        leaderboard_persistance_embed = await create_leaderboard_persistance_embed(
+        leaderboard_persistance_embed_list = await create_leaderboard_persistance_embed(
             user_scores
         )
-        await upsert_message_for_channel(
-            leaderboard_persistance_channel, leaderboard_persistance_embed, client
-        )
+        for embed in leaderboard_persistance_embed_list:
+            await upsert_message_for_channel(
+                leaderboard_persistance_channel, embed, client
+            )
         print("Updated leaderboard persistance embeds.")
 
     # Store the member objects in a dictionary for fast lookups

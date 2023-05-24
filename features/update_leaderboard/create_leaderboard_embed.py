@@ -61,6 +61,7 @@ async def create_leaderboard_persistance_embed(user_scores):
             message.add_field(
                 name=field["name"], value=field["value"], inline=False
             )
+            leaderboard_messages.append(message)  # Add the created embed to the list
         return leaderboard_messages
     except Exception as e:
         # Handle any errors that occur during the process
