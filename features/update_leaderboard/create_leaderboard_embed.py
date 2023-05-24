@@ -58,7 +58,7 @@ async def create_leaderboard_persistance_embed(user_scores):
         field_list = await create_leaderboard_persistance_embed_field_list(user_scores)
         for index, field in enumerate(field_list):
             title = f"Leaderboard Persistence {index}"
-            message = (embed=Embed(title=title, color=0x006400, description=field["value"]))
+            message = Embed(title=title, color=0x006400, description=field["value"])
             await message.edit(content=f"**{field['name']}**")
             leaderboard_messages.append(message)
         return leaderboard_messages
