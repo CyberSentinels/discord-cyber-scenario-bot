@@ -52,13 +52,13 @@ async def create_leaderboard_embed(user_scores, question_dict_mapping, member_di
 
     return leaderboard
 
-async def create_leaderboard_persistance_embed(channel, user_scores):
+async def create_leaderboard_persistance_embed(user_scores):
     try:
         leaderboard_messages = []
         field_list = await create_leaderboard_persistance_embed_field_list(user_scores)
         for index, field in enumerate(field_list):
             title = f"Leaderboard Persistence {index}"
-            message = await channel.send(embed=Embed(title=title, color=0x006400, description=field["value"]))
+            message = (embed=Embed(title=title, color=0x006400, description=field["value"]))
             await message.edit(content=f"**{field['name']}**")
             leaderboard_messages.append(message)
         return leaderboard_messages
