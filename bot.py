@@ -219,6 +219,10 @@ async def update_leaderboard():
     guild = client.get_guild(int(guildid))
     global loaded_scores_from_leaderboard
 
+    leaderboard_persistance_channel = guild.get_channel(
+        int(leaderboard_persist_channel_id)
+    )
+
     if not user_scores and not loaded_scores_from_leaderboard:
         # initialize user_scores
         user_scores = {}
@@ -227,27 +231,27 @@ async def update_leaderboard():
                 f"missing required guild or leaderboard or leaderboard persist channel id"
             )
         else:
-            # update leaderboard persistance if feature is enabled
-            leaderboard_persistance_channel = guild.get_channel(
-                int(leaderboard_persist_channel_id)
-            )
+            # load user_scores from persist embeds
             user_scores = await load_user_scores_from_existing_leaderboard(
                 leaderboard_persistance_channel, client
             )
-            leaderboard_persistance_embed = await create_leaderboard_persistance_embed(
-                leaderboard_persistance_channel,
-                user_scores
-            )
-            await upsert_message_for_channel(
-                leaderboard_persistance_channel, leaderboard_persistance_embed, client
-            )
         loaded_scores_from_leaderboard = True
+
+    if feature_flags["leaderboard_persist"]:
+        print("Updating leaderboard persistance embeds...")
+        leaderboard_persistance_embed = await create_leaderboard_persistance_embed(
+            user_scores
+        )
+        await upsert_message_for_channel(
+            leaderboard_persistance_channel, leaderboard_persistance_embed, client
+        )
+        print("Updated leaderboard persistance embeds.")
 
     # Store the member objects in a dictionary for fast lookups
     member_dict = {str(member.id): member for member in guild.members}
     leaderboard_channel = guild.get_channel(int(leaderboardid))
 
-    # update leaderboard if feature is enabled
+    # update leaderboard
     leaderboard_embed = await create_leaderboard_embed(
         user_scores, question_dict_mapping, member_dict
     )

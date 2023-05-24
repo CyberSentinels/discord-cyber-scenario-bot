@@ -1,5 +1,4 @@
 from discord import Embed
-import os
 
 from features.update_leaderboard.create_overall_leaderboard_str import (
     create_overall_leaderboard_str,
