@@ -5,7 +5,7 @@ Discord Cyber Scenario, Quiz, And Cyber Awareness Training Bot.
 
 You can skip to [🚀 Quick Start](#quick-start) to add `CyberScenarioBot` to your server now.
 
-[![Docker Image CI](https://github.com/simeononsecurity/discord-cyber-scenario-bot/actions/workflows/docker-image.yml/badge.svg)](https://github.com/simeononsecurity/discord-cyber-scenario-bot/actions/workflows/docker-image.yml)
+[![Docker Image CI](https://github.com/simeononsecurity/discord-cyber-scenario-bot/actions/workflows/docker-image.yml/badge.svg)](https://github.com/simeononsecurity/discord-cyber-scenario-bot/actions/workflows/docker-image.yml) [DockerHub](https://hub.docker.com/r/simeononsecurity/discord-cyber-scenario-bot)
 
 ## Table of Contents
 
@@ -192,3 +192,16 @@ You can discuss development efforts in the community discord server [here](https
 ## License
 
 [MIT](https://github.com/simeononsecurity/glotta/blob/main/LICENSE)
+
+<a href="https://simeononsecurity.ch" target="_blank" rel="noopener noreferrer">
+  <h2>Explore the World of Cybersecurity</h2>
+</a>
+<a href="https://simeononsecurity.ch" target="_blank" rel="noopener noreferrer">
+  <img src="https://simeononsecurity.ch/img/banner.png" alt="SimeonOnSecurity Logo" width="300" height="300">
+</a>
+
+### Links:
+- #### [github.com/simeononsecurity](https://github.com/simeononsecurity)
+- #### [simeononsecurity.ch](https://simeononsecurity.ch)
+
+
