@@ -8,8 +8,15 @@ WORKDIR /
 
 COPY requirements.txt .
 
+# Update packages and install required system dependencies
+RUN apt-get update && \
+    apt-get -y full-upgrade --no-install-recommends && \
+    apt-get install -y --no-install-recommends locales python3-setuptools python3-dev python3-pip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Ensure latest pip is installed and install any needed packages specified in requirements.txt
-RUN pip install --upgrade pip && pip install -r requirements.txt && pip show requests && pip list
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt && pip show requests && pip list
 
 #### LAYER 2: ADD PYTHON SOURCE FILES IF THEY HAVE CHANGED
 
