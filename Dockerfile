@@ -1,6 +1,10 @@
 # Use an official Python runtime as a parent image
 FROM python:3.11.2-bullseye
 
+ENV DEBIAN_FRONTEND noninteractive
+ENV container docker
+ENV TERM=xterm
+
 #### LAYER 1: INSTALL DEPENDENCIES IF THEY HAVE CHANGED
 
 # Set the working directory to /
