@@ -7,6 +7,15 @@ You can skip to [🚀 Quick Start](#quick-start) to add `CyberScenarioBot` to yo
 
 [![Docker Image CI](https://github.com/simeononsecurity/discord-cyber-scenario-bot/actions/workflows/docker-image.yml/badge.svg)](https://github.com/simeononsecurity/discord-cyber-scenario-bot/actions/workflows/docker-image.yml) [DockerHub](https://hub.docker.com/r/simeononsecurity/discord-cyber-scenario-bot)
 
+See the Bot in Action!
+<!-- Website -->
+<a href="https://cybersentinels.org">
+<img src="https://img.shields.io/badge/Website-Visit-<COLOR>?color=green" alt="Website">
+</a>
+<a href="https://discord.io/cybersentinels">
+<img src="https://img.shields.io/discord/1077773186772521011?label=Cyber%20Sentinels%20Discord&logo=discord&logoColor=white" alt="Discord">
+</a>
+
 ## Table of Contents
 
 - [CyberScenarioBot](#cyberscenariobot)
@@ -35,10 +44,6 @@ You can skip to [🚀 Quick Start](#quick-start) to add `CyberScenarioBot` to yo
 ## Introduction
 
 This bot may be useful in a cybersecurity training or awareness program, where users can be exposed to various cybersecurity scenarios and learn how to prevent or respond to them. By using a Discord bot, the scenarios can be easily shared with users in a server environment, and the bot can be customized to include additional commands or functionality as needed. Additionally, the bot can be run in a Docker container, making it easy to deploy and manage in various environments.
-
-[See the bot in action](https://discord.io/cybersentinels)
-
-![](https://discord.io/cybersentinels/badge)
 
 ## 🚀 Quick Start
 
