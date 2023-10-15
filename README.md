@@ -12,7 +12,7 @@ See the Bot in Action!
 <a href="https://cybersentinels.org">
 <img src="https://img.shields.io/badge/Website-Visit-<COLOR>?color=green" alt="Website">
 </a>
-<a href="https://discord.io/cybersentinels">
+<a href="https://discord.gg/CYVe2CyrXk">
 <img src="https://img.shields.io/discord/1077773186772521011?label=Cyber%20Sentinels%20Discord&logo=discord&logoColor=white" alt="Discord">
 </a>
 
@@ -192,21 +192,21 @@ For testing changes and implementing features, you'll need a few things.
 
 ### Working with the Developers
 
-You can discuss development efforts in the community discord server [here](https://discord.io/cybersentinels).
+You can discuss development efforts in the community discord server [here](https://discord.gg/CYVe2CyrXk).
   
 ## License
 
 [MIT](https://github.com/simeononsecurity/glotta/blob/main/LICENSE)
 
-<a href="https://simeononsecurity.ch" target="_blank" rel="noopener noreferrer">
+<a href="https://simeononsecurity.com" target="_blank" rel="noopener noreferrer">
   <h2>Explore the World of Cybersecurity</h2>
 </a>
-<a href="https://simeononsecurity.ch" target="_blank" rel="noopener noreferrer">
-  <img src="https://simeononsecurity.ch/img/banner.png" alt="SimeonOnSecurity Logo" width="300" height="300">
+<a href="https://simeononsecurity.com" target="_blank" rel="noopener noreferrer">
+  <img src="https://simeononsecurity.com/img/banner.png" alt="SimeonOnSecurity Logo" width="300" height="300">
 </a>
 
 ### Links:
 - #### [github.com/simeononsecurity](https://github.com/simeononsecurity)
-- #### [simeononsecurity.ch](https://simeononsecurity.ch)
+- #### [simeononsecurity.com](https://simeononsecurity.com)
 
 
