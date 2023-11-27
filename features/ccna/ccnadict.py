@@ -792,7 +792,7 @@ ccnadict = [
     {
         "question": "What is the CIDR notation for the subnet mask 255.255.248.0?",
         "answers": {"A": "/20", "B": "/21", "C": "/22", "D": "/23"},
-        "correctanswer": "A",
+        "correctanswer": "B",
     },
     {
         "question": "What is BGP and what is its role in Internet routing?",
