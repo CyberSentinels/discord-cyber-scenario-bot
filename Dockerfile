@@ -27,5 +27,8 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt 
 # Copy the rest of the directory contents into the container
 COPY . .
 
-# Run app.py when the container launches
-CMD ["python", "bot.py"]
+# Make the entry point script executable
+RUN chmod +x entrypoint.sh
+
+# Define the default command to run when the container starts
+CMD ["./entrypoint.sh"]
