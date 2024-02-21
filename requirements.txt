@@ -18,7 +18,7 @@ idna==3.4
 multidict==6.0.4
 phonenumbers==8.13.11
 pycparser==2.21
-pycryptodome==3.18.0
+pycryptodome==3.19.1
 python-whois==0.8.0
 requests==2.31.0
 tomli==2.0.1
